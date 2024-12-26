@@ -1,75 +1,89 @@
 from tkinter import ttk
 import tkinter as tk
-from PIL import Image, ImageTk
+from tkinter import filedialog
 from gui.widgets.title_line import create_title_line, remove_title_line
+from gui.widgets.image import center_image_vertically
+from gui.widgets.line_toggle import toggle_new_line, add_new_line, remove_new_line, toggle_third_line, add_third_line, remove_third_line, update_title_lines_section
 
 class CreateImage(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
 
-        # Label at the top middle
-        title_label = ttk.Label(self, text="Fly Wiz", font=("Helvetica", 60))
-        title_label.grid(row=0, column=0, columnspan=3, pady=10, sticky="n")
+        # Create frame for the title
+        title_frame = ttk.Frame(self, borderwidth=2, relief="solid")
+        title_frame.grid(row=0, column=0, columnspan=2, sticky="ew")
 
-        # Label and input for "Title Line 1"
-        create_title_line(self, 1, 1)
+        # Add title label to the title frame
+        title_label = ttk.Label(title_frame, text="Fly Wiz", font=("Helvetica", 60), borderwidth=2, relief="solid", anchor="center")
+        title_label.grid(row=0, column=1, pady=10, sticky="ew")
 
-        # Toggle for new line
-        self.new_line_var = tk.BooleanVar()
-        new_line_toggle = tk.Checkbutton(self, text="New Line", variable=self.new_line_var, font=("Helvetica", 20), command=self.toggle_new_line)
-        new_line_toggle.grid(row=2, column=0, columnspan=2, pady=2, sticky="w")
+        # Add empty columns on either side of the title label
+        title_frame.grid_columnconfigure(0, weight=1)
+        title_frame.grid_columnconfigure(1, weight=1)
+        title_frame.grid_columnconfigure(2, weight=1)
 
-        # Load and display the image on the right side
-        image_path = "./dog.jpg"  # Update with the correct path to your image
-        self.image = Image.open(image_path)
-        self.photo = ImageTk.PhotoImage(self.image)
-        image_label = tk.Label(self, image=self.photo)
-        image_label.grid(row=1, column=2, rowspan=5, padx=20, pady=2, sticky="ns")
+        # Create frames for left and right sides
+        left_frame = ttk.Frame(self, borderwidth=2, relief="solid")
+        right_frame = ttk.Frame(self, borderwidth=2, relief="solid")
+
+        left_frame.grid(row=1, column=0, sticky="nsew")
+        right_frame.grid(row=1, column=1, sticky="nsew")
 
         # Configure grid columns to adjust layout
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
+        self.grid_rowconfigure(1, weight=1)
 
-    def toggle_new_line(self):
-        if self.new_line_var.get():
-            self.add_new_line()
-        else:
-            self.remove_new_line()
+        # Create a frame for the title lines within the left frame
+        self.title_lines_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
+        self.title_lines_frame.grid(row=0, column=0, sticky="nsew")
 
-    def add_new_line(self):
-        if hasattr(self, 'title_line2_label'):
-            return  # If the new line already exists, do nothing
+        # Add widgets to the title lines frame
+        create_title_line(self.title_lines_frame, 1, 1)
 
-        create_title_line(self, 2, 3)
+        self.new_line_var = tk.BooleanVar()
 
-        # Toggle for adding a third line
-        self.new_line_var2 = tk.BooleanVar()
-        self.new_line_toggle2 = tk.Checkbutton(self, text="Add New Line", variable=self.new_line_var2, font=("Helvetica", 20), command=self.toggle_third_line)
-        self.new_line_toggle2.grid(row=4, column=0, columnspan=2, pady=2, sticky="w")
+        # Bind the imported functions to the class
+        self.toggle_new_line = toggle_new_line.__get__(self)
+        self.add_new_line = add_new_line.__get__(self)
+        self.remove_new_line = remove_new_line.__get__(self)
+        self.toggle_third_line = toggle_third_line.__get__(self)
+        self.add_third_line = add_third_line.__get__(self)
+        self.remove_third_line = remove_third_line.__get__(self)
+        self.update_title_lines_section = update_title_lines_section.__get__(self)
 
-    def remove_new_line(self):
-        remove_title_line(self, 2)
+        self.new_line_toggle = tk.Checkbutton(self.title_lines_frame, text="New Line", variable=self.new_line_var, font=("Helvetica", 20), command=self.toggle_new_line)
+        self.new_line_toggle.grid(row=2, column=0, columnspan=2, pady=2, sticky="w")
 
-        if hasattr(self, 'new_line_toggle2'):
-            self.new_line_toggle2.destroy()
-            del self.new_line_toggle2
+        # Create a frame for the "Choose Image" section within the left frame
+        choose_image_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
+        choose_image_frame.grid(row=1, column=0, sticky="nsew")
 
-        # Also remove the third line if it exists
-        self.remove_third_line()
+        # Add "Choose Image" label and buttons to the choose image frame
+        self.choose_image_label = ttk.Label(choose_image_frame, text="Choose Image", font=("Helvetica", 20))
+        self.choose_image_label.grid(row=0, column=0, pady=10, sticky="w")
 
-    def toggle_third_line(self):
-        if self.new_line_var2.get():
-            self.add_third_line()
-        else:
-            self.remove_third_line()
+        self.browse_button = ttk.Button(choose_image_frame, text="Browse", command=self.browse_image)
+        self.browse_button.grid(row=0, column=1, padx=5, pady=10, sticky="w")
 
-    def add_third_line(self):
-        if hasattr(self, 'title_line3_label'):
-            return  # If the third line already exists, do nothing
+        self.search_button = ttk.Button(choose_image_frame, text="Search")
+        self.search_button.grid(row=0, column=2, padx=5, pady=10, sticky="w")
 
-        create_title_line(self, 3, 5)
+        # Load and display the image on the right side using center_image_vertically function
+        image_path = "./flyer.jpg"
+        center_image_vertically(right_frame, image_path, title_row=0, bottom_row=6, column=0, max_width=960, max_height=540)
+        
+        # Configure grid columns to adjust layout in frames
+        left_frame.grid_columnconfigure(0, weight=1)
+        left_frame.grid_rowconfigure(0, weight=1)
+        left_frame.grid_rowconfigure(1, weight=1)
+        right_frame.grid_columnconfigure(0, weight=1)
 
-    def remove_third_line(self):
-        remove_title_line(self, 3)
+        self.frames = {"left_frame": left_frame, "right_frame": right_frame}
+
+    def browse_image(self):
+        file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png")])
+        if file_path:
+            # Handle the selected file path
+            print(f"Selected file: {file_path}")

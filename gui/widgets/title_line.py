@@ -19,3 +19,4 @@ def remove_title_line(parent, line_number):
         entry.destroy()
         delattr(parent, f"title_line{line_number}_label")
         delattr(parent, f"title_line{line_number}_entry")
+

@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from image_manipulation.create_image import create_blank_image
 
 from gui.create import CreateImage
+
 
 class FlyWizGui(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -28,6 +30,15 @@ class FlyWizGui(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-if __name__ == "__main__":
+
+def main():
+    # Create the blank image
+    create_blank_image()
+
+    # Initialize and run the Fly Wiz app
     app = FlyWizGui()
     app.mainloop()
+
+
+if __name__ == "__main__":
+    main()
