@@ -1,9 +1,8 @@
 from tkinter import ttk
 import tkinter as tk
 from tkinter import filedialog
-from gui.widgets.title_line import create_title_line, remove_title_line
 from gui.widgets.image import center_image_vertically
-from gui.widgets.line_toggle import toggle_new_line, add_new_line, remove_new_line, toggle_third_line, add_third_line, remove_third_line, update_title_lines_section
+from gui.widgets.browse_image import browse_image
 
 class CreateImage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -35,40 +34,83 @@ class CreateImage(ttk.Frame):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        # Create a frame for the title lines within the left frame
-        self.title_lines_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
-        self.title_lines_frame.grid(row=0, column=0, sticky="nsew")
+        # Create a frame for the header within the left frame
+        self.header_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
+        self.header_frame.grid(row=0, column=0, sticky="nsew")
 
-        # Add widgets to the title lines frame
-        create_title_line(self.title_lines_frame, 1, 1)
+        # Add a label for the header
+        header_label = ttk.Label(self.header_frame, text="Header:", font=("Helvetica", 20), width=15)
+        header_label.grid(row=0, column=0, padx=20, pady=10, sticky="w")
 
-        self.new_line_var = tk.BooleanVar()
+        # Create a frame to the right of the label
+        header_text_area_frame = ttk.Frame(self.header_frame)
+        header_text_area_frame.grid(row=0, column=1, padx=(0, 20), pady=(10, 20), sticky="nsew")
 
-        # Bind the imported functions to the class
-        self.toggle_new_line = toggle_new_line.__get__(self)
-        self.add_new_line = add_new_line.__get__(self)
-        self.remove_new_line = remove_new_line.__get__(self)
-        self.toggle_third_line = toggle_third_line.__get__(self)
-        self.add_third_line = add_third_line.__get__(self)
-        self.remove_third_line = remove_third_line.__get__(self)
-        self.update_title_lines_section = update_title_lines_section.__get__(self)
-
-        self.new_line_toggle = tk.Checkbutton(self.title_lines_frame, text="New Line", variable=self.new_line_var, font=("Helvetica", 20), command=self.toggle_new_line)
-        self.new_line_toggle.grid(row=2, column=0, columnspan=2, pady=2, sticky="w")
+        # Add the text area inside the new frame and center it
+        self.header_text_area = tk.Text(header_text_area_frame, font=("Helvetica", 20), height=3, width=30)  # Increased height
+        self.header_text_area.pack(expand=True, fill="both", padx=10, pady=10)
 
         # Create a frame for the "Choose Image" section within the left frame
         choose_image_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
         choose_image_frame.grid(row=1, column=0, sticky="nsew")
 
         # Add "Choose Image" label and buttons to the choose image frame
-        self.choose_image_label = ttk.Label(choose_image_frame, text="Choose Image", font=("Helvetica", 20))
+        self.choose_image_label = ttk.Label(choose_image_frame, text="Choose Image:", font=("Helvetica", 20), width=15)
         self.choose_image_label.grid(row=0, column=0, pady=10, sticky="w")
 
-        self.browse_button = ttk.Button(choose_image_frame, text="Browse", command=self.browse_image)
+        self.browse_button = ttk.Button(choose_image_frame, text="Browse", command=browse_image)
         self.browse_button.grid(row=0, column=1, padx=5, pady=10, sticky="w")
 
         self.search_button = ttk.Button(choose_image_frame, text="Search")
         self.search_button.grid(row=0, column=2, padx=5, pady=10, sticky="w")
+
+        # Create a frame for the text info section within the left frame
+        text_info_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
+        text_info_frame.grid(row=2, column=0, sticky="nsew")
+
+        # Add a label for the text info section
+        text_info_label = ttk.Label(text_info_frame, text="Text Info:", font=("Helvetica", 20), width=15)
+        text_info_label.grid(row=0, column=0, padx=20, pady=10, sticky="w")
+
+        # Create a frame to the right of the label
+        text_info_text_area_frame = ttk.Frame(text_info_frame)
+        text_info_text_area_frame.grid(row=0, column=1, padx=(0, 20), pady=(10, 20), sticky="nsew")
+
+        # Add the text area inside the new frame and center it
+        self.text_info_text_area = tk.Text(text_info_text_area_frame, font=("Helvetica", 20), height=3, width=30)  # Increased height
+        self.text_info_text_area.pack(expand=True, fill="both", padx=10, pady=10)
+
+        # Create a frame for the styled info section within the left frame
+        styled_info_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
+        styled_info_frame.grid(row=3, column=0, sticky="nsew")
+
+        # Add a label for the styled info section
+        styled_info_label = ttk.Label(styled_info_frame, text="Styled Info:", font=("Helvetica", 20), width=15)
+        styled_info_label.grid(row=0, column=0, padx=20, pady=10, sticky="w")
+
+        # Create a frame to the right of the label
+        styled_info_text_area_frame = ttk.Frame(styled_info_frame)
+        styled_info_text_area_frame.grid(row=0, column=1, padx=(0, 20), pady=(10, 20), sticky="nsew")
+
+        # Add the text area inside the new frame and center it
+        self.styled_info_text_area = tk.Text(styled_info_text_area_frame, font=("Helvetica", 20), height=3, width=30)  # Increased height
+        self.styled_info_text_area.pack(expand=True, fill="both", padx=10, pady=10)
+
+        # Create a frame for the footer section within the left frame
+        footer_frame = ttk.Frame(left_frame, borderwidth=2, relief="solid")
+        footer_frame.grid(row=4, column=0, sticky="nsew")
+
+        # Add a label for the footer section
+        footer_label = ttk.Label(footer_frame, text="Footer:", font=("Helvetica", 20), width=15)
+        footer_label.grid(row=0, column=0, padx=20, pady=10, sticky="w")
+
+        # Create a frame to the right of the label
+        footer_text_area_frame = ttk.Frame(footer_frame)
+        footer_text_area_frame.grid(row=0, column=1, padx=(0, 20), pady=(10, 20), sticky="nsew")
+
+        # Add the text area inside the new frame and center it
+        self.footer_text_area = tk.Text(footer_text_area_frame, font=("Helvetica", 20), height=3, width=30)  # Increased height
+        self.footer_text_area.pack(expand=True, fill="both", padx=10, pady=10)
 
         # Load and display the image on the right side using center_image_vertically function
         image_path = "./flyer.jpg"
@@ -78,6 +120,9 @@ class CreateImage(ttk.Frame):
         left_frame.grid_columnconfigure(0, weight=1)
         left_frame.grid_rowconfigure(0, weight=1)
         left_frame.grid_rowconfigure(1, weight=1)
+        left_frame.grid_rowconfigure(2, weight=1)
+        left_frame.grid_rowconfigure(3, weight=1)
+        left_frame.grid_rowconfigure(4, weight=1)
         right_frame.grid_columnconfigure(0, weight=1)
 
         self.frames = {"left_frame": left_frame, "right_frame": right_frame}
@@ -87,3 +132,30 @@ class CreateImage(ttk.Frame):
         if file_path:
             # Handle the selected file path
             print(f"Selected file: {file_path}")
+
+    def get_header_text(self):
+        # Retrieve the text from the text area
+        header_text = self.header_text_area.get("1.0", tk.END).strip()
+        print(header_text)  # Print the text with new lines preserved
+
+    def get_text_info_text(self):
+        # Retrieve the text from the text info text area
+        text_info_text = self.text_info_text_area.get("1.0", tk.END).strip()
+        print(text_info_text)  # Print the text with new lines preserved
+
+    def get_styled_info_text(self):
+        # Retrieve the text from the styled info text area
+        styled_info_text = self.styled_info_text_area.get("1.0", tk.END).strip()
+        print(styled_info_text)  # Print the text with new lines preserved
+
+    def get_footer_text(self):
+        # Retrieve the text from the footer text area
+        footer_text = self.footer_text_area.get("1.0", tk.END).strip()
+        print(footer_text)  # Print the text with new lines preserved
+
+# Example usage
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = CreateImage(root, None)
+    app.pack(fill="both", expand=True)
+    root.mainloop()
