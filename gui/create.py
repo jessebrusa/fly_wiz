@@ -2,12 +2,14 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import filedialog
 from gui.widgets.image import center_image_vertically
-from gui.widgets.browse_image import browse_image
+
 
 class CreateImage(ttk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller, flyer_image):
         super().__init__(parent)
         self.controller = controller
+        self.flyer_image = flyer_image
+        self.selected_file_path = None  # Add this line to store the file path
 
         # Create frame for the title
         title_frame = ttk.Frame(self, borderwidth=2, relief="solid")
@@ -58,7 +60,7 @@ class CreateImage(ttk.Frame):
         self.choose_image_label = ttk.Label(choose_image_frame, text="Choose Image:", font=("Helvetica", 20), width=15)
         self.choose_image_label.grid(row=0, column=0, pady=10, sticky="w")
 
-        self.browse_button = ttk.Button(choose_image_frame, text="Browse", command=browse_image)
+        self.browse_button = ttk.Button(choose_image_frame, text="Browse", command=self.browse_image)  # Update command
         self.browse_button.grid(row=0, column=1, padx=5, pady=10, sticky="w")
 
         self.search_button = ttk.Button(choose_image_frame, text="Search")
@@ -130,28 +132,32 @@ class CreateImage(ttk.Frame):
     def browse_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png")])
         if file_path:
-            # Handle the selected file path
+            self.selected_file_path = file_path  # Store the selected file path
             print(f"Selected file: {file_path}")
 
     def get_header_text(self):
         # Retrieve the text from the text area
         header_text = self.header_text_area.get("1.0", tk.END).strip()
-        print(header_text)  # Print the text with new lines preserved
+        return header_text
 
     def get_text_info_text(self):
         # Retrieve the text from the text info text area
         text_info_text = self.text_info_text_area.get("1.0", tk.END).strip()
-        print(text_info_text)  # Print the text with new lines preserved
+        return text_info_text
 
     def get_styled_info_text(self):
         # Retrieve the text from the styled info text area
         styled_info_text = self.styled_info_text_area.get("1.0", tk.END).strip()
-        print(styled_info_text)  # Print the text with new lines preserved
+        return styled_info_text
 
     def get_footer_text(self):
         # Retrieve the text from the footer text area
         footer_text = self.footer_text_area.get("1.0", tk.END).strip()
-        print(footer_text)  # Print the text with new lines preserved
+        return footer_text
+
+    def get_selected_file_path(self):
+        # Retrieve the selected file path
+        return self.selected_file_path
 
 # Example usage
 if __name__ == "__main__":
