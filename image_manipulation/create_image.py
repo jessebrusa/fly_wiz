@@ -4,4 +4,6 @@ def create_blank_image():
     width = 3508
     height = 2480
     image = Image.new('RGB', (width, height), color='white')
-    return image
+    image_path = "flyer.jpg"
+    image.save(image_path, format="JPEG")
+    return image_path

@@ -1,7 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
 from tkinter import filedialog
-from gui.widgets.image import center_image_vertically
+from gui.widgets.image import center_image_vertically, create_image_label
 from gui.widgets.helpers import get_footer_text, get_selected_file_path
 from gui.widgets.frame_creators import (
     create_title_frame,
@@ -10,18 +10,18 @@ from gui.widgets.frame_creators import (
 )
 
 class CreateImage(ttk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller, image_path):
         super().__init__(parent)
         self.controller = controller
         self.selected_file_path = None  # Add this line to store the file path
+        self.image_path = image_path
 
         create_title_frame(self)
         create_left_frame(self)
         create_right_frame(self)
 
         # Load and display the image on the right side using center_image_vertically function
-        image_path = "./flyer.jpg"
-        center_image_vertically(self.right_frame, image_path, title_row=0, bottom_row=6, column=0, max_width=960, max_height=540)
+        self.image_label = create_image_label(self.right_frame, self.image_path, row=0, column=0, max_width=960, max_height=540)
 
         # Configure grid columns to adjust layout in frames
         self.left_frame.grid_columnconfigure(0, weight=1)
@@ -60,9 +60,18 @@ class CreateImage(ttk.Frame):
     def get_selected_file_path(self):
         return get_selected_file_path(self)
 
+    def update_displayed_image(self):
+        # Update the displayed image
+        self.image_label.destroy()  # Remove the old image label
+        self.image_label = create_image_label(self.right_frame, self.image_path, row=0, column=0, max_width=960, max_height=540)
+
 # Example usage
 if __name__ == "__main__":
+    from image_manipulation.create_image import create_blank_image
+
+
     root = tk.Tk()
-    app = CreateImage(root, None, None)
+    image_path = create_blank_image()
+    app = CreateImage(root, None, image_path)
     app.pack(fill="both", expand=True)
     root.mainloop()

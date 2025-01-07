@@ -1,16 +1,18 @@
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image
 from image_manipulation.create_image import create_blank_image
 from image_manipulation.update_image import update_image
 from gui.create import CreateImage
 import json
 
 class FlyWizGui(tk.Tk):
-    def __init__(self, flyer_image, *args, **kwargs):
+    def __init__(self, image_path, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Fly Wiz")
         self.state('zoomed')
-        self.flyer_image = flyer_image
+        self.image_path = image_path
+        self.flyer_image = Image.open(image_path)  # Open the image file
 
         container = ttk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -21,7 +23,7 @@ class FlyWizGui(tk.Tk):
 
         # Initialize only the CreateImage frame
         page_name = CreateImage.__name__
-        frame = CreateImage(parent=container, controller=self)
+        frame = CreateImage(parent=container, controller=self, image_path=image_path)
         self.frames[page_name] = frame
         frame.grid(row=0, column=0, sticky="nsew")
 
@@ -57,14 +59,15 @@ class FlyWizGui(tk.Tk):
     def on_text_change(self, current_data):
         with open("text_data.json", "w") as file:
             json.dump(current_data, file, indent=4)
-        update_image()
+        update_image(self.flyer_image, current_data)
+        self.frames["CreateImage"].update_displayed_image()  # Update the displayed image
 
 def main():
     # Create the blank image
-    flyer_image = create_blank_image()
+    image_path = create_blank_image()
 
     # Initialize and run the Fly Wiz app
-    app = FlyWizGui(flyer_image)
+    app = FlyWizGui(image_path)
     app.mainloop()
 
 if __name__ == "__main__":
