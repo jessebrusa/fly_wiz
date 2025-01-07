@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from image_manipulation.create_image import create_blank_image
+from image_manipulation.update_image import update_image
 from gui.create import CreateImage
 import json
 
@@ -9,6 +10,7 @@ class FlyWizGui(tk.Tk):
         super().__init__(*args, **kwargs)
         self.title("Fly Wiz")
         self.state('zoomed')
+        self.flyer_image = flyer_image
 
         container = ttk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -19,7 +21,7 @@ class FlyWizGui(tk.Tk):
 
         # Initialize only the CreateImage frame
         page_name = CreateImage.__name__
-        frame = CreateImage(parent=container, controller=self, flyer_image=flyer_image)
+        frame = CreateImage(parent=container, controller=self)
         self.frames[page_name] = frame
         frame.grid(row=0, column=0, sticky="nsew")
 
@@ -55,7 +57,7 @@ class FlyWizGui(tk.Tk):
     def on_text_change(self, current_data):
         with open("text_data.json", "w") as file:
             json.dump(current_data, file, indent=4)
-        # Perform your desired function here
+        update_image()
 
 def main():
     # Create the blank image

@@ -1,7 +1,7 @@
 {
-    "header": "header",
-    "text_info": "",
-    "styled_info": "",
-    "footer": "footer",
-    "file_path": null
+    "header": "test header",
+    "text_info": "test text info",
+    "styled_info": "test styled info",
+    "footer": "test footer",
+    "file_path": "C:/storage/Python/Southgate/fly_wiz/dog.jpg"
 }
