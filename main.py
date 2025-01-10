@@ -1,18 +1,26 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image
-from flyer_manipulation.create_flyer import create_blank_image
+from gui.widgets.helpers import json_init
+from flyer_manipulation.create_flyer import create_blank_flyer
 from flyer_manipulation.update_flyer import update_flyer
 from gui.create import CreateImage
 import json
 
+
 class FlyWizGui(tk.Tk):
-    def __init__(self, image_path, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Fly Wiz")
         self.state('zoomed')
-        self.image_path = image_path
-        self.flyer_image = Image.open(image_path)  # Open the image file
+
+        with open("temp.json", "r") as file:
+            json_data = json.load(file)
+        if not json_data:
+            return 
+        
+        self.flyer = json_data["flyer"]
+        self.image = json_data["img"]
 
         container = ttk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -20,10 +28,9 @@ class FlyWizGui(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-
         # Initialize only the CreateImage frame
         page_name = CreateImage.__name__
-        frame = CreateImage(parent=container, controller=self, image_path=image_path)
+        frame = CreateImage(parent=container, controller=self)
         self.frames[page_name] = frame
         frame.grid(row=0, column=0, sticky="nsew")
 
@@ -46,7 +53,7 @@ class FlyWizGui(tk.Tk):
             "text_info": frame.get_text_info_text(),
             "styled_info": frame.get_styled_info_text(),
             "footer": frame.get_footer_text(),
-            "file_path": frame.get_selected_file_path()  # Include the file path
+            "flyer": self.flyer
         }
 
     def check_for_changes(self):
@@ -63,11 +70,10 @@ class FlyWizGui(tk.Tk):
         self.frames["CreateImage"].update_displayed_image()  # Update the displayed image
 
 def main():
-    # Create the blank image
-    image_path = create_blank_image()
+    json_init()
+    create_blank_flyer()
 
-    # Initialize and run the Fly Wiz app
-    app = FlyWizGui(image_path)
+    app = FlyWizGui()
     app.mainloop()
 
 if __name__ == "__main__":

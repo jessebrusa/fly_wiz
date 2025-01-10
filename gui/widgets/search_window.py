@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from .google_images import google_img_search
-from .img_json import image_to_base64
+from flyer_manipulation.img_json import image_to_base64
 from PIL import ImageTk
 import json
 
