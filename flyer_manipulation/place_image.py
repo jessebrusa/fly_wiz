@@ -23,6 +23,9 @@ def place_image(flyer_image, current_data, max_width=2200, max_height=1500):
     # Paste the image onto the flyer_image
     flyer_image.paste(image_to_place, position, image_to_place.convert("RGBA"))
 
+    # Convert the flyer_image to RGB mode before saving
+    flyer_image = flyer_image.convert("RGB")
+
     # Save the modified flyer_image
     output_path = "flyer.jpg"
     flyer_image.save(output_path, format="JPEG")
