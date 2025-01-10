@@ -1,5 +1,7 @@
+from .search_window import open_search_window
 from tkinter import ttk
 import tkinter as tk
+
 
 def create_title_frame(instance):
     # Create frame for the title
@@ -59,7 +61,7 @@ def create_choose_image_section(instance):
     instance.browse_button = ttk.Button(choose_image_frame, text="Browse", command=instance.browse_image)  # Update command
     instance.browse_button.grid(row=0, column=1, padx=5, pady=10, sticky="w")
 
-    instance.search_button = ttk.Button(choose_image_frame, text="Search")
+    instance.search_button = ttk.Button(choose_image_frame, text="Search", command=open_search_window)
     instance.search_button.grid(row=0, column=2, padx=5, pady=10, sticky="w")
 
 def create_text_info_section(instance):

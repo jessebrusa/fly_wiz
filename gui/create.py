@@ -1,7 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
 from tkinter import filedialog
-from gui.widgets.image import center_image_vertically, create_image_label
+from gui.widgets.image import create_image_label
 from gui.widgets.helpers import get_footer_text, get_selected_file_path
 from gui.widgets.frame_creators import (
     create_title_frame,
@@ -64,14 +64,3 @@ class CreateImage(ttk.Frame):
         # Update the displayed image
         self.image_label.destroy()  # Remove the old image label
         self.image_label = create_image_label(self.right_frame, self.image_path, row=0, column=0, max_width=960, max_height=540)
-
-# Example usage
-if __name__ == "__main__":
-    from image_manipulation.create_image import create_blank_image
-
-
-    root = tk.Tk()
-    image_path = create_blank_image()
-    app = CreateImage(root, None, image_path)
-    app.pack(fill="both", expand=True)
-    root.mainloop()
