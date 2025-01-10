@@ -11,7 +11,7 @@ def color_picker(image_path):
         # Filter out colors that are too similar
         filtered_colors = []
         for color, _ in most_common_colors:
-            if all(color_distance(color, fc) > 50 for fc in filtered_colors):  # Adjust the threshold as needed
+            if all(color_distance(color, fc) > 30 for fc in filtered_colors):  # Adjust the threshold to allow more colors
                 filtered_colors.append(color)
             if len(filtered_colors) >= 10:
                 break
@@ -70,6 +70,19 @@ def color_picker(image_path):
 
     image = Image.open(image_path)
     image = image.convert('RGB')
+    
+    # Resize the image if its resolution is above 1080p
+    max_resolution = 1080
+    if max(image.size) > max_resolution:
+        aspect_ratio = image.width / image.height
+        if image.width > image.height:
+            new_width = max_resolution
+            new_height = int(new_width / aspect_ratio)
+        else:
+            new_height = max_resolution
+            new_width = int(new_height * aspect_ratio)
+        image = image.resize((new_width, new_height), Image.LANCZOS)
+    
     pixels = list(image.getdata())
     
     # Count the frequency of each color
@@ -77,7 +90,6 @@ def color_picker(image_path):
     
     # Get the 50 most common colors to ensure we have enough to choose from
     most_common_colors = color_counts.most_common(50)
-    print("Most Common Colors:", most_common_colors)
     
     # Filter out grayscale colors (where R, G, and B are the same)
     most_common_colors = [(color, count) for color, count in most_common_colors if len(set(color)) > 1]
@@ -111,8 +123,6 @@ def apply_background_color(flyer_image, color_list):
 def background_text_color(flyer_image, current_data):
     image_path = current_data["file_path"]
     lightest_and_darkest_colors, median_colors = color_picker(image_path)
-    print("Lightest and Darkest Colors:", lightest_and_darkest_colors)
-    print("Median Colors:", median_colors)
 
     flyer_image = apply_background_color(flyer_image, median_colors)
 

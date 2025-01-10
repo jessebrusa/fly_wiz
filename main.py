@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image
 from flyer_manipulation.create_flyer import create_blank_image
-from flyer_manipulation.update_flyer import update_image
+from flyer_manipulation.update_flyer import update_flyer
 from gui.create import CreateImage
 import json
 
@@ -59,7 +59,7 @@ class FlyWizGui(tk.Tk):
     def on_text_change(self, current_data):
         with open("text_data.json", "w") as file:
             json.dump(current_data, file, indent=4)
-        update_image(self.flyer_image, current_data)
+        update_flyer(self.flyer_image, current_data)
         self.frames["CreateImage"].update_displayed_image()  # Update the displayed image
 
 def main():
