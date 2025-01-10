@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image
-from image_manipulation.create_image import create_blank_image
-from image_manipulation.update_image import update_image
+from flyer_manipulation.create_flyer import create_blank_image
+from flyer_manipulation.update_flyer import update_image
 from gui.create import CreateImage
 import json
 
