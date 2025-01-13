@@ -1,5 +1,4 @@
 from tkinter import ttk
-import tkinter as tk
 
 class RightFrame(ttk.Frame):
     """
@@ -112,6 +111,15 @@ class RightFrame(ttk.Frame):
             The parent widget.
         """
         right_subsection = ttk.Frame(parent, borderwidth=1, relief="solid")
-        right_subsection.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
-        right_label = ttk.Label(right_subsection, text="R2R")
-        right_label.pack(pady=10)
+        right_subsection.grid(row=0, column=1, sticky="nsew", padx=5, pady=2)
+
+        # Create a frame to center the buttons vertically
+        button_frame = ttk.Frame(right_subsection)
+        button_frame.pack(expand=True)
+
+        # Create Save and Load buttons with increased height and more space between them
+        save_button = ttk.Button(button_frame, text="Save", width=10)
+        save_button.pack(pady=(15, 5), ipady=12)  # Add more padding between buttons and increase internal padding
+
+        load_button = ttk.Button(button_frame, text="Load", width=10)
+        load_button.pack(pady=(5, 15), ipady=12)  # Add more padding between buttons and increase internal padding
