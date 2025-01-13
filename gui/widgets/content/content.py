@@ -30,9 +30,12 @@ class ContentSection(ttk.Frame):
             The parent widget.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
-        self.configure_grid()
-        self.create_left_frame()
-        self.create_right_frame()
+        try:
+            self.configure_grid()
+            self.create_left_frame()
+            self.create_right_frame()
+        except Exception as e:
+            print(f"An error occurred while initializing the content section: {e}")
 
     def configure_grid(self):
         """

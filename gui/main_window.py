@@ -30,5 +30,8 @@ class FlyWizGui(tk.Tk):
         container = ttk.Frame(self)
         container.pack(fill="both", expand=True)
 
-        HeaderSection(container).pack(fill="x", padx=10, pady=5)
-        ContentSection(container).pack(fill="both", expand=True, padx=10, pady=5)
+        try:
+            HeaderSection(container).pack(fill="x", padx=10, pady=5)
+            ContentSection(container).pack(fill="both", expand=True, padx=10, pady=5)
+        except Exception as e:
+            print(f"An error occurred while initializing the GUI: {e}")

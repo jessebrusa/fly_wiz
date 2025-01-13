@@ -64,14 +64,15 @@ class LeftFrame(ttk.Frame):
 
         section_frame.grid_columnconfigure(1, weight=1)
         section_frame.grid_columnconfigure(2, weight=1)
-        label = ttk.Label(section_frame, text=f"{label_text}:", font=LABEL_FONT, width=7, anchor="e")
-        label.grid(row=0, column=0, padx=5, pady=5, sticky="ns")
 
-        browse_button = ttk.Button(section_frame, text="Browse", style="TButton", command=self.browse_image)
-        browse_button.grid(row=0, column=1, padx=5, pady=5, sticky="ns ew")
-
-        search_button = ttk.Button(section_frame, text="Search", style="TButton")
-        search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ns ew")
-
-        section_frame.grid_columnconfigure(1, weight=1)
-        section_frame.grid_columnconfigure(2, weight=1)
+    def browse_image(self):
+        """
+        Open a file dialog to browse for an image file.
+        """
+        try:
+            file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png")])
+            if file_path:
+                self.selected_file_path = file_path
+                print(f"Selected file: {file_path}")
+        except Exception as e:
+            print(f"An error occurred while browsing for an image: {e}")

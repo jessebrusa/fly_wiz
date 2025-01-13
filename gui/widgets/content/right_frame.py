@@ -34,9 +34,12 @@ class RightFrame(ttk.Frame):
             The parent widget.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
-        self.configure_main_frame_grid()
-        self.create_first_section()
-        self.create_second_section()
+        try:
+            self.configure_main_frame_grid()
+            self.create_first_section()
+            self.create_second_section()
+        except Exception as e:
+            print(f"An error occurred while initializing the right frame: {e}")
 
     def configure_main_frame_grid(self):
         """
