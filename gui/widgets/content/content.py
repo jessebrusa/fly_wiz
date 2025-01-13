@@ -41,9 +41,9 @@ class ContentSection(ttk.Frame):
         """
         Configures the grid layout for the content section.
         """
-        self.grid_rowconfigure(0, weight=1)  
-        self.grid_columnconfigure(0, weight=4)  
-        self.grid_columnconfigure(1, weight=5)  
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=4)  # Left frame takes 4/9 of the width
+        self.grid_columnconfigure(1, weight=5)  # Right frame takes 5/9 of the width
 
     def create_left_frame(self):
         """
