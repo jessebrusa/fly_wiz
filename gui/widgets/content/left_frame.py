@@ -61,7 +61,8 @@ class LeftFrame(ttk.Frame):
                                    command=self.browse_image)
         browse_button.grid(row=0, column=1, padx=5, pady=18, sticky="ns")
 
-        search_button = ttk.Button(section_frame, text="Search", style="TButton", width=10)
+        search_button = ttk.Button(section_frame, text="Search", style="TButton", width=10, 
+                                   command=self.open_search_window)
         search_button.grid(row=0, column=2, padx=5, pady=18, sticky="ns")
 
         section_frame.grid_columnconfigure(1, weight=1)
@@ -78,3 +79,30 @@ class LeftFrame(ttk.Frame):
                 print(f"Selected file: {file_path}")
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
+
+    def open_search_window(self):
+        """
+        Open a small window with a label, input bar, and search button.
+        """
+        search_window = tk.Toplevel(self)
+        search_window.title("Search")
+
+        label = ttk.Label(search_window, text="Search:", font=LABEL_FONT)
+        label.grid(row=0, column=0, padx=5, pady=5, sticky="e")
+
+        entry = ttk.Entry(search_window, font=TEXT_AREA_FONT)
+        entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+
+        search_button = ttk.Button(search_window, text="Search", style="TButton", command=lambda: self.perform_search(entry.get()))
+        search_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+
+        search_window.grid_columnconfigure(1, weight=1)
+
+        # Bind the Enter key to the search button
+        search_window.bind('<Return>', lambda event: self.perform_search(entry.get()))
+
+    def perform_search(self, query):
+        """
+        Perform the search operation.
+        """
+        print(f"Searching for: {query}")
