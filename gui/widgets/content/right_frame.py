@@ -1,4 +1,5 @@
 from tkinter import ttk
+from .img.image_label import ImageLabel
 
 class RightFrame(ttk.Frame):
     """
@@ -82,24 +83,35 @@ class RightFrame(ttk.Frame):
         left_subsection = ttk.Frame(parent, borderwidth=1, relief="solid")
         left_subsection.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
-        # Create a 3x2 grid of buttons with placeholder images
-        button_texts = ["1", "2", "3", "4", "5", "6"]
-        index = 0
+        # Create a 3x2 grid of ImageLabels
+        image_path = "./gui/widgets/content/img/layout_1.jpg"
         for row in range(2):
             for col in range(3):
-                button = ttk.Button(left_subsection, text=button_texts[index], width=3)
-                button.grid(row=row+1, column=col, padx=5, pady=1, sticky="nsew")
-                index += 1
+                image_label = ImageLabel(left_subsection, image_path, 110, 1.1)
+                image_label.grid(row=row+1, column=col, sticky="nsew")
 
-        # Configure the grid to ensure buttons expand to fill the space
-        for row in range(3):  # Including the label row
-            left_subsection.grid_rowconfigure(row, weight=1)
-        for col in range(3):
-            left_subsection.grid_columnconfigure(col, weight=1)
+        # Configure the grid to ensure labels expand to fill the space
+        self.configure_grid(left_subsection, 3, 3)
 
-        # Add a spacer row at the top and bottom to center the buttons vertically
-        left_subsection.grid_rowconfigure(0, weight=1)
-        left_subsection.grid_rowconfigure(3, weight=1)
+    def configure_grid(self, parent, rows, cols):
+        """
+        Configures the grid layout to ensure labels expand to fill the space.
+
+        Parameters
+        ----------
+        parent : widget
+            The parent widget.
+        rows : int
+            The number of rows in the grid.
+        cols : int
+            The number of columns in the grid.
+        """
+        for row in range(rows):
+            parent.grid_rowconfigure(row, weight=1)
+        for col in range(cols):
+            parent.grid_columnconfigure(col, weight=1)
+        parent.grid_rowconfigure(0, weight=1)
+        parent.grid_rowconfigure(rows, weight=1)
 
     def create_right_subsection(self, parent):
         """
