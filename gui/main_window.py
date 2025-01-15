@@ -43,17 +43,25 @@ class FlyWizGui(tk.Tk):
             styled_info_text = left_frame.styled_info_text_area.get("1.0", tk.END).strip()
             text_info_text = left_frame.text_info_text_area.get("1.0", tk.END).strip()
             footer_text = left_frame.footer_text_area.get("1.0", tk.END).strip()
-    
+
             data = {
                 "title": title_text,
                 "styled_info": styled_info_text,
                 "text_info": text_info_text,
                 "footer": footer_text
             }
-            print(data)
+
+            # Update the data handler with the new data
+            for key, value in data.items():
+                if self.data_handler.get_data().get(key) != value:
+                    self.data_handler.update_data(key, value)
+                    print(key)
+                    print(self.data_handler.get_data())
+
+
         except Exception as e:
             print(f"An error occurred while getting the text: {e}")
-    
+
         # Schedule this method to be called again after 250 milliseconds (0.25 seconds)
         self.after(250, self.check_text)
 
