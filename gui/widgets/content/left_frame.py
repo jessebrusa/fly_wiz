@@ -50,6 +50,15 @@ class LeftFrame(ttk.Frame):
         
         section_frame.grid_columnconfigure(1, weight=1)
 
+        if label_text == 'Title':
+            self.title_text_area = text_area
+        elif label_text == 'Styled\nInfo':
+            self.styled_info_text_area = text_area
+        elif label_text == 'Text\nInfo':
+            self.text_info_text_area = text_area
+        elif label_text == 'Footer':
+            self.footer_text_area = text_area
+
     def create_label_and_buttons(self, section_frame, label_text):
         """
         Create a label and buttons within the section frame.
