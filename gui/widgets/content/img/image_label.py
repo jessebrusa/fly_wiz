@@ -20,10 +20,10 @@ class ImageLabel(tk.Label):
     -------
     load_and_scale_image():
         Loads and scales the image.
-    on_image_press(event):
-        Handles the image press event to scale down the image and print a message.
-    on_image_release(event):
-        Handles the image release event to restore the image size.
+    on_click(event):
+        Handles the click event to scale down the image.
+    on_release(event):
+        Handles the release event to return the image to its original size.
     """
     def __init__(self, parent, image_path, width, scale_factor):
         """
@@ -44,14 +44,19 @@ class ImageLabel(tk.Label):
         self.image_path = image_path
         self.width = width
         self.scale_factor = scale_factor
-        self.original_image, self.scaled_image = self.load_and_scale_image()
-        self.config(image=self.original_image)
-        self.bind("<ButtonPress-1>", self.on_image_press)
-        self.bind("<ButtonRelease-1>", self.on_image_release)
+        self.original_image, self.scaled_image = self.load_and_scale_image(self.scale_factor)
+        self.config(image=self.scaled_image)
+        self.bind("<Button-1>", self.on_click)  # Bind left mouse click to the on_click method
+        self.bind("<ButtonRelease-1>", self.on_release)  # Bind left mouse release to the on_release method
 
-    def load_and_scale_image(self):
+    def load_and_scale_image(self, scale_factor):
         """
         Loads and scales the image.
+
+        Parameters
+        ----------
+        scale_factor : float
+            The factor by which to scale the image.
 
         Returns
         -------
@@ -61,24 +66,34 @@ class ImageLabel(tk.Label):
         image = Image.open(self.image_path)
         height = int((8.5 / 11) * self.width)  # Calculate height based on the ratio 8.5 by 11
         image = image.resize((self.width, height), Image.LANCZOS)  # Resize the image
-        scaled_down_width = int(self.width * 0.9)  # Scale down by 10%
-        scaled_down_height = int(height * 0.9)  # Scale down by 10%
-        scaled_image = image.resize((scaled_down_width, scaled_down_height), Image.LANCZOS)
+        scaled_width = int(self.width * scale_factor)  # Scale width
+        scaled_height = int(height * scale_factor)  # Scale height
+        scaled_image = image.resize((scaled_width, scaled_height), Image.LANCZOS)
         return ImageTk.PhotoImage(image), ImageTk.PhotoImage(scaled_image)
 
-    def on_image_press(self, event):
+    def on_click(self, event):
         """
-        Handle the image press event to scale down the image and print a message.
+        Handles the click event to scale down the image.
+
+        Parameters
+        ----------
+        event : Event
+            The event object.
         """
-        print("Image clicked!")
+        print('clicked')
+        self.scale_factor = 0.9  # Set the scale factor to scale down the image slightly
+        _, self.scaled_image = self.load_and_scale_image(self.scale_factor)
         self.config(image=self.scaled_image)
 
-    def on_image_release(self, event):
+    def on_release(self, event):
         """
-        Handle the image release event to restore the image size.
+        Handles the release event to return the image to its original size.
+
+        Parameters
+        ----------
+        event : Event
+            The event object.
         """
-        self.config(image=self.original_image)
-        """
-        Handle the image release event to restore the image size.
-        """
-        self.config(image=self.original_image)
+        self.scale_factor = 1.0  # Set the scale factor to return the image to its original size
+        _, self.scaled_image = self.load_and_scale_image(self.scale_factor)
+        self.config(image=self.scaled_image)

@@ -46,8 +46,8 @@ class RightFrame(ttk.Frame):
         """
         Configures the grid layout for the main frame.
         """
-        self.grid_rowconfigure(0, weight=3)
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=8)  # Increase weight for the top section
+        self.grid_rowconfigure(1, weight=1, minsize=100)  # Decrease weight and set minimum size for the bottom section
         self.grid_columnconfigure(0, weight=1)
 
     def create_first_section(self):
@@ -55,16 +55,20 @@ class RightFrame(ttk.Frame):
         Creates and places the first section in the right frame.
         """
         first_section = ttk.Frame(self, borderwidth=1, relief="solid")
-        first_section.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
-        first_label = ttk.Label(first_section, text="Right Section 1")
-        first_label.pack(pady=10)
+        first_section.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
+        
+        # Display the image in the first section
+        image_path = "./gui/widgets/content/img/layout_1.jpg"
+        scale_factor = 1.7  # Adjust the scale factor as needed
+        image_label = ImageLabel(first_section, image_path, 300, scale_factor)  # Adjust width and scale factor as needed
+        image_label.pack(expand=True)  # Center the image vertically
 
     def create_second_section(self):
         """
         Creates and places the second section in the right frame.
         """
         second_section = ttk.Frame(self, borderwidth=1, relief="solid")
-        second_section.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
+        second_section.grid(row=1, column=0, sticky="nsew", padx=5, pady=2)
         second_section.grid_rowconfigure(0, weight=1)
         second_section.grid_columnconfigure(0, weight=3)
         second_section.grid_columnconfigure(1, weight=1)
@@ -127,11 +131,19 @@ class RightFrame(ttk.Frame):
 
         # Create a frame to center the buttons vertically
         button_frame = ttk.Frame(right_subsection)
-        button_frame.pack(expand=True)
+        button_frame.pack(expand=True, fill="both")
+
+        # Create an inner frame to hold the buttons and center them vertically
+        inner_frame = ttk.Frame(button_frame)
+        inner_frame.pack(expand=True)
 
         # Create Save and Load buttons with increased height and more space between them
-        save_button = ttk.Button(button_frame, text="Save", width=10)
-        save_button.pack(pady=(15, 5), ipady=12)  # Add more padding between buttons and increase internal padding
+        save_button = ttk.Button(inner_frame, text="Save", width=10)
+        save_button.pack(pady=5, ipady=12)  # Add padding between buttons
 
-        load_button = ttk.Button(button_frame, text="Load", width=10)
-        load_button.pack(pady=(5, 15), ipady=12)  # Add more padding between buttons and increase internal padding
+        load_button = ttk.Button(inner_frame, text="Load", width=10)
+        load_button.pack(pady=5, ipady=12)  # Add padding between buttons
+
+        # Create Export button
+        export_button = ttk.Button(inner_frame, text="Export", width=10)
+        export_button.pack(pady=5, ipady=12)  # Add padding between buttons
