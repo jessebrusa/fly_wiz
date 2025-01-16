@@ -6,7 +6,7 @@ from PIL import Image
 LABEL_FONT = ("Helvetica", 18)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
-SMALL_BUTTON_FONT = ("Helvetica", 12)  
+SMALL_BUTTON_FONT = ("Helvetica", 12)  # Define a smaller font for the buttons
 
 class LeftFrame(ttk.Frame):
     def __init__(self, parent, data_handler):
@@ -33,7 +33,7 @@ class LeftFrame(ttk.Frame):
         label_list = ['Title', 'Styled\nInfo', 'Text\nInfo', 'Footer']
         
         # Create the first section for the label and text areas
-        for i, label_text in enumerate(label_list[:1]):
+        for _, label_text in enumerate(label_list[:1]):
             section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
             section_frame.pack(fill="both", expand=True, padx=5, pady=5)
             section_frame.grid_propagate(False)  
@@ -91,11 +91,11 @@ class LeftFrame(ttk.Frame):
         button_frame_1.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
 
         browse_button_1 = ttk.Button(button_frame_1, text="Browse", style="Small.TButton", width=8, 
-                                   command=self.browse_image)
+                                   command=lambda: self.browse_image('image1'))
         browse_button_1.pack(side="left", padx=5)
 
         search_button_1 = ttk.Button(button_frame_1, text="Search", style="Small.TButton", width=8, 
-                                   command=self.open_search_window)
+                                   command=lambda: self.open_search_window('image1'))
         search_button_1.pack(side="left", padx=5)
 
         # Label for second image
@@ -107,11 +107,11 @@ class LeftFrame(ttk.Frame):
         button_frame_2.grid(row=1, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
 
         browse_button_2 = ttk.Button(button_frame_2, text="Browse", style="Small.TButton", width=8, 
-                                   command=self.browse_image)
+                                   command=lambda: self.browse_image('image2'))
         browse_button_2.pack(side="left", padx=5)
 
         search_button_2 = ttk.Button(button_frame_2, text="Search", style="Small.TButton", width=8, 
-                                   command=self.open_search_window)
+                                   command=lambda: self.open_search_window('image2'))
         search_button_2.pack(side="left", padx=5)
 
         section_frame.grid_columnconfigure(1, weight=1)
@@ -119,7 +119,7 @@ class LeftFrame(ttk.Frame):
         section_frame.grid_rowconfigure(0, weight=1)
         section_frame.grid_rowconfigure(1, weight=1)
 
-    def browse_image(self):
+    def browse_image(self, image_key):
         """
         Open a file dialog to browse for an image file and update the data handler with the image object.
         """
@@ -133,12 +133,12 @@ class LeftFrame(ttk.Frame):
                 image = Image.open(file_path)
                 
                 # Update the data handler with the image object
-                self.data_handler.update_data('image', image)
-                print("Image updated in data handler")
+                self.data_handler.update_data(image_key, image)
+                print(f"Image updated in data handler with key {image_key}")
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
 
-    def open_search_window(self):
+    def open_search_window(self, image_key):
         """
         Open a small window with a label, input bar, and search button.
         """
@@ -151,16 +151,17 @@ class LeftFrame(ttk.Frame):
         entry = ttk.Entry(search_window, font=TEXT_AREA_FONT)
         entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-        search_button = ttk.Button(search_window, text="Search", style="Small.TButton", command=lambda: self.perform_search(entry.get()))
+        search_button = ttk.Button(search_window, text="Search", style="Small.TButton", command=lambda: self.perform_search(entry.get(), image_key))
         search_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
 
         search_window.grid_columnconfigure(1, weight=1)
 
         # Bind the Enter key to the search button
-        search_window.bind('<Return>', lambda event: self.perform_search(entry.get()))
+        search_window.bind('<Return>', lambda event: self.perform_search(entry.get(), image_key))
 
-    def perform_search(self, query):
+    def perform_search(self, query, image_key):
         """
         Perform the search operation.
         """
-        print(f"Searching for: {query}")
+        print(f"Searching for: {query} for {image_key}")
+        # Implement the search functionality here

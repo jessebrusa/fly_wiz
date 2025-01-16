@@ -31,8 +31,9 @@ class DataHandler:
             'styled_info': '',
             'text_info': '',
             'footer': '',
-            'image': '',
-            'flyer': '',
+            'image1': None,
+            'image2': None,
+            'flyer': None
         }
 
     def update_data(self, key, value):
