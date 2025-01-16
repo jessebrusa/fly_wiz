@@ -63,21 +63,22 @@ class RightFrame(ttk.Frame):
         first_section = ttk.Frame(self, borderwidth=1, relief="solid")
         first_section.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
         
-        # Get the image from the data handler
-        image = self.data_handler.get_data().get('flyer')
-        if image:
-            # Scale the image down to 0.7 of its original size
-            width, height = image.size
-            scale_factor = 0.45
-            new_size = (int(width * scale_factor), int(height * scale_factor))
-            scaled_image = image.resize(new_size, Image.LANCZOS)
-            
-            image_tk = ImageTk.PhotoImage(scaled_image)
-            image_label = ttk.Label(first_section, image=image_tk)
-            image_label.image = image_tk  # Keep a reference to avoid garbage collection
-            image_label.pack(expand=True)  # Center the image vertically
-        else:
-            print("No image found in data handler")
+        try:
+            image = self.data_handler.get_data().get('flyer')
+            if image:
+                width, height = image.size
+                scale_factor = 0.45
+                new_size = (int(width * scale_factor), int(height * scale_factor))
+                scaled_image = image.resize(new_size, Image.LANCZOS)
+                
+                image_tk = ImageTk.PhotoImage(scaled_image)
+                image_label = ttk.Label(first_section, image=image_tk)
+                image_label.image = image_tk  
+                image_label.pack(expand=True)  
+            else:
+                print("No image found in data handler")
+        except Exception as e:
+            print(f"An error occurred while creating the first section: {e}")
 
     def create_second_section(self):
         """
