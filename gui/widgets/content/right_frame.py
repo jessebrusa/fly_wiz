@@ -1,5 +1,6 @@
 from tkinter import ttk
 from .img.image_label import ImageLabel
+from PIL import Image, ImageTk
 
 class RightFrame(ttk.Frame):
     """
@@ -9,11 +10,13 @@ class RightFrame(ttk.Frame):
     ----------
     parent : widget
         The parent widget.
+    data_handler : DataHandler
+        The data handler instance.
 
     Methods
     -------
-    __init__(parent):
-        Initializes the right frame with the parent widget.
+    __init__(parent, data_handler):
+        Initializes the right frame with the parent widget and data handler.
     configure_main_frame_grid():
         Configures the grid layout for the main frame.
     create_first_section():
@@ -25,16 +28,19 @@ class RightFrame(ttk.Frame):
     create_right_subsection(parent):
         Creates and places the right subsection in the second section.
     """
-    def __init__(self, parent):
+    def __init__(self, parent, data_handler):
         """
-        Initializes the right frame with the parent widget.
+        Initializes the right frame with the parent widget and data handler.
 
         Parameters
         ----------
         parent : widget
             The parent widget.
+        data_handler : DataHandler
+            The data handler instance.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
+        self.data_handler = data_handler
         try:
             self.configure_main_frame_grid()
             self.create_first_section()
@@ -57,11 +63,21 @@ class RightFrame(ttk.Frame):
         first_section = ttk.Frame(self, borderwidth=1, relief="solid")
         first_section.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
         
-        # Display the image in the first section
-        image_path = "./gui/widgets/content/img/layout_1.jpg"
-        scale_factor = 1.7  # Adjust the scale factor as needed
-        image_label = ImageLabel(first_section, image_path, 300, scale_factor)  # Adjust width and scale factor as needed
-        image_label.pack(expand=True)  # Center the image vertically
+        # Get the image from the data handler
+        image = self.data_handler.get_data().get('flyer')
+        if image:
+            # Scale the image down to 0.7 of its original size
+            width, height = image.size
+            scale_factor = 0.45
+            new_size = (int(width * scale_factor), int(height * scale_factor))
+            scaled_image = image.resize(new_size, Image.LANCZOS)
+            
+            image_tk = ImageTk.PhotoImage(scaled_image)
+            image_label = ttk.Label(first_section, image=image_tk)
+            image_label.image = image_tk  # Keep a reference to avoid garbage collection
+            image_label.pack(expand=True)  # Center the image vertically
+        else:
+            print("No image found in data handler")
 
     def create_second_section(self):
         """

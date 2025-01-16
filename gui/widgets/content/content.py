@@ -10,6 +10,8 @@ class ContentSection(ttk.Frame):
     ----------
     parent : widget
         The parent widget.
+    data_handler : DataHandler
+        The data handler instance.
 
     Methods
     -------
@@ -59,5 +61,10 @@ class ContentSection(ttk.Frame):
         """
         Creates and places the right frame in the content section.
         """
-        right_frame = RightFrame(self)
-        right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+        self.right_frame = RightFrame(self, self.data_handler)
+        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+        """
+        Creates and places the right frame in the content section.
+        """
+        self.right_frame = RightFrame(self, self.data_handler)
+        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
