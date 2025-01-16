@@ -6,7 +6,7 @@ from PIL import Image
 LABEL_FONT = ("Helvetica", 18)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
-SMALL_BUTTON_FONT = ("Helvetica", 12)  # Define a smaller font for the buttons
+SMALL_BUTTON_FONT = ("Helvetica", 12) 
 
 class LeftFrame(ttk.Frame):
     def __init__(self, parent, data_handler):
@@ -82,7 +82,6 @@ class LeftFrame(ttk.Frame):
         """
         Create a label and buttons within the section frame.
         """
-        label_text = "Image"  # Define the label text within the method
         label = ttk.Label(section_frame, text="Image 1:", font=LABEL_FONT, width=7, anchor="center")
         label.grid(row=0, column=0, padx=5, pady=5, sticky="ns")
 

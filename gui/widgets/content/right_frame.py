@@ -1,4 +1,5 @@
 from tkinter import ttk
+from tkinter import filedialog
 from .img.image_label import ImageLabel
 from PIL import Image, ImageTk
 
@@ -108,7 +109,7 @@ class RightFrame(ttk.Frame):
         image_path = "./gui/widgets/content/img/layout_1.jpg"
         for row in range(2):
             for col in range(3):
-                image_label = ImageLabel(left_subsection, image_path, 110, 1)
+                image_label = ImageLabel(left_subsection, image_path, 110, 1.1)
                 image_label.grid(row=row+1, column=col, sticky="nsew")
 
         # Configure the grid to ensure labels expand to fill the space
@@ -146,31 +147,39 @@ class RightFrame(ttk.Frame):
         right_subsection = ttk.Frame(parent, borderwidth=1, relief="solid")
         right_subsection.grid(row=0, column=1, sticky="nsew", padx=5, pady=2)
 
-        # Create a frame to center the buttons vertically
+        # Create a frame to center the buttons vertically and horizontally
         button_frame = ttk.Frame(right_subsection)
-        button_frame.pack(expand=True, fill="both")
-
-        # Create an inner frame to hold the buttons and center them vertically
-        inner_frame = ttk.Frame(button_frame)
-        inner_frame.pack(expand=True)
-
-        # Create Save, Load, Export, and Print buttons with slightly larger size
-        button_width = 10  # Adjust the width to make the buttons slightly larger
-
-        save_button = ttk.Button(inner_frame, text="Save", width=button_width)
-        save_button.grid(row=0, column=0, padx=5, pady=15)
-
-        load_button = ttk.Button(inner_frame, text="Load", width=button_width)
-        load_button.grid(row=0, column=1, padx=5, pady=15)
-
-        export_button = ttk.Button(inner_frame, text="Export", width=button_width)
-        export_button.grid(row=1, column=0, padx=5, pady=15)
-
-        print_button = ttk.Button(inner_frame, text="Print", width=button_width)
-        print_button.grid(row=1, column=1, padx=5, pady=15)
+        button_frame.grid(row=0, column=0, sticky="nsew")
 
         # Configure the grid to ensure buttons expand to fill the space
-        for row in range(2):
-            inner_frame.grid_rowconfigure(row, weight=1)
-        for col in range(2):
-            inner_frame.grid_columnconfigure(col, weight=1)
+        right_subsection.grid_rowconfigure(0, weight=1)
+        right_subsection.grid_columnconfigure(0, weight=1)
+        button_frame.grid_rowconfigure(0, weight=1)
+        button_frame.grid_rowconfigure(1, weight=1)
+        button_frame.grid_columnconfigure(0, weight=1)
+        button_frame.grid_columnconfigure(1, weight=1)
+
+        # Create Save, Load, Export, and Print buttons with smaller size
+        button_width = 8  # Adjust the width to make the buttons smaller
+        button_height = 8  # Adjust the height to make the buttons smaller
+
+        save_button = ttk.Button(button_frame, text="Save", width=button_width, command=self.save_data)
+        save_button.grid(row=0, column=0, padx=5, pady=2, sticky="nsew")
+
+        load_button = ttk.Button(button_frame, text="Load", width=button_width)
+        load_button.grid(row=0, column=1, padx=5, pady=2, sticky="nsew")
+
+        export_button = ttk.Button(button_frame, text="Export", width=button_width)
+        export_button.grid(row=1, column=0, padx=5, pady=15, sticky="nsew")
+
+        print_button = ttk.Button(button_frame, text="Print", width=button_width)
+        print_button.grid(row=1, column=1, padx=5, pady=15, sticky="nsew")
+
+    def save_data(self):
+        """
+        Open a file dialog to pick a location and name for the file, then save the data.
+        """
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
+        if file_path:
+            self.data_handler.save(file_path)
+            print(f"Data saved to {file_path}")
