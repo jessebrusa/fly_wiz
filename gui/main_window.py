@@ -3,7 +3,8 @@ from tkinter import ttk
 from gui.widgets.header import HeaderSection
 from gui.widgets.content.content import ContentSection
 from gui.data_handler import DataHandler
-from gui.flyer_manipulator import ImageManipulator
+from gui.flyer_manipulator import FlyerManipulator
+import logging
 
 class FlyWizGui(tk.Tk):
     def __init__(self):
@@ -18,7 +19,7 @@ class FlyWizGui(tk.Tk):
         self.option_add("*Font", default_font)
 
         self.data_handler = DataHandler()
-        self.image_manipulator = ImageManipulator()
+        self.flyer_manipulator = FlyerManipulator(self.data_handler)
 
         container = ttk.Frame(self)
         container.pack(fill="both", expand=True)
@@ -29,7 +30,7 @@ class FlyWizGui(tk.Tk):
             self.content_section = ContentSection(container, self.data_handler)
             self.content_section.pack(fill="both", expand=True, padx=10, pady=5)
         except Exception as e:
-            print(f"An error occurred while initializing the GUI: {e}")
+            logging.error(f"An error occurred while initializing the GUI: {e}")
 
         self.check_text()
 
@@ -55,15 +56,15 @@ class FlyWizGui(tk.Tk):
             for key, value in data.items():
                 if self.data_handler.get_data().get(key) != value:
                     self.data_handler.update_data(key, value)
-                    print(key)
-                    print(self.data_handler.get_data())
+                    logging.info(f"Updated {key} in data handler: {self.data_handler.get_data()}")
 
         except Exception as e:
-            print(f"An error occurred while getting the text: {e}")
+            logging.error(f"An error occurred while getting the text: {e}")
 
         # Schedule this method to be called again after 250 milliseconds (0.25 seconds)
         self.after(250, self.check_text)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     app = FlyWizGui()
     app.mainloop()

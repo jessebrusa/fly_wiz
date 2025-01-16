@@ -1,70 +1,56 @@
-# FILE: gui/image_manipulator.py
+from PIL import Image
 
-from PIL import Image, ImageDraw, ImageFont
-
-class ImageManipulator:
+class FlyerManipulator:
     """
-    A class to manipulate a Pillow image with data from the DataHandler.
+    A class to create and manipulate a base blank image.
 
     Attributes
     ----------
     image : Image
         The Pillow image to be manipulated.
+    data_handler : DataHandler
+        The data handler instance to update data.
 
     Methods
     -------
-    load_image(image_path):
-        Loads an image from the given path.
-    add_text(text, position, font_path, font_size, color):
-        Adds text to the image at the specified position.
-    save_image(output_path):
-        Saves the manipulated image to the specified output path.
+    create_base_image():
+        Creates a base blank image with dimensions 11 inches by 8.5 inches.
+    update_data_handler():
+        Updates the data handler with the current image.
     """
-    def __init__(self):
+    def __init__(self, data_handler):
         """
-        Initializes the ImageManipulator with a None image.
+        Initializes the FlyerManipulator and creates the base blank image.
+
+        Parameters
+        ----------
+        data_handler : DataHandler
+            The data handler instance to update data.
         """
         self.image = None
+        self.data_handler = data_handler
+        try:
+            self.create_base_image()
+            self.update_data_handler()
+        except Exception as e:
+            print(f"An error occurred while initializing the FlyerManipulator: {e}")
 
-    def load_image(self, image_path):
+    def create_base_image(self):
         """
-        Loads an image from the given path.
+        Creates a base blank image with dimensions 11 inches by 8.5 inches.
+        """
+        try:
+            width, height = 1100, 850  # Dimensions in pixels (assuming 100 pixels per inch)
+            self.image = Image.new('RGB', (width, height), color='white')
+        except Exception as e:
+            print(f"An error occurred while creating the base image: {e}")
+            self.image = None
 
-        Parameters
-        ----------
-        image_path : str
-            The path to the image file.
+    def update_data_handler(self):
         """
-        self.image = Image.open(image_path)
-
-    def add_text(self, text, position, font_path, font_size, color):
+        Updates the data handler with the current image.
         """
-        Adds text to the image at the specified position.
-
-        Parameters
-        ----------
-        text : str
-            The text to be added to the image.
-        position : tuple
-            The (x, y) position to add the text.
-        font_path : str
-            The path to the font file.
-        font_size : int
-            The size of the font.
-        color : tuple
-            The color of the text.
-        """
-        draw = ImageDraw.Draw(self.image)
-        font = ImageFont.truetype(font_path, font_size)
-        draw.text(position, text, font=font, fill=color)
-
-    def save_image(self, output_path):
-        """
-        Saves the manipulated image to the specified output path.
-
-        Parameters
-        ----------
-        output_path : str
-            The path to save the manipulated image.
-        """
-        self.image.save(output_path)
+        try:
+            self.data_handler.update_data('flyer', self.image)
+        except Exception as e:
+            print(f"An error occurred while updating the data handler: {e}")
