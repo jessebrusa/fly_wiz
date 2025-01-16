@@ -108,7 +108,7 @@ class RightFrame(ttk.Frame):
         image_path = "./gui/widgets/content/img/layout_1.jpg"
         for row in range(2):
             for col in range(3):
-                image_label = ImageLabel(left_subsection, image_path, 110, 1.1)
+                image_label = ImageLabel(left_subsection, image_path, 110, 1)
                 image_label.grid(row=row+1, column=col, sticky="nsew")
 
         # Configure the grid to ensure labels expand to fill the space
