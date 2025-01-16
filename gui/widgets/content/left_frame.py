@@ -1,17 +1,19 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+from PIL import Image
 
 LABEL_FONT = ("Helvetica", 18)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
 
 class LeftFrame(ttk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_handler):
         """
-        Initialize the LeftFrame with parent widget.
+        Initialize the LeftFrame with parent widget and data handler.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
+        self.data_handler = data_handler
         self.create_styles()
         self.create_sections()
 
@@ -79,13 +81,20 @@ class LeftFrame(ttk.Frame):
 
     def browse_image(self):
         """
-        Open a file dialog to browse for an image file.
+        Open a file dialog to browse for an image file and update the data handler with the image object.
         """
         try:
             file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png")])
             if file_path:
                 self.selected_file_path = file_path
                 print(f"Selected file: {file_path}")
+                
+                # Load the image using Pillow
+                image = Image.open(file_path)
+                
+                # Update the data handler with the image object
+                self.data_handler.update_data('image', image)
+                print("Image updated in data handler")
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
 

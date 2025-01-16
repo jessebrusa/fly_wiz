@@ -26,7 +26,7 @@ class FlyWizGui(tk.Tk):
         try:
             self.header_section = HeaderSection(container)
             self.header_section.pack(fill="x", padx=10, pady=5)
-            self.content_section = ContentSection(container)
+            self.content_section = ContentSection(container, self.data_handler)
             self.content_section.pack(fill="both", expand=True, padx=10, pady=5)
         except Exception as e:
             print(f"An error occurred while initializing the GUI: {e}")
@@ -57,7 +57,6 @@ class FlyWizGui(tk.Tk):
                     self.data_handler.update_data(key, value)
                     print(key)
                     print(self.data_handler.get_data())
-
 
         except Exception as e:
             print(f"An error occurred while getting the text: {e}")

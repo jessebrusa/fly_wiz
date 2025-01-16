@@ -20,7 +20,7 @@ class ContentSection(ttk.Frame):
     create_right_frame():
         Creates and places the right frame in the content section.
     """
-    def __init__(self, parent):
+    def __init__(self, parent, data_handler):
         """
         Constructs all the necessary attributes for the ContentSection object.
 
@@ -28,8 +28,11 @@ class ContentSection(ttk.Frame):
         ----------
         parent : widget
             The parent widget.
+        data_handler : DataHandler
+            The data handler instance.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
+        self.data_handler = data_handler
         try:
             self.configure_grid()
             self.create_left_frame()
@@ -49,7 +52,7 @@ class ContentSection(ttk.Frame):
         """
         Creates and places the left frame in the content section.
         """
-        self.left_frame = LeftFrame(self)
+        self.left_frame = LeftFrame(self, self.data_handler)
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
     def create_right_frame(self):
