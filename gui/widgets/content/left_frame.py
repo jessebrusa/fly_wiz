@@ -6,6 +6,7 @@ from PIL import Image
 LABEL_FONT = ("Helvetica", 18)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
+SMALL_BUTTON_FONT = ("Helvetica", 12)  
 
 class LeftFrame(ttk.Frame):
     def __init__(self, parent, data_handler):
@@ -23,6 +24,7 @@ class LeftFrame(ttk.Frame):
         """
         self.style = ttk.Style()
         self.style.configure("TButton", font=BUTTON_FONT, padding=(5, 2))  # Adjust padding to reduce button height
+        self.style.configure("Small.TButton", font=SMALL_BUTTON_FONT, padding=(5, 2))  # Smaller font for buttons
 
     def create_sections(self):
         """
@@ -38,7 +40,7 @@ class LeftFrame(ttk.Frame):
             if i != 2:
                 self.create_label_and_text_area(section_frame, label_list[i-1])
             else:
-                self.create_label_and_buttons(section_frame, label_list[i-1])
+                self.create_label_and_buttons(section_frame)
 
     def create_label_and_text_area(self, section_frame, label_text):
         """
@@ -61,23 +63,46 @@ class LeftFrame(ttk.Frame):
         elif label_text == 'Footer':
             self.footer_text_area = text_area
 
-    def create_label_and_buttons(self, section_frame, label_text):
+    def create_label_and_buttons(self, section_frame):
         """
         Create a label and buttons within the section frame.
         """
-        label = ttk.Label(section_frame, text=f"{label_text}:", font=LABEL_FONT, width=7, anchor="center")
+        label_text = "Image"  # Define the label text within the method
+        label = ttk.Label(section_frame, text="Image 1:", font=LABEL_FONT, width=7, anchor="center")
         label.grid(row=0, column=0, padx=5, pady=5, sticky="ns")
 
-        browse_button = ttk.Button(section_frame, text="Browse", style="TButton", width=10, 
-                                   command=self.browse_image)
-        browse_button.grid(row=0, column=1, padx=5, pady=18, sticky="ns")
+        # Frame for the first set of buttons
+        button_frame_1 = ttk.Frame(section_frame)
+        button_frame_1.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
 
-        search_button = ttk.Button(section_frame, text="Search", style="TButton", width=10, 
+        browse_button_1 = ttk.Button(button_frame_1, text="Browse", style="Small.TButton", width=8, 
+                                   command=self.browse_image)
+        browse_button_1.pack(side="left", padx=5)
+
+        search_button_1 = ttk.Button(button_frame_1, text="Search", style="Small.TButton", width=8, 
                                    command=self.open_search_window)
-        search_button.grid(row=0, column=2, padx=5, pady=18, sticky="ns")
+        search_button_1.pack(side="left", padx=5)
+
+        # Label for second image
+        second_image_label = ttk.Label(section_frame, text="Image 2:", font=LABEL_FONT, width=12, anchor="center")
+        second_image_label.grid(row=1, column=0, padx=5, pady=5, sticky="ns")
+
+        # Frame for the second set of buttons
+        button_frame_2 = ttk.Frame(section_frame)
+        button_frame_2.grid(row=1, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
+
+        browse_button_2 = ttk.Button(button_frame_2, text="Browse", style="Small.TButton", width=8, 
+                                   command=self.browse_image)
+        browse_button_2.pack(side="left", padx=5)
+
+        search_button_2 = ttk.Button(button_frame_2, text="Search", style="Small.TButton", width=8, 
+                                   command=self.open_search_window)
+        search_button_2.pack(side="left", padx=5)
 
         section_frame.grid_columnconfigure(1, weight=1)
         section_frame.grid_columnconfigure(2, weight=1)
+        section_frame.grid_rowconfigure(0, weight=1)
+        section_frame.grid_rowconfigure(1, weight=1)
 
     def browse_image(self):
         """
@@ -111,7 +136,7 @@ class LeftFrame(ttk.Frame):
         entry = ttk.Entry(search_window, font=TEXT_AREA_FONT)
         entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-        search_button = ttk.Button(search_window, text="Search", style="TButton", command=lambda: self.perform_search(entry.get()))
+        search_button = ttk.Button(search_window, text="Search", style="Small.TButton", command=lambda: self.perform_search(entry.get()))
         search_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
 
         search_window.grid_columnconfigure(1, weight=1)
