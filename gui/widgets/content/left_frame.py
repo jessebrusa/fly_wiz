@@ -30,17 +30,32 @@ class LeftFrame(ttk.Frame):
         """
         Create sections within the LeftFrame.
         """
-        label_list = ['Title', 'Image', 'Styled\nInfo', 'Text\nInfo', 'Footer']
-        for i in range(1, 6):
+        label_list = ['Title', 'Styled\nInfo', 'Text\nInfo', 'Footer']
+        
+        # Create the first section for the label and text areas
+        for i, label_text in enumerate(label_list[:1]):
             section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
             section_frame.pack(fill="both", expand=True, padx=5, pady=5)
             section_frame.grid_propagate(False)  
             section_frame.grid_rowconfigure(0, weight=1)  
             
-            if i != 2:
-                self.create_label_and_text_area(section_frame, label_list[i-1])
-            else:
-                self.create_label_and_buttons(section_frame)
+            self.create_label_and_text_area(section_frame, label_text)
+        
+        # Create the section for the image buttons
+        image_section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
+        image_section_frame.pack(fill="both", expand=True, padx=5, pady=5)
+        image_section_frame.grid_propagate(False)  
+        image_section_frame.grid_rowconfigure(0, weight=1)
+        self.create_label_and_buttons(image_section_frame)
+        
+        # Create the remaining sections for the label and text areas
+        for i, label_text in enumerate(label_list[1:]):
+            section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
+            section_frame.pack(fill="both", expand=True, padx=5, pady=5)
+            section_frame.grid_propagate(False)  
+            section_frame.grid_rowconfigure(0, weight=1)  
+            
+            self.create_label_and_text_area(section_frame, label_text)
 
     def create_label_and_text_area(self, section_frame, label_text):
         """
