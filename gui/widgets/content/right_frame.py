@@ -154,13 +154,23 @@ class RightFrame(ttk.Frame):
         inner_frame = ttk.Frame(button_frame)
         inner_frame.pack(expand=True)
 
-        # Create Save and Load buttons with increased height and more space between them
-        save_button = ttk.Button(inner_frame, text="Save", width=10)
-        save_button.pack(pady=5, ipady=12)  # Add padding between buttons
+        # Create Save, Load, Export, and Print buttons with slightly larger size
+        button_width = 10  # Adjust the width to make the buttons slightly larger
 
-        load_button = ttk.Button(inner_frame, text="Load", width=10)
-        load_button.pack(pady=5, ipady=12)  # Add padding between buttons
+        save_button = ttk.Button(inner_frame, text="Save", width=button_width)
+        save_button.grid(row=0, column=0, padx=5, pady=15)
 
-        # Create Export button
-        export_button = ttk.Button(inner_frame, text="Export", width=10)
-        export_button.pack(pady=5, ipady=12)  # Add padding between buttons
+        load_button = ttk.Button(inner_frame, text="Load", width=button_width)
+        load_button.grid(row=0, column=1, padx=5, pady=15)
+
+        export_button = ttk.Button(inner_frame, text="Export", width=button_width)
+        export_button.grid(row=1, column=0, padx=5, pady=15)
+
+        print_button = ttk.Button(inner_frame, text="Print", width=button_width)
+        print_button.grid(row=1, column=1, padx=5, pady=15)
+
+        # Configure the grid to ensure buttons expand to fill the space
+        for row in range(2):
+            inner_frame.grid_rowconfigure(row, weight=1)
+        for col in range(2):
+            inner_frame.grid_columnconfigure(col, weight=1)
