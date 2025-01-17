@@ -142,10 +142,11 @@ class LeftFrame(ttk.Frame):
         """
         Remove the image from the data handler and refresh the GUI.
         """
-        # self.data_handler.update_data(image_key, None)
-        # print(f"Image removed from data handler with key {image_key}")
-        # self.create_label_and_buttons(self.image_section_frame)
+        self.data_handler.update_data(image_key, None)
+        print(f"Image removed from data handler with key {image_key}")
+        self.create_label_and_buttons(self.image_section_frame)
         print('remove image')
+        self.data_handler.save('test_save.json')
 
     def browse_image(self, image_key):
         """
@@ -166,6 +167,7 @@ class LeftFrame(ttk.Frame):
                 
                 # Refresh the GUI to reflect the selected image
                 self.create_label_and_buttons(self.image_section_frame)
+                self.data_handler.save('test_save.json')
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
 
