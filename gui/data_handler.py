@@ -5,37 +5,31 @@ from PIL import Image
 
 class DataHandler:
     """
-    A class to handle data from the GUI and notify observers of changes.
+    A class to handle data from the GUI, including text and images.
 
     Attributes
     ----------
     data : dict
-        A dictionary to store the data from the GUI.
-    observers : list
-        A list of observer functions to notify when data changes.
+        A dictionary to store the data from the GUI, including text and images.
 
     Methods
     -------
     update_data(key, value):
-        Updates the data dictionary with the given key-value pair and notifies observers.
+        Updates the data dictionary with the given key-value pair.
     get_data():
         Returns the data dictionary.
-    add_observer(observer):
-        Adds an observer function to the list of observers.
-    remove_observer(observer):
-        Removes an observer function from the list of observers.
-    notify_observers(key, value):
-        Notifies all observer functions of data changes.
     image_to_base64(image):
         Converts a Pillow image to a base64 string.
     base64_to_image(base64_str):
         Converts a base64 string to a Pillow image.
     save(file_path):
         Saves the data dictionary as a JSON file, converting images to base64 if necessary.
+    load(file_path):
+        Loads the data dictionary from a JSON file, converting base64 strings to images if necessary.
     """
     def __init__(self):
         """
-        Initializes the DataHandler with an empty data dictionary and an empty list of observers.
+        Initializes the DataHandler with an empty data dictionary.
         """
         self.data = {
             'title': '',
@@ -49,7 +43,7 @@ class DataHandler:
 
     def update_data(self, key, value):
         """
-        Updates the data dictionary with the given key-value pair and notifies observers.
+        Updates the data dictionary with the given key-value pair.
 
         Parameters
         ----------
@@ -126,3 +120,22 @@ class DataHandler:
 
         with open(file_path, 'w') as json_file:
             json.dump(data_to_save, json_file, indent=4)
+
+    def load(self, file_path):
+        """
+        Loads the data dictionary from a JSON file, converting base64 strings to images if necessary.
+
+        Parameters
+        ----------
+        file_path : str
+            The file path to load the JSON file from.
+        """
+        with open(file_path, 'r') as json_file:
+            loaded_data = json.load(json_file)
+
+        # Convert base64 strings to images if they are not None
+        for key in ['image1', 'image2', 'flyer']:
+            if isinstance(loaded_data.get(key), str):
+                loaded_data[key] = self.base64_to_image(loaded_data[key])
+
+        self.data = loaded_data

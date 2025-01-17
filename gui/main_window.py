@@ -5,6 +5,7 @@ from gui.widgets.content.content import ContentSection
 from gui.data_handler import DataHandler
 from gui.flyer_manipulator import FlyerManipulator
 import logging
+from PIL import Image, ImageTk
 
 class FlyWizGui(tk.Tk):
     def __init__(self):
@@ -27,7 +28,7 @@ class FlyWizGui(tk.Tk):
         try:
             self.header_section = HeaderSection(container)
             self.header_section.pack(fill="x", padx=10, pady=5)
-            self.content_section = ContentSection(container, self.data_handler)
+            self.content_section = ContentSection(container, self.data_handler, self)
             self.content_section.pack(fill="both", expand=True, padx=10, pady=5)
         except Exception as e:
             logging.error(f"An error occurred while initializing the GUI: {e}")
@@ -64,7 +65,38 @@ class FlyWizGui(tk.Tk):
         # Schedule this method to be called again after 250 milliseconds (0.25 seconds)
         self.after(250, self.check_text)
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    app = FlyWizGui()
-    app.mainloop()
+    def update_gui(self):
+        """
+        Updates the GUI with the data from the data handler.
+        """
+        try:
+            data = self.data_handler.get_data()
+            left_frame = self.content_section.left_frame
+
+            # Update text areas
+            left_frame.title_text_area.delete("1.0", tk.END)
+            left_frame.title_text_area.insert(tk.END, data.get("title", ""))
+
+            left_frame.styled_info_text_area.delete("1.0", tk.END)
+            left_frame.styled_info_text_area.insert(tk.END, data.get("styled_info", ""))
+
+            left_frame.text_info_text_area.delete("1.0", tk.END)
+            left_frame.text_info_text_area.insert(tk.END, data.get("text_info", ""))
+
+            left_frame.footer_text_area.delete("1.0", tk.END)
+            left_frame.footer_text_area.insert(tk.END, data.get("footer", ""))
+
+            # Update images
+            right_frame = self.content_section.right_frame
+            flyer_image = data.get("flyer")
+            if flyer_image:
+                # Set the desired resolution for display
+                desired_width = 650
+                desired_height = 425
+                flyer_image_resized = flyer_image.resize((desired_width, desired_height), Image.LANCZOS)
+                flyer_image_tk = ImageTk.PhotoImage(flyer_image_resized)
+                right_frame.image_label.config(image=flyer_image_tk)
+                right_frame.image_label.image = flyer_image_tk
+
+        except Exception as e:
+            logging.error(f"An error occurred while updating the GUI: {e}")

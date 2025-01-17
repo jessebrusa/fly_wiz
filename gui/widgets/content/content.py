@@ -12,6 +12,8 @@ class ContentSection(ttk.Frame):
         The parent widget.
     data_handler : DataHandler
         The data handler instance.
+    main_app : FlyWizGui
+        The main application instance.
 
     Methods
     -------
@@ -22,7 +24,7 @@ class ContentSection(ttk.Frame):
     create_right_frame():
         Creates and places the right frame in the content section.
     """
-    def __init__(self, parent, data_handler):
+    def __init__(self, parent, data_handler, main_app):
         """
         Constructs all the necessary attributes for the ContentSection object.
 
@@ -32,9 +34,12 @@ class ContentSection(ttk.Frame):
             The parent widget.
         data_handler : DataHandler
             The data handler instance.
+        main_app : FlyWizGui
+            The main application instance.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
         self.data_handler = data_handler
+        self.main_app = main_app
         try:
             self.configure_grid()
             self.create_left_frame()
@@ -47,8 +52,8 @@ class ContentSection(ttk.Frame):
         Configures the grid layout for the content section.
         """
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=4)  # Left frame takes 4/9 of the width
-        self.grid_columnconfigure(1, weight=5)  # Right frame takes 5/9 of the width
+        self.grid_columnconfigure(0, weight=4)  
+        self.grid_columnconfigure(1, weight=5)  
 
     def create_left_frame(self):
         """
@@ -61,10 +66,10 @@ class ContentSection(ttk.Frame):
         """
         Creates and places the right frame in the content section.
         """
-        self.right_frame = RightFrame(self, self.data_handler)
+        self.right_frame = RightFrame(self, self.data_handler, self.main_app)
         self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
         """
         Creates and places the right frame in the content section.
         """
-        self.right_frame = RightFrame(self, self.data_handler)
+        self.right_frame = RightFrame(self, self.data_handler, self.main_app)
         self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)

@@ -13,11 +13,13 @@ class RightFrame(ttk.Frame):
         The parent widget.
     data_handler : DataHandler
         The data handler instance.
+    main_app : FlyWizGui
+        The main application instance.
 
     Methods
     -------
-    __init__(parent, data_handler):
-        Initializes the right frame with the parent widget and data handler.
+    __init__(parent, data_handler, main_app):
+        Initializes the right frame with the parent widget, data handler, and main application instance.
     configure_main_frame_grid():
         Configures the grid layout for the main frame.
     create_first_section():
@@ -28,10 +30,14 @@ class RightFrame(ttk.Frame):
         Creates and places the left subsection in the second section.
     create_right_subsection(parent):
         Creates and places the right subsection in the second section.
+    save_data():
+        Opens a file dialog to pick a location and name for the file, then saves the data.
+    load_data():
+        Opens a file dialog to select a JSON file, then loads the data.
     """
-    def __init__(self, parent, data_handler):
+    def __init__(self, parent, data_handler, main_app):
         """
-        Initializes the right frame with the parent widget and data handler.
+        Initializes the right frame with the parent widget, data handler, and main application instance.
 
         Parameters
         ----------
@@ -39,9 +45,12 @@ class RightFrame(ttk.Frame):
             The parent widget.
         data_handler : DataHandler
             The data handler instance.
+        main_app : FlyWizGui
+            The main application instance.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
         self.data_handler = data_handler
+        self.main_app = main_app
         try:
             self.configure_main_frame_grid()
             self.create_first_section()
@@ -61,23 +70,22 @@ class RightFrame(ttk.Frame):
         """
         Creates and places the first section in the right frame.
         """
-        first_section = ttk.Frame(self, borderwidth=1, relief="solid")
-        first_section.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
+        self.first_section = ttk.Frame(self, borderwidth=1, relief="solid")
+        self.first_section.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
         
         try:
             image = self.data_handler.get_data().get('flyer')
             if image:
-                width, height = image.size
-                scale_factor = 0.45
-                new_size = (int(width * scale_factor), int(height * scale_factor))
+                new_size = (650, 425) 
                 scaled_image = image.resize(new_size, Image.LANCZOS)
                 
                 image_tk = ImageTk.PhotoImage(scaled_image)
-                image_label = ttk.Label(first_section, image=image_tk)
-                image_label.image = image_tk  
-                image_label.pack(expand=True)  
+                self.image_label = ttk.Label(self.first_section, image=image_tk)
+                self.image_label.image = image_tk  
+                self.image_label.pack(expand=True)  
             else:
-                print("No image found in data handler")
+                self.image_label = ttk.Label(self.first_section, text="No image found")
+                self.image_label.pack(expand=True)
         except Exception as e:
             print(f"An error occurred while creating the first section: {e}")
 
@@ -109,7 +117,7 @@ class RightFrame(ttk.Frame):
         image_path = "./gui/widgets/content/img/layout_1.jpg"
         for row in range(2):
             for col in range(3):
-                image_label = ImageLabel(left_subsection, image_path, 110, 1.1)
+                image_label = ImageLabel(left_subsection, image_path, 110, 1)
                 image_label.grid(row=row+1, column=col, sticky="nsew")
 
         # Configure the grid to ensure labels expand to fill the space
@@ -159,14 +167,12 @@ class RightFrame(ttk.Frame):
         button_frame.grid_columnconfigure(0, weight=1)
         button_frame.grid_columnconfigure(1, weight=1)
 
-        # Create Save, Load, Export, and Print buttons with smaller size
-        button_width = 8  # Adjust the width to make the buttons smaller
-        button_height = 8  # Adjust the height to make the buttons smaller
+        button_width = 8  
 
         save_button = ttk.Button(button_frame, text="Save", width=button_width, command=self.save_data)
         save_button.grid(row=0, column=0, padx=5, pady=2, sticky="nsew")
 
-        load_button = ttk.Button(button_frame, text="Load", width=button_width)
+        load_button = ttk.Button(button_frame, text="Load", width=button_width, command=self.load_data)
         load_button.grid(row=0, column=1, padx=5, pady=2, sticky="nsew")
 
         export_button = ttk.Button(button_frame, text="Export", width=button_width)
@@ -183,3 +189,13 @@ class RightFrame(ttk.Frame):
         if file_path:
             self.data_handler.save(file_path)
             print(f"Data saved to {file_path}")
+
+    def load_data(self):
+        """
+        Open a file dialog to select a JSON file, then load the data.
+        """
+        file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
+        if file_path:
+            self.data_handler.load(file_path)
+            print(f"Data loaded from {file_path}")
+            self.main_app.update_gui()
