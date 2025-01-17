@@ -70,38 +70,48 @@ class FlyerManipulator:
             image1 = self.data_handler.get_data().get('image1')
             image2 = self.data_handler.get_data().get('image2')
 
-            if image1:
+            if image1 and image2:
+                # Resize both images to fit within 50% of the flyer width and 70% of the flyer height
+                max_width, max_height = int(1100 * 0.5 * 0.65), int(850 * 0.65)
+                image1.thumbnail((max_width, max_height), Image.LANCZOS)
+                image2.thumbnail((max_width, max_height), Image.LANCZOS)
+
+                # Create a new image to combine both images side by side
+                combined_width = image1.width + image2.width
+                combined_height = max(image1.height, image2.height)
+                combined_image = Image.new('RGB', (combined_width, combined_height))
+
+                # Paste both images onto the combined image
+                combined_image.paste(image1, (0, 0))
+                combined_image.paste(image2, (image1.width, 0))
+
+                # Place the combined image in the center of the flyer
+                x_offset = (1100 - combined_image.width) // 2
+                y_offset = (850 - combined_image.height) // 2
+                self.image.paste(combined_image, (x_offset, y_offset))
+
+            elif image1:
                 # Resize image1 to fit within 70% of the flyer dimensions
                 max_width, max_height = int(1100 * 0.65), int(850 * 0.65)
                 image1.thumbnail((max_width, max_height), Image.LANCZOS)
 
-                if image2:
-                    # Resize image2 to fit within 70% of the flyer dimensions
-                    image2.thumbnail((max_width, max_height), Image.LANCZOS)
+                # Place image1 in the center of the flyer
+                x_offset = (1100 - image1.width) // 2
+                y_offset = (850 - image1.height) // 2
+                self.image.paste(image1, (x_offset, y_offset))
 
-                    # Combine images side by side
-                    combined_width = image1.width + image2.width
-                    combined_height = max(image1.height, image2.height)
-                    combined_image = Image.new('RGB', (combined_width, combined_height), color='white')
-                    combined_image.paste(image1, (0, (combined_height - image1.height) // 2))
-                    combined_image.paste(image2, (image1.width, (combined_height - image2.height) // 2))
+            elif image2:
+                # Resize image2 to fit within 70% of the flyer dimensions
+                max_width, max_height = int(1100 * 0.65), int(850 * 0.65)
+                image2.thumbnail((max_width, max_height), Image.LANCZOS)
 
-                    # Resize combined image if necessary
-                    if combined_width > max_width or combined_height > max_height:
-                        combined_image.thumbnail((max_width, max_height), Image.LANCZOS)
+                # Place image2 in the center of the flyer
+                x_offset = (1100 - image2.width) // 2
+                y_offset = (850 - image2.height) // 2
+                self.image.paste(image2, (x_offset, y_offset))
 
-                    # Place combined image in the center of the flyer
-                    x_offset = (1100 - combined_image.width) // 2
-                    y_offset = (850 - combined_image.height) // 2
-                    self.image.paste(combined_image, (x_offset, y_offset))
-                else:
-                    # Place image1 in the center of the flyer
-                    x_offset = (1100 - image1.width) // 2
-                    y_offset = (850 - image1.height) // 2
-                    self.image.paste(image1, (x_offset, y_offset))
-
-                # Update the data handler with the modified flyer image
-                self.update_data_handler()
+            # Update the data handler with the modified flyer image
+            self.update_data_handler()
         
         except Exception as e:
             print(f"An error occurred while placing images on the flyer: {e}")

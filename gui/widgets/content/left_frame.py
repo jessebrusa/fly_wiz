@@ -143,9 +143,7 @@ class LeftFrame(ttk.Frame):
         Remove the image from the data handler and refresh the GUI.
         """
         self.data_handler.update_data(image_key, None)
-        print(f"Image removed from data handler with key {image_key}")
         self.create_label_and_buttons(self.image_section_frame)
-        print('remove image')
         self.data_handler.save('test_save.json')
 
     def browse_image(self, image_key):
@@ -156,9 +154,7 @@ class LeftFrame(ttk.Frame):
             file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png")])
             if file_path:
                 self.selected_file_path = file_path
-                print(f"Selected file: {file_path}")
                 
-                # Load the image using Pillow
                 image = Image.open(file_path)
                 
                 # Update the data handler with the image object
