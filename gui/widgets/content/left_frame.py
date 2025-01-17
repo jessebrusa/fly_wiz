@@ -97,7 +97,7 @@ class LeftFrame(ttk.Frame):
     
         # Frame for the first set of buttons
         button_frame_1 = ttk.Frame(section_frame)
-        button_frame_1.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
+        button_frame_1.grid(row=0, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
     
         browse_button_1 = ttk.Button(button_frame_1, text="Browse", style="Small.TButton", width=8, 
                                      command=lambda: self.browse_image('image1'))
@@ -106,6 +106,10 @@ class LeftFrame(ttk.Frame):
         search_button_1 = ttk.Button(button_frame_1, text="Search", style="Small.TButton", width=8, 
                                      command=lambda: self.open_search_window('image1'))
         search_button_1.pack(side="left", padx=5)
+        
+        remove_button_1 = ttk.Button(button_frame_1, text="Remove", style="Small.TButton", width=8, 
+                                     command=lambda: self.remove_image('image1'))
+        remove_button_1.pack(side="left", padx=5)
     
         # Label for second image
         label_text_2 = "Image 2" + (" ✓:" if image2_selected else " :")
@@ -114,7 +118,7 @@ class LeftFrame(ttk.Frame):
     
         # Frame for the second set of buttons
         button_frame_2 = ttk.Frame(section_frame)
-        button_frame_2.grid(row=1, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
+        button_frame_2.grid(row=1, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
     
         browse_button_2 = ttk.Button(button_frame_2, text="Browse", style="Small.TButton", width=8, 
                                      command=lambda: self.browse_image('image2'))
@@ -123,11 +127,25 @@ class LeftFrame(ttk.Frame):
         search_button_2 = ttk.Button(button_frame_2, text="Search", style="Small.TButton", width=8, 
                                      command=lambda: self.open_search_window('image2'))
         search_button_2.pack(side="left", padx=5)
+        
+        remove_button_2 = ttk.Button(button_frame_2, text="Remove", style="Small.TButton", width=8, 
+                                     command=lambda: self.remove_image('image2'))
+        remove_button_2.pack(side="left", padx=5)
     
         section_frame.grid_columnconfigure(1, weight=1)
         section_frame.grid_columnconfigure(2, weight=1)
+        section_frame.grid_columnconfigure(3, weight=1)
         section_frame.grid_rowconfigure(0, weight=1)
         section_frame.grid_rowconfigure(1, weight=1)
+
+    def remove_image(self, image_key):
+        """
+        Remove the image from the data handler and refresh the GUI.
+        """
+        # self.data_handler.update_data(image_key, None)
+        # print(f"Image removed from data handler with key {image_key}")
+        # self.create_label_and_buttons(self.image_section_frame)
+        print('remove image')
 
     def browse_image(self, image_key):
         """
