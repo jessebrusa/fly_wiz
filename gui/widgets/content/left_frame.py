@@ -42,11 +42,11 @@ class LeftFrame(ttk.Frame):
             self.create_label_and_text_area(section_frame, label_text)
         
         # Create the section for the image buttons
-        image_section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
-        image_section_frame.pack(fill="both", expand=True, padx=5, pady=5)
-        image_section_frame.grid_propagate(False)  
-        image_section_frame.grid_rowconfigure(0, weight=1)
-        self.create_label_and_buttons(image_section_frame)
+        self.image_section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
+        self.image_section_frame.pack(fill="both", expand=True, padx=5, pady=5)
+        self.image_section_frame.grid_propagate(False)  
+        self.image_section_frame.grid_rowconfigure(0, weight=1)
+        self.create_label_and_buttons(self.image_section_frame)
         
         # Create the remaining sections for the label and text areas
         for i, label_text in enumerate(label_list[1:]):
@@ -82,37 +82,48 @@ class LeftFrame(ttk.Frame):
         """
         Create a label and buttons within the section frame.
         """
-        label = ttk.Label(section_frame, text="Image 1:", font=LABEL_FONT, width=7, anchor="center")
+        # Clear the section frame to avoid duplicate widgets
+        for widget in section_frame.winfo_children():
+            widget.destroy()
+    
+        # Check if images are selected
+        image1_selected = self.data_handler.get_data().get('image1') is not None
+        image2_selected = self.data_handler.get_data().get('image2') is not None
+    
+        # Label for first image
+        label_text_1 = "Image 1" + (" ✓:" if image1_selected else " :")
+        label = ttk.Label(section_frame, text=label_text_1, font=LABEL_FONT, width=12, anchor="center")
         label.grid(row=0, column=0, padx=5, pady=5, sticky="ns")
-
+    
         # Frame for the first set of buttons
         button_frame_1 = ttk.Frame(section_frame)
         button_frame_1.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
-
+    
         browse_button_1 = ttk.Button(button_frame_1, text="Browse", style="Small.TButton", width=8, 
-                                   command=lambda: self.browse_image('image1'))
+                                     command=lambda: self.browse_image('image1'))
         browse_button_1.pack(side="left", padx=5)
-
+    
         search_button_1 = ttk.Button(button_frame_1, text="Search", style="Small.TButton", width=8, 
-                                   command=lambda: self.open_search_window('image1'))
+                                     command=lambda: self.open_search_window('image1'))
         search_button_1.pack(side="left", padx=5)
-
+    
         # Label for second image
-        second_image_label = ttk.Label(section_frame, text="Image 2:", font=LABEL_FONT, width=12, anchor="center")
+        label_text_2 = "Image 2" + (" ✓:" if image2_selected else " :")
+        second_image_label = ttk.Label(section_frame, text=label_text_2, font=LABEL_FONT, width=12, anchor="center")
         second_image_label.grid(row=1, column=0, padx=5, pady=5, sticky="ns")
-
+    
         # Frame for the second set of buttons
         button_frame_2 = ttk.Frame(section_frame)
         button_frame_2.grid(row=1, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
-
+    
         browse_button_2 = ttk.Button(button_frame_2, text="Browse", style="Small.TButton", width=8, 
-                                   command=lambda: self.browse_image('image2'))
+                                     command=lambda: self.browse_image('image2'))
         browse_button_2.pack(side="left", padx=5)
-
+    
         search_button_2 = ttk.Button(button_frame_2, text="Search", style="Small.TButton", width=8, 
-                                   command=lambda: self.open_search_window('image2'))
+                                     command=lambda: self.open_search_window('image2'))
         search_button_2.pack(side="left", padx=5)
-
+    
         section_frame.grid_columnconfigure(1, weight=1)
         section_frame.grid_columnconfigure(2, weight=1)
         section_frame.grid_rowconfigure(0, weight=1)
@@ -134,6 +145,9 @@ class LeftFrame(ttk.Frame):
                 # Update the data handler with the image object
                 self.data_handler.update_data(image_key, image)
                 print(f"Image updated in data handler with key {image_key}")
+                
+                # Refresh the GUI to reflect the selected image
+                self.create_label_and_buttons(self.image_section_frame)
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
 

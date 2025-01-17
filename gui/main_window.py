@@ -34,6 +34,7 @@ class FlyWizGui(tk.Tk):
             logging.error(f"An error occurred while initializing the GUI: {e}")
 
         self.check_text()
+        self.update_flyer()
 
     def check_text(self):
         """
@@ -100,3 +101,16 @@ class FlyWizGui(tk.Tk):
 
         except Exception as e:
             logging.error(f"An error occurred while updating the GUI: {e}")
+
+    def update_flyer(self):
+        """
+        Updates the flyer by placing images on it every 0.25 seconds.
+        """
+        try:
+            self.flyer_manipulator.update_flyer()
+            self.update_gui()  # Update the GUI with the new flyer image
+        except Exception as e:
+            logging.error(f"An error occurred while updating the flyer: {e}")
+
+        # Schedule this method to be called again after 250 milliseconds (0.25 seconds)
+        self.after(250, self.update_flyer)
