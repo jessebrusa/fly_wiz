@@ -1,12 +1,13 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, colorchooser
 from tkinter import filedialog
 from PIL import Image
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
-SMALL_BUTTON_FONT = ("Helvetica", 12) 
+SMALL_BUTTON_FONT = ("Helvetica", 12)
+DROPDOWN_FONT = ("Helvetica", 10)  # Smaller font for dropdown menu
 
 class LeftFrame(ttk.Frame):
     def __init__(self, parent, data_handler):
@@ -25,6 +26,7 @@ class LeftFrame(ttk.Frame):
         self.style = ttk.Style()
         self.style.configure("TButton", font=BUTTON_FONT, padding=(5, 2))  # Adjust padding to reduce button height
         self.style.configure("Small.TButton", font=SMALL_BUTTON_FONT, padding=(5, 2))  # Smaller font for buttons
+        self.style.configure("TCombobox", font=DROPDOWN_FONT)  # Smaller font for dropdown menu
 
     def create_sections(self):
         """
@@ -77,6 +79,102 @@ class LeftFrame(ttk.Frame):
             self.text_info_text_area = text_area
         elif label_text == 'Footer':
             self.footer_text_area = text_area
+
+    def open_color_wheel_window(self, gradient=False):
+        """
+        Open a window with one or two squares for color selection.
+        The first square is white, and the second is transparent by default, both with outlines.
+        """
+        self.color_wheel_window = tk.Toplevel(self)
+        self.color_wheel_window.title("Color Wheel")
+        self.color_wheel_window.attributes('-topmost', True)  # Keep the window on top
+
+        # Set fixed width and center the window
+        window_width = 400
+        window_height = 200
+        screen_width = self.color_wheel_window.winfo_screenwidth()
+        screen_height = self.color_wheel_window.winfo_screenheight()
+        position_top = int(screen_height / 2 - window_height / 2)
+        position_right = int(screen_width / 2 - window_width / 2)
+        self.color_wheel_window.geometry(f'{window_width}x{window_height}+{position_right}+{position_top}')
+
+        # Frame for the color squares
+        color_frame = ttk.Frame(self.color_wheel_window)
+        color_frame.pack(padx=10, pady=10)
+
+        # Center the color frame horizontally
+        color_frame.grid_columnconfigure(0, weight=1)
+        color_frame.grid_columnconfigure(1, weight=1)
+        color_frame.grid_columnconfigure(2, weight=1)
+        color_frame.grid_columnconfigure(3, weight=1)
+
+        # Create the first color square
+        self.color_square_1 = tk.Label(color_frame, bg="white", width=5, height=2, relief="solid", borderwidth=1)
+        self.color_square_1.grid(row=1, column=1, padx=5, pady=5)
+        self.color_square_1.bind("<Button-1>", lambda event: self.change_color(self.color_square_1))
+
+        # Variable to track the gradient option
+        self.gradient_var = tk.IntVar(value=0)
+
+        # Checkbutton for gradient option
+        gradient_checkbutton = ttk.Checkbutton(color_frame, text="Gradient", variable=self.gradient_var, command=self.toggle_gradient)
+        gradient_checkbutton.grid(row=2, column=1, padx=5, pady=5)
+
+        # Dropdown menu for gradient directions (initially hidden)
+        self.gradient_direction = tk.StringVar(value="Top Left to Bottom Right")
+        self.gradient_direction_menu = ttk.Combobox(color_frame, textvariable=self.gradient_direction, state="readonly", style="TCombobox",
+                                font=DROPDOWN_FONT, width=25)
+        self.gradient_direction_menu['values'] = [
+            "Top Left to Bottom Right",
+            "Top Right to Bottom Left",
+            "Bottom Left to Top Right",
+            "Bottom Right to Top Left",
+            "Top to Bottom",
+            "Bottom to Top",
+            "Left to Right",
+            "Right to Left"
+        ]
+        self.gradient_direction_menu.option_add('*TCombobox*Listbox.font', DROPDOWN_FONT)
+        self.gradient_direction_menu.grid(row=2, column=2, padx=5, pady=5)
+        self.gradient_direction_menu.grid_remove()
+
+        # Create the second color square for gradient (initially hidden)
+        self.color_square_2 = tk.Label(color_frame, bg="white", width=5, height=2, relief="solid", borderwidth=1)
+        self.color_square_2.grid(row=1, column=2, padx=5, pady=5)
+        self.color_square_2.bind("<Button-1>", lambda event: self.change_color(self.color_square_2))
+        self.color_square_2.grid_remove()
+
+        # Submit button
+        submit_button = ttk.Button(self.color_wheel_window, text="Submit", command=self.apply_gradient)
+        submit_button.pack(pady=10)
+
+    def toggle_gradient(self):
+        """
+        Toggle the visibility of the second color square and gradient direction menu based on the gradient option.
+        """
+        if self.gradient_var.get() == 1:
+            self.color_square_2.grid()
+            self.gradient_direction_menu.grid()
+        else:
+            self.color_square_2.grid_remove()
+            self.gradient_direction_menu.grid_remove()
+
+    def change_color(self, color_square):
+        """
+        Open a color picker dialog to select a color and change the background color of the square.
+        """
+        self.color_wheel_window.attributes('-topmost', False)  # Allow the color picker to be on top
+        color = colorchooser.askcolor()[1]
+        self.color_wheel_window.attributes('-topmost', True)  # Bring the color wheel window back to the top
+        if color:
+            color_square.config(bg=color)
+
+    def apply_gradient(self):
+        """
+        Apply the selected gradient to the background.
+        """
+        # Implement the logic to apply the gradient based on the selected colors and direction
+        print(f"Applying gradient: {self.gradient_direction.get()}")
 
     def create_label_and_buttons(self, section_frame):
         """
@@ -141,11 +239,11 @@ class LeftFrame(ttk.Frame):
         button_frame_3 = ttk.Frame(section_frame)
         button_frame_3.grid(row=2, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
     
-        color_wheel_button = ttk.Button(button_frame_3, text="Color Wheel", style="Small.TButton", width=12)
+        color_wheel_button = ttk.Button(button_frame_3, text="Color Wheel", style="Small.TButton", width=12, command=self.open_color_wheel_window)
         color_wheel_button.pack(side="left", padx=5)
     
-        color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=12)
-        color_picker_button.pack(side="left", padx=5)
+        gradient_button = ttk.Button(button_frame_3, text="Gradient", style="Small.TButton", width=12, command=lambda: self.open_color_wheel_window(gradient=True))
+        gradient_button.pack(side="left", padx=5)
     
         section_frame.grid_columnconfigure(1, weight=1)
         section_frame.grid_columnconfigure(2, weight=1)
