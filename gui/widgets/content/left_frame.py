@@ -49,7 +49,7 @@ class LeftFrame(ttk.Frame):
         self.create_label_and_buttons(self.image_section_frame)
         
         # Create the remaining sections for the label and text areas
-        for i, label_text in enumerate(label_list[1:]):
+        for _, label_text in enumerate(label_list[1:]):
             section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
             section_frame.pack(fill="both", expand=True, padx=5, pady=5)
             section_frame.grid_propagate(False)  
@@ -92,7 +92,7 @@ class LeftFrame(ttk.Frame):
     
         # Label for first image
         label_text_1 = "Image 1" + (" ✓:" if image1_selected else " :")
-        label = ttk.Label(section_frame, text=label_text_1, font=LABEL_FONT, width=12, anchor="center")
+        label = ttk.Label(section_frame, text=label_text_1, font=LABEL_FONT, width=10, anchor="center")
         label.grid(row=0, column=0, padx=5, pady=5, sticky="ns")
     
         # Frame for the first set of buttons
@@ -113,7 +113,7 @@ class LeftFrame(ttk.Frame):
     
         # Label for second image
         label_text_2 = "Image 2" + (" ✓:" if image2_selected else " :")
-        second_image_label = ttk.Label(section_frame, text=label_text_2, font=LABEL_FONT, width=12, anchor="center")
+        second_image_label = ttk.Label(section_frame, text=label_text_2, font=LABEL_FONT, width=10, anchor="center")
         second_image_label.grid(row=1, column=0, padx=5, pady=5, sticky="ns")
     
         # Frame for the second set of buttons
@@ -159,11 +159,9 @@ class LeftFrame(ttk.Frame):
                 
                 # Update the data handler with the image object
                 self.data_handler.update_data(image_key, image)
-                print(f"Image updated in data handler with key {image_key}")
                 
                 # Refresh the GUI to reflect the selected image
                 self.create_label_and_buttons(self.image_section_frame)
-                self.data_handler.save('test_save.json')
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
 

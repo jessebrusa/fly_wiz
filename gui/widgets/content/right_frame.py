@@ -76,16 +76,18 @@ class RightFrame(ttk.Frame):
         try:
             image = self.data_handler.get_data().get('flyer')
             if image:
-                new_size = (650, 425) 
-                scaled_image = image.resize(new_size, Image.LANCZOS)
+                # Set the desired resolution for display with padding
+                desired_width = 600  # Adjusted width to fit within the section
+                desired_height = 400  # Adjusted height to fit within the section
+                scaled_image = image.resize((desired_width, desired_height), Image.LANCZOS)
                 
                 image_tk = ImageTk.PhotoImage(scaled_image)
                 self.image_label = ttk.Label(self.first_section, image=image_tk)
                 self.image_label.image = image_tk  
-                self.image_label.pack(expand=True)  
+                self.image_label.pack(expand=True, padx=10, pady=10)  # Add padding around the image
             else:
                 self.image_label = ttk.Label(self.first_section, text="No image found")
-                self.image_label.pack(expand=True)
+                self.image_label.pack(expand=True, padx=10, pady=10)  # Add padding around the label
         except Exception as e:
             print(f"An error occurred while creating the first section: {e}")
 
