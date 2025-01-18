@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image
 
-LABEL_FONT = ("Helvetica", 18)
+LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
 SMALL_BUTTON_FONT = ("Helvetica", 12) 
@@ -132,11 +132,27 @@ class LeftFrame(ttk.Frame):
                                      command=lambda: self.remove_image('image2'))
         remove_button_2.pack(side="left", padx=5)
     
+        # Label for background color
+        label_text_3 = "Background:"
+        background_label = ttk.Label(section_frame, text=label_text_3, font=LABEL_FONT, width=10, anchor="center")
+        background_label.grid(row=2, column=0, padx=5, pady=5, sticky="ns")
+    
+        # Frame for the background color buttons
+        button_frame_3 = ttk.Frame(section_frame)
+        button_frame_3.grid(row=2, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
+    
+        color_wheel_button = ttk.Button(button_frame_3, text="Color Wheel", style="Small.TButton", width=12)
+        color_wheel_button.pack(side="left", padx=5)
+    
+        color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=12)
+        color_picker_button.pack(side="left", padx=5)
+    
         section_frame.grid_columnconfigure(1, weight=1)
         section_frame.grid_columnconfigure(2, weight=1)
         section_frame.grid_columnconfigure(3, weight=1)
         section_frame.grid_rowconfigure(0, weight=1)
         section_frame.grid_rowconfigure(1, weight=1)
+        section_frame.grid_rowconfigure(2, weight=1)
 
     def remove_image(self, image_key):
         """
