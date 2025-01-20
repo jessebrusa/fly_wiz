@@ -40,8 +40,8 @@ class DataHandler:
             'image2': None,
             'bg_color': {
                 'color1': '#FFFFFF',
-                'color2': '#FFFFFF',
-                'direction': "Top Left to Bottom Right",
+                'color2': None,
+                'direction': None,
                 'gradient_state': 0
             },
             'flyer': None

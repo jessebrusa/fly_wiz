@@ -10,12 +10,13 @@ SMALL_BUTTON_FONT = ("Helvetica", 12)
 DROPDOWN_FONT = ("Helvetica", 10)  # Smaller font for dropdown menu
 
 class LeftFrame(ttk.Frame):
-    def __init__(self, parent, data_handler):
+    def __init__(self, parent, data_handler, main_app):
         """
-        Initialize the LeftFrame with parent widget and data handler.
+        Initialize the LeftFrame with parent widget, data handler, and main application instance.
         """
         super().__init__(parent, borderwidth=2, relief="solid")
         self.data_handler = data_handler
+        self.main_app = main_app  # Set the main_app attribute
         self.create_styles()
         self.create_sections()
 
@@ -206,8 +207,18 @@ class LeftFrame(ttk.Frame):
         # Print the applied gradient for debugging
         print(f"Applying gradient: color1={color1}, color2={color2}, direction={direction}, gradient_state={self.gradient_var.get()}")
     
+        # Retrieve the flyer manipulator instance and update the background color
+        flyer_manipulator = self.main_app.flyer_manipulator
+        if flyer_manipulator:
+            flyer_manipulator.change_made = True  # Set the change flag
+            flyer_manipulator.apply_background_color()  # Correct method call
+    
         # Close the color wheel window
         self.color_wheel_window.destroy()
+        self.data_handler.save('test_save.json')
+    
+        # Update the flyer
+        self.main_app.update_flyer()
 
     def create_label_and_buttons(self, section_frame):
         """
@@ -307,8 +318,17 @@ class LeftFrame(ttk.Frame):
                 # Update the data handler with the image object
                 self.data_handler.update_data(image_key, image)
                 
+                # Set the change_made flag to True in the FlyerManipulator instance
+                self.main_app.flyer_manipulator.change_made = True
+                
                 # Refresh the GUI to reflect the selected image
                 self.create_label_and_buttons(self.image_section_frame)
+                
+                # Save the updated data
+                self.data_handler.save('test_save.json')
+                
+                # Update the flyer
+                self.main_app.update_flyer()
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
 

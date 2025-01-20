@@ -59,10 +59,15 @@ class ContentSection(ttk.Frame):
         """
         Creates and places the left frame in the content section.
         """
-        self.left_frame = LeftFrame(self, self.data_handler)
+        self.left_frame = LeftFrame(self, self.data_handler, self.main_app)
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
     def create_right_frame(self):
+        """
+        Creates and places the right frame in the content section.
+        """
+        self.right_frame = RightFrame(self, self.data_handler, self.main_app)
+        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
         """
         Creates and places the right frame in the content section.
         """
