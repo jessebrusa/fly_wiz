@@ -26,6 +26,16 @@ class ImageHandler:
         """
         Remove the image from the data handler and refresh the GUI.
         """
+        try:
+            self.data_handler.update_data(image_key, None)
+            self.main_app.flyer_manipulator.change_made = True
+            self.main_app.update_flyer()
+            self.update_ui_callback()  # Call the callback to update the UI
+        except Exception as e:
+            print(f"An error occurred while removing the image: {e}")
+        """
+        Remove the image from the data handler and refresh the GUI.
+        """
         self.data_handler.update_data(image_key, None)
         self.main_app.update_flyer()
         self.update_ui_callback()  # Call the callback to update the UI
