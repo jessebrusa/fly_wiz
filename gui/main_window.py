@@ -37,7 +37,7 @@ class FlyWizGui(tk.Tk):
 
     def check_text(self):
         """
-        Gets the text from the title, styled text, info text, and footer sections.
+        Gets the text from the title, styled text, info text, and footer sections every 0.25 seconds.
         """
         try:
             left_frame = self.content_section.left_frame

@@ -51,6 +51,7 @@ class RightFrame(ttk.Frame):
         super().__init__(parent, borderwidth=2, relief="solid")
         self.data_handler = data_handler
         self.main_app = main_app
+        self.config(width=300)  # Set a fixed width for the right frame
         try:
             self.configure_main_frame_grid()
             self.create_first_section()
@@ -77,8 +78,8 @@ class RightFrame(ttk.Frame):
             image = self.data_handler.get_data().get('flyer')
             if image:
                 # Set the desired resolution for display with padding
-                desired_width = 600  # Adjusted width to fit within the section
-                desired_height = 400  # Adjusted height to fit within the section
+                desired_width = 650  # Adjusted width to fit within the section
+                desired_height = 425  # Adjusted height to fit within the section
                 scaled_image = image.resize((desired_width, desired_height), Image.LANCZOS)
                 
                 image_tk = ImageTk.PhotoImage(scaled_image)
@@ -124,26 +125,6 @@ class RightFrame(ttk.Frame):
 
         # Configure the grid to ensure labels expand to fill the space
         self.configure_grid(left_subsection, 3, 3)
-
-    def configure_grid(self, parent, rows, cols):
-        """
-        Configures the grid layout to ensure labels expand to fill the space.
-
-        Parameters
-        ----------
-        parent : widget
-            The parent widget.
-        rows : int
-            The number of rows in the grid.
-        cols : int
-            The number of columns in the grid.
-        """
-        for row in range(rows):
-            parent.grid_rowconfigure(row, weight=1)
-        for col in range(cols):
-            parent.grid_columnconfigure(col, weight=1)
-        parent.grid_rowconfigure(0, weight=1)
-        parent.grid_rowconfigure(rows, weight=1)
 
     def create_right_subsection(self, parent):
         """
@@ -201,3 +182,23 @@ class RightFrame(ttk.Frame):
             self.data_handler.load(file_path)
             print(f"Data loaded from {file_path}")
             self.main_app.update_gui()
+
+    def configure_grid(self, parent, rows, cols):
+        """
+        Configures the grid layout to ensure labels expand to fill the space.
+
+        Parameters
+        ----------
+        parent : widget
+            The parent widget.
+        rows : int
+            The number of rows in the grid.
+        cols : int
+            The number of columns in the grid.
+        """
+        for row in range(rows):
+            parent.grid_rowconfigure(row, weight=1)
+        for col in range(cols):
+            parent.grid_columnconfigure(col, weight=1)
+        parent.grid_rowconfigure(0, weight=1)
+        parent.grid_rowconfigure(rows, weight=1)
