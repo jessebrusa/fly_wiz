@@ -38,6 +38,12 @@ class DataHandler:
             'footer': '',
             'image1': None,
             'image2': None,
+            'bg_color': {
+                'color1': '#FFFFFF',
+                'color2': '#FFFFFF',
+                'direction': "Top Left to Bottom Right",
+                'gradient_state': 0
+            },
             'flyer': None
         }
 
