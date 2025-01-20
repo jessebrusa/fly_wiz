@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import ttk
 from gui.widgets.left_frame.image_handler import ImageHandler
 from gui.widgets.left_frame.background_handler import BackgroundHandler
@@ -10,7 +9,7 @@ LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
 BUTTON_FONT = ("Helvetica", 20)
 SMALL_BUTTON_FONT = ("Helvetica", 12)
-DROPDOWN_FONT = ("Helvetica", 10)  # Smaller font for dropdown menu
+DROPDOWN_FONT = ("Helvetica", 10)  
 
 class LeftFrame(ttk.Frame):
     def __init__(self, parent, data_handler, main_app):
@@ -20,7 +19,7 @@ class LeftFrame(ttk.Frame):
         super().__init__(parent, borderwidth=2, relief="solid")
         self.data_handler = data_handler
         self.main_app = main_app  # Set the main_app attribute
-        self.image_handler = ImageHandler(data_handler, main_app)
+        self.image_handler = ImageHandler(data_handler, main_app, self.update_ui)
         self.background_handler = BackgroundHandler(data_handler, main_app)
         self.color_wheel_handler = ColorWheelHandler(self, data_handler, main_app)
         self.search_handler = SearchHandler(self, data_handler)
@@ -88,3 +87,9 @@ class LeftFrame(ttk.Frame):
         Open a window with one or two squares for color selection.
         """
         self.color_wheel_handler.open_color_wheel_window(gradient)
+
+    def update_ui(self):
+        """
+        Update the UI by recreating the label and buttons.
+        """
+        create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
