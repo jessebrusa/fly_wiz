@@ -65,7 +65,12 @@ class FlyerManipulator:
         """
         Apply the background color from the data handler to the flyer image.
         """
-        self.image = self.background_applier.apply_background_color(self.image)
+        extracted_colors = self.data_handler.get_data().get('extracted_colors', {})
+        color1 = extracted_colors.get('color1', (255, 255, 255))
+        color2 = extracted_colors.get('color2', (255, 255, 255))
+        gradient_state = 1 if color2 else 0
+
+        self.image = self.background_applier.apply_background_color(self.image, color1, color2, gradient_state)
         self.update_data_handler()
 
     def place_images_on_flyer(self):

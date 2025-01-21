@@ -28,14 +28,14 @@ class ImageHandler:
         """
         try:
             self.data_handler.update_data(image_key, None)
+            
+            # Remove the combined image if either image1 or image2 is removed
+            if image_key in ['image1', 'image2']:
+                self.data_handler.update_data('combined_image', None)
+            
             self.main_app.flyer_manipulator.change_made = True
             self.main_app.update_flyer()
             self.update_ui_callback()  # Call the callback to update the UI
+
         except Exception as e:
             print(f"An error occurred while removing the image: {e}")
-        """
-        Remove the image from the data handler and refresh the GUI.
-        """
-        self.data_handler.update_data(image_key, None)
-        self.main_app.update_flyer()
-        self.update_ui_callback()  # Call the callback to update the UI

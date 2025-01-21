@@ -49,6 +49,9 @@ class ImagePlacer:
                 combined_image.paste(image1, (0, image1_y_offset), image1)
                 combined_image.paste(image2, (image1.width, image2_y_offset), image2)
     
+                # Store the combined image in the data handler
+                self.data_handler.update_data('combined_image', combined_image)
+    
                 # Place the combined image in the center of the flyer
                 x_offset = (1100 - combined_image.width) // 2
                 y_offset = (850 - combined_image.height) // 2

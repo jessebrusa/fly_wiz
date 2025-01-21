@@ -4,32 +4,16 @@ class BackgroundApplier:
     def __init__(self, data_handler):
         self.data_handler = data_handler
 
-    def apply_background_color(self, image):
+    def apply_background_color(self, image, color1, color2=None, gradient_state=0):
         """
-        Apply the background color from the data handler to the flyer image.
+        Apply the background color to the flyer image.
         """
         try:
-            bg_color = self.data_handler.get_data().get('bg_color', {})
-            color1 = bg_color.get('color1', '#FFFFFF')
-            color2 = bg_color.get('color2', None)
-            direction = bg_color.get('direction', None)
-            gradient_state = bg_color.get('gradient_state', 0)
-
-            # Ensure color1 is in the correct format
-            if isinstance(color1, str) and color1.startswith('#'):
-                color1 = tuple(int(color1[i:i+2], 16) for i in (1, 3, 5))
-
-            print(f"Color1: {color1}, Color2: {color2}, Direction: {direction}, Gradient State: {gradient_state}")
-
-            # Create a new base image with the updated background color
             width, height = image.size
             if gradient_state == 1 and color2:
-                # Ensure color2 is in the correct format
-                if isinstance(color2, str) and color2.startswith('#'):
-                    color2 = tuple(int(color2[i:i+2], 16) for i in (1, 3, 5))
                 image = Image.new('RGBA', (width, height))
                 # Apply gradient background
-                self.apply_gradient_background(image, color1, color2, direction)
+                self.apply_gradient_background(image, color1, color2)
             else:
                 image = Image.new('RGBA', (width, height), color=color1 + (255,))
 
@@ -39,7 +23,7 @@ class BackgroundApplier:
             print(f"An error occurred while applying the background color: {e}")
             return image
 
-    def apply_gradient_background(self, image, color1, color2, direction):
+    def apply_gradient_background(self, image, color1, color2):
         """
         Apply a gradient background to the flyer image.
         """
@@ -49,41 +33,12 @@ class BackgroundApplier:
         mask = Image.new('L', (width, height))
         mask_data = []
 
-        if direction == "Top Left to Bottom Right":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * (x + y) / (width + height)))
-        elif direction == "Top Right to Bottom Left":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * (width - x + y) / (width + height)))
-        elif direction == "Bottom Left to Top Right":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * (x + height - y) / (width + height)))
-        elif direction == "Bottom Right to Top Left":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * (width - x + height - y) / (width + height)))
-        elif direction == "Top to Bottom":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * y / height))
-        elif direction == "Bottom to Top":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * (height - y) / height))
-        elif direction == "Left to Right":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * x / width))
-        elif direction == "Right to Left":
-            for y in range(height):
-                for x in range(width):
-                    mask_data.append(int(255 * (width - x) / width))
+        for y in range(height):
+            for x in range(width):
+                mask_data.append(int(255 * y / height))
 
         mask.putdata(mask_data)
         gradient_image = Image.composite(base, top, mask)
         image.paste(gradient_image, (0, 0), gradient_image)
-        print(f"Applied gradient background: color1={color1}, color2={color2}, direction={direction}")
+        print(f"Applied gradient background: color1={color1}, color2={color2}")
         return image

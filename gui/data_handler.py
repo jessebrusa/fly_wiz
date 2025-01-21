@@ -38,13 +38,20 @@ class DataHandler:
             'footer': '',
             'image1': None,
             'image2': None,
+            'combined_image': None,
             'bg_color': {
                 'color1': '#FFFFFF',
                 'color2': None,
                 'direction': None,
                 'gradient_state': 0
             },
-            'flyer': None
+            'flyer': None,
+            'extracted_colors': {
+                'color1': (255, 255, 255),
+                'color2': (255, 255, 255),
+                'lightest_color': (255, 255, 255),
+                'darkest_color': (0, 0, 0)
+            }
         }
 
     def update_data(self, key, value):
@@ -120,7 +127,7 @@ class DataHandler:
         data_to_save = self.data.copy()
 
         # Convert images to base64 if they are not None
-        for key in ['image1', 'image2', 'flyer']:
+        for key in ['image1', 'image2', 'flyer', 'combined_image']:
             if isinstance(data_to_save[key], Image.Image):
                 data_to_save[key] = self.image_to_base64(data_to_save[key])
 
@@ -140,7 +147,7 @@ class DataHandler:
             loaded_data = json.load(json_file)
 
         # Convert base64 strings to images if they are not None
-        for key in ['image1', 'image2', 'flyer']:
+        for key in ['image1', 'image2', 'flyer', 'combined_image']:
             if isinstance(loaded_data.get(key), str):
                 loaded_data[key] = self.base64_to_image(loaded_data[key])
 
