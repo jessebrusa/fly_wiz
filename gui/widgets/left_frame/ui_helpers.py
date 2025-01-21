@@ -38,8 +38,8 @@ def create_label_and_buttons(parent, image_handler, open_color_wheel_window, ope
     color_wheel_button = ttk.Button(button_frame_3, text="Color Wheel", style="Small.TButton", width=12, command=open_color_wheel_window)
     color_wheel_button.pack(side="left", padx=5)
 
-    color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=12, command=lambda: open_color_wheel_window(color_picker=True))
-    color_picker_button.pack(side="left", padx=5)
+    gradient_button = ttk.Button(button_frame_3, text="Gradient", style="Small.TButton", width=12, command=lambda: open_color_wheel_window(gradient=True))
+    gradient_button.pack(side="left", padx=5)
 
     # Check if images are selected
     image1_selected = image_handler.data_handler.get_data().get('image1') is not None
