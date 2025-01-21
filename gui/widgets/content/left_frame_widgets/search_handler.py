@@ -62,7 +62,7 @@ class SearchHandler:
         """
         self.data_handler.update_data(image_key, img)
         self.data_handler.save('test_save.json')
-        self.flyer_manipulator.place_images_on_flyer()
+        self.flyer_manipulator.update_flyer()
         self.flyer_manipulator.main_app.update_gui()
         results_window.destroy()
 
