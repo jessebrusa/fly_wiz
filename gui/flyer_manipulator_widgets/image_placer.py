@@ -11,8 +11,10 @@ class ImagePlacer:
         try:
             image1 = self.data_handler.get_data().get('image1')
             image2 = self.data_handler.get_data().get('image2')
-    
-            max_width, max_height = int(1100 * 0.7), int(850 * 0.7)  
+
+            max_width_scale_factor = .85
+            max_height_scale_factor = .5
+            max_width, max_height = int(1100 * max_width_scale_factor), int(850 * max_height_scale_factor)  
     
             if image1 and image2:
                 # Resize both images to fit within the maximum allowed dimensions
