@@ -45,9 +45,9 @@ class DataHandler:
                 'direction': None,
                 'gradient_state': 0
             },
-            'flyer': None,
             'lightest_color': (255, 255, 255),
-            'darkest_color': (0, 0, 0)
+            'darkest_color': (0, 0, 0),
+            'flyer': None
         }
 
     def update_data(self, key, value):

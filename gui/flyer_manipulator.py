@@ -39,9 +39,7 @@ class FlyerManipulator:
         """
         self.image = None
         self.data_handler = data_handler
-        self.main_app = main_app  # Store the main_app instance
-        self.background_color = (255, 255, 255)  # White
-        self.change_made = False  # Flag to track changes
+        self.main_app = main_app  
         self.base_image_creator = BaseImageCreator()
         self.background_applier = BackgroundApplier(data_handler)
         self.image_placer = ImagePlacer(data_handler)
@@ -79,7 +77,6 @@ class FlyerManipulator:
         """
         self.image = self.image_placer.place_images_on_flyer(self.image)
         self.update_data_handler()
-        self.change_made = True  # Set the change flag
 
     def update_flyer(self):
         """

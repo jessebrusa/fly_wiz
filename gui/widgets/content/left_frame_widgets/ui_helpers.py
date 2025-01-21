@@ -37,10 +37,10 @@ def create_label_and_buttons(parent, image_handler, open_color_wheel_window, ope
     button_frame_3.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
 
     color_picker_handler = ColorPickerHandler(image_handler.data_handler, image_handler.main_app.flyer_manipulator)
-    color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=12, command=color_picker_handler.extract_colors)
+    color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=14, command=color_picker_handler.extract_colors)
     color_picker_button.pack(side="left", padx=5)
 
-    color_wheel_button = ttk.Button(button_frame_3, text="Color Wheel", style="Small.TButton", width=12, command=open_color_wheel_window)
+    color_wheel_button = ttk.Button(button_frame_3, text="Color / Direction", style="Small.TButton", width=14, command=open_color_wheel_window)
     color_wheel_button.pack(side="left", padx=5)
 
     # Check if images are selected
