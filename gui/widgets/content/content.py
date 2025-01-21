@@ -1,5 +1,5 @@
 from tkinter import ttk
-from gui.widgets.content.left_frame import LeftFrame
+from gui.widgets.content.left_frame_widgets import LeftFrame
 from gui.widgets.content.right_frame import RightFrame
 
 class ContentSection(ttk.Frame):

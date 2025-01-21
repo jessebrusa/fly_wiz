@@ -1,9 +1,9 @@
 from tkinter import ttk
-from gui.widgets.left_frame.image_handler import ImageHandler
-from gui.widgets.left_frame.background_handler import BackgroundHandler
-from gui.widgets.left_frame.color_wheel_handler import ColorWheelHandler
-from gui.widgets.left_frame.search_handler import SearchHandler
-from gui.widgets.left_frame.ui_helpers import create_label_and_text_area, create_label_and_buttons
+from gui.widgets.content.left_frame_widgets.image_handler import ImageHandler
+from gui.widgets.content.left_frame_widgets.background_handler import BackgroundHandler
+from gui.widgets.content.left_frame_widgets.color_wheel_handler import ColorWheelHandler
+from gui.widgets.content.left_frame_widgets.search_handler import SearchHandler
+from gui.widgets.content.left_frame_widgets.ui_helpers import create_label_and_text_area, create_label_and_buttons
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
