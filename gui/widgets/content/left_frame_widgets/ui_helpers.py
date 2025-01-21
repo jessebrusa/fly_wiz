@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from .color_picker_handler import ColorPickerHandler
+from .search_handler import SearchHandler
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)

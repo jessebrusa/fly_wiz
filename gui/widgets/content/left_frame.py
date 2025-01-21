@@ -22,7 +22,7 @@ class LeftFrame(ttk.Frame):
         self.image_handler = ImageHandler(data_handler, main_app, self.update_ui)
         self.background_handler = BackgroundHandler(data_handler, main_app)
         self.color_wheel_handler = ColorWheelHandler(self, data_handler, main_app)
-        self.search_handler = SearchHandler(self, data_handler)
+        self.search_handler = SearchHandler(data_handler, main_app.flyer_manipulator)  # Correct initialization
         self.create_styles()
         self.create_sections()
 
