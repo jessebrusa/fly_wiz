@@ -127,7 +127,20 @@ class ColorPickerHandler:
         while len(unique_median_colors) < 2:
             unique_median_colors.append((128, 128, 128))
         
+        # Ensure color1 and color2 are distinct
+        if len(unique_median_colors) >= 2 and self.color_distance(unique_median_colors[0], unique_median_colors[1]) < 30:
+            for color in sorted_colors:
+                if self.color_distance(unique_median_colors[0], color) >= 30:
+                    unique_median_colors[1] = color
+                    break
+        
         return unique_median_colors
+
+    def color_distance(self, c1, c2):
+        """
+        Calculate the Euclidean distance between two colors.
+        """
+        return sum((a - b) ** 2 for a, b in zip(c1, c2)) ** 0.5
 
     def analyze_image_colors(self, image):
         """
