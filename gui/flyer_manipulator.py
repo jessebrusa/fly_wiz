@@ -12,6 +12,8 @@ class FlyerManipulator:
         The Pillow image to be manipulated.
     data_handler : DataHandler
         The data handler instance to update data.
+    main_app : FlyWizGui
+        The main application instance.
 
     Methods
     -------
@@ -24,7 +26,7 @@ class FlyerManipulator:
     update_flyer():
         Updates the flyer by placing images on it.
     """
-    def __init__(self, data_handler):
+    def __init__(self, data_handler, main_app):
         """
         Initializes the FlyerManipulator and creates the base blank image.
 
@@ -32,9 +34,12 @@ class FlyerManipulator:
         ----------
         data_handler : DataHandler
             The data handler instance to update data.
+        main_app : FlyWizGui
+            The main application instance.
         """
         self.image = None
         self.data_handler = data_handler
+        self.main_app = main_app  # Store the main_app instance
         self.background_color = (255, 255, 255)  # White
         self.change_made = False  # Flag to track changes
         self.base_image_creator = BaseImageCreator()
@@ -65,18 +70,7 @@ class FlyerManipulator:
         """
         Apply the background color from the data handler to the flyer image.
         """
-        bg_color = self.data_handler.get_data().get('bg_color', {})
-        color1 = bg_color.get('color1', '#FFFFFF')
-        color2 = bg_color.get('color2', None)
-        gradient_state = bg_color.get('gradient_state', 0)
-
-        # Ensure colors are in the correct format
-        if isinstance(color1, str) and color1.startswith('#'):
-            color1 = tuple(int(color1[i:i+2], 16) for i in (1, 3, 5))
-        if color2 and isinstance(color2, str) and color2.startswith('#'):
-            color2 = tuple(int(color2[i:i+2], 16) for i in (1, 3, 5))
-
-        self.image = self.background_applier.apply_background_color(self.image, color1, color2, gradient_state)
+        self.image = self.background_applier.apply_background_color(self.image)
         self.update_data_handler()
 
     def place_images_on_flyer(self):
@@ -93,13 +87,4 @@ class FlyerManipulator:
         """
         self.apply_background_color()
         self.place_images_on_flyer()
-        """
-        Updates the flyer by placing images on it.
-        """
-        self.apply_background_color()
-        self.place_images_on_flyer()
-        """
-        Updates the flyer by placing images on it.
-        """
-        self.apply_background_color()
-        self.place_images_on_flyer()
+        self.image.save('flyer.png')

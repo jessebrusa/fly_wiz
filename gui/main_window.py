@@ -20,7 +20,7 @@ class FlyWizGui(tk.Tk):
         self.option_add("*Font", default_font)
 
         self.data_handler = DataHandler()
-        self.flyer_manipulator = FlyerManipulator(self.data_handler)
+        self.flyer_manipulator = FlyerManipulator(self.data_handler, self)  # Pass the main_app instance
 
         container = ttk.Frame(self)
         container.pack(fill="both", expand=True)

@@ -8,6 +8,10 @@ class ImagePlacer:
         """
         Places images from data_handler on the flyer image.
         """
+        if flyer_image is None:
+            print("No flyer image provided to place images on.")
+            return None
+
         try:
             image1 = self.data_handler.get_data().get('image1')
             image2 = self.data_handler.get_data().get('image2')

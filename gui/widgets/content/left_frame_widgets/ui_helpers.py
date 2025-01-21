@@ -36,7 +36,7 @@ def create_label_and_buttons(parent, image_handler, open_color_wheel_window, ope
     button_frame_3 = ttk.Frame(parent)
     button_frame_3.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
 
-    color_picker_handler = ColorPickerHandler(image_handler.data_handler)
+    color_picker_handler = ColorPickerHandler(image_handler.data_handler, image_handler.main_app.flyer_manipulator)
     color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=12, command=color_picker_handler.extract_colors)
     color_picker_button.pack(side="left", padx=5)
 

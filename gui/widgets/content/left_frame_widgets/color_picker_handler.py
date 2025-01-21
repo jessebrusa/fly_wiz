@@ -3,26 +3,24 @@ from collections import Counter
 import colorsys
 
 class ColorPickerHandler:
-    def __init__(self, data_handler):
+    def __init__(self, data_handler, flyer_manipulator):
         self.data_handler = data_handler
+        self.flyer_manipulator = flyer_manipulator
 
     def extract_colors(self):
         """
         Extract the two most represented colors and the darkest and lightest colors from the image(s).
         Store these colors in the data handler.
         """
+        combined_image = self.data_handler.get_data().get('combined_image')
         image1 = self.data_handler.get_data().get('image1')
         image2 = self.data_handler.get_data().get('image2')
 
-        if image1 and image2:
-            # Combine the images and extract colors
-            combined_image = self.combine_images(image1, image2)
+        if combined_image:
             self.extract_colors_from_image(combined_image)
         elif image1:
-            # Extract colors from image1
             self.extract_colors_from_image(image1)
         elif image2:
-            # Extract colors from image2
             self.extract_colors_from_image(image2)
         else:
             # No images provided, set default colors
@@ -33,22 +31,19 @@ class ColorPickerHandler:
                 'darkest_color': (0, 0, 0)
             })
 
-    def combine_images(self, image1, image2):
-        """
-        Combine two images side by side.
-        """
-        max_width, max_height = int(1100 * 0.7), int(850 * 0.7)
-        image1.thumbnail((max_width, max_height), Image.LANCZOS)
-        image2.thumbnail((max_width, max_height), Image.LANCZOS)
+        # Print the extracted colors
+        extracted_colors = self.data_handler.get_data().get('extracted_colors')
+        print("Extracted colors:", extracted_colors)
 
-        combined_width = image1.width + image2.width
-        combined_height = max(image1.height, image2.height)
+        # Call the flyer manipulator to apply the background color
+        self.flyer_manipulator.apply_background_color()
+        print("Applied background color")
 
-        combined_image = Image.new('RGBA', (combined_width, combined_height), (255, 255, 255, 0))
-        combined_image.paste(image1, (0, (combined_height - image1.height) // 2), image1)
-        combined_image.paste(image2, (image1.width, (combined_height - image2.height) // 2), image2)
+        # Update the flyer
+        self.flyer_manipulator.main_app.update_flyer()
 
-        return combined_image
+        # Update the GUI
+        self.flyer_manipulator.main_app.update_gui()
 
     def extract_colors_from_image(self, image):
         """
