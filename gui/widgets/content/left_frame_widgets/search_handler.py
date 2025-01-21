@@ -1,6 +1,4 @@
-from tkinter import ttk
-from tkinter import filedialog
-from ..img.image_label import ImageLabel
+
 from PIL import Image, ImageTk
 import tkinter as tk
 from io import BytesIO
@@ -9,9 +7,10 @@ from bs4 import BeautifulSoup
 from tkinter import simpledialog
 
 class SearchHandler:
-    def __init__(self, data_handler, flyer_manipulator):
+    def __init__(self, data_handler, flyer_manipulator, update_ui_callback):
         self.data_handler = data_handler
         self.flyer_manipulator = flyer_manipulator
+        self.update_ui_callback = update_ui_callback
 
     def google_img_search(self, query):
         """
@@ -64,6 +63,7 @@ class SearchHandler:
         self.data_handler.save('test_save.json')
         self.flyer_manipulator.update_flyer()
         self.flyer_manipulator.main_app.update_gui()
+        self.update_ui_callback()  # Call the callback to update the UI
         results_window.destroy()
 
     def open_search_window(self, image_key):
