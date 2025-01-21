@@ -14,27 +14,26 @@ class BackgroundApplier:
 
         try:
             # Retrieve the colors from the data handler
-            extracted_colors = self.data_handler.get_data().get('extracted_colors', {})
-            color1 = extracted_colors.get('color1', None)
-            color2 = extracted_colors.get('color2', None)
+            bg_color = self.data_handler.get_data().get('bg_color', {})
+            color1 = bg_color.get('color1', '#FFFFFF')
+            color2 = bg_color.get('color2', None)
+            gradient_state = bg_color.get('gradient_state', 0)
+            direction = bg_color.get('direction', 'Top to Bottom')
 
-            # If both colors are None, return without applying any background
-            if color1 is None and color2 is None:
-                print("No background color applied: both color1 and color2 are None")
-                return image
+            # Ensure colors are in the correct format
+            if isinstance(color1, str) and color1.startswith('#'):
+                color1 = tuple(int(color1[i:i+2], 16) for i in (1, 3, 5))
+            if color2 and isinstance(color2, str) and color2.startswith('#'):
+                color2 = tuple(int(color2[i:i+2], 16) for i in (1, 3, 5))
 
             width, height = image.size
-
-            # If both colors are present, apply a gradient background
-            if color1 and color2:
+            if gradient_state == 1 and color2:
                 image = Image.new('RGBA', (width, height))
-                self.apply_gradient_background(image, color1, color2)
-                print(f"Applied gradient background: color1={color1}, color2={color2}")
+                self.apply_gradient_background(image, color1, color2, direction)
+                print(f"Applied gradient background: color1={color1}, color2={color2}, direction={direction}")
             else:
-                # Apply a solid background with the available color
-                solid_color = color1 if color1 else color2
-                image = Image.new('RGBA', (width, height), color=solid_color + (255,))
-                print(f"Applied solid background color: {solid_color}")
+                image = Image.new('RGBA', (width, height), color=color1 + (255,))
+                print(f"Applied solid background color: {color1}")
 
             self.data_handler.update_data('flyer', image)
             return image
@@ -42,7 +41,7 @@ class BackgroundApplier:
             print(f"An error occurred while applying the background color: {e}")
             return image
 
-    def apply_gradient_background(self, image, color1, color2):
+    def apply_gradient_background(self, image, color1, color2, direction):
         """
         Apply a gradient background to the flyer image.
         """
@@ -52,9 +51,38 @@ class BackgroundApplier:
         mask = Image.new('L', (width, height))
         mask_data = []
 
-        for y in range(height):
-            for x in range(width):
-                mask_data.append(int(255 * y / height))
+        if direction == "Top Left to Bottom Right":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * (x + y) / (width + height)))
+        elif direction == "Top Right to Bottom Left":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * (width - x + y) / (width + height)))
+        elif direction == "Bottom Left to Top Right":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * (x + height - y) / (width + height)))
+        elif direction == "Bottom Right to Top Left":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * (width - x + height - y) / (width + height)))
+        elif direction == "Top to Bottom":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * y / height))
+        elif direction == "Bottom to Top":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * (height - y) / height))
+        elif direction == "Left to Right":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * x / width))
+        elif direction == "Right to Left":
+            for y in range(height):
+                for x in range(width):
+                    mask_data.append(int(255 * (width - x) / width))
 
         mask.putdata(mask_data)
         gradient_image = Image.composite(base, top, mask)

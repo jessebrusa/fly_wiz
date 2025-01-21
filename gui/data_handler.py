@@ -46,12 +46,8 @@ class DataHandler:
                 'gradient_state': 0
             },
             'flyer': None,
-            'extracted_colors': {
-                'color1': (255, 255, 255),
-                'color2': (255, 255, 255),
-                'lightest_color': (255, 255, 255),
-                'darkest_color': (0, 0, 0)
-            }
+            'lightest_color': (255, 255, 255),
+            'darkest_color': (0, 0, 0)
         }
 
     def update_data(self, key, value):

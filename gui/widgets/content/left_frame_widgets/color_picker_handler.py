@@ -24,16 +24,20 @@ class ColorPickerHandler:
             self.extract_colors_from_image(image2)
         else:
             # No images provided, set default colors
-            self.data_handler.update_data('extracted_colors', {
+            self.data_handler.update_data('bg_color', {
                 'color1': (255, 255, 255),
                 'color2': (255, 255, 255),
-                'lightest_color': (255, 255, 255),
-                'darkest_color': (0, 0, 0)
+                'direction': 'Top to Bottom',
+                'gradient_state': 1
             })
+            self.data_handler.update_data('lightest_color', (255, 255, 255))
+            self.data_handler.update_data('darkest_color', (0, 0, 0))
 
         # Print the extracted colors
-        extracted_colors = self.data_handler.get_data().get('extracted_colors')
-        print("Extracted colors:", extracted_colors)
+        bg_color = self.data_handler.get_data().get('bg_color')
+        lightest_color = self.data_handler.get_data().get('lightest_color')
+        darkest_color = self.data_handler.get_data().get('darkest_color')
+        print("Extracted colors:", bg_color, lightest_color, darkest_color)
 
         # Call the flyer manipulator to apply the background color
         self.flyer_manipulator.apply_background_color()
@@ -54,12 +58,14 @@ class ColorPickerHandler:
         color1, color2 = median_colors
         lightest_color, darkest_color = lightest_and_darkest_colors
 
-        self.data_handler.update_data('extracted_colors', {
+        self.data_handler.update_data('bg_color', {
             'color1': color1,
             'color2': color2,
-            'lightest_color': lightest_color,
-            'darkest_color': darkest_color
+            'direction': 'Top to Bottom',
+            'gradient_state': 1
         })
+        self.data_handler.update_data('lightest_color', lightest_color)
+        self.data_handler.update_data('darkest_color', darkest_color)
 
     def filter_and_sort_colors(self, most_common_colors):
         """
