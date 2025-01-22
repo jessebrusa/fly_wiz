@@ -99,8 +99,9 @@ class RightFrame(ttk.Frame):
             for col in range(3):
                 layout_name = layout_names[row * 3 + col]
                 image_path = image_paths[row * 3 + col]
+                
                 image_label = ImageLabel(left_subsection, image_path, 110, 1, lambda event, name=layout_name: self.change_layout(name))
-                image_label.grid(row=row+1, column=col, sticky="nsew")
+                image_label.grid(row=row+1, column=col, sticky="nsew", padx=5, pady=5)
 
         # Configure the grid to ensure labels expand to fill the space
         self.configure_grid(left_subsection, 3, 3)
