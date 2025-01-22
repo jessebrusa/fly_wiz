@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
-from .layout_interface import LayoutInterface
 
-class BaseLayout(LayoutInterface):
+class BaseLayout:
     def __init__(self, flyer_image, data_handler):
         self.flyer_image = flyer_image
         self.data_handler = data_handler
@@ -22,8 +21,6 @@ class BaseLayout(LayoutInterface):
         """
         image1 = self.data_handler.get_data().get('image1')
         image2 = self.data_handler.get_data().get('image2')
-
-        print(f"place_images: image1={image1}, image2={image2}")
 
         if image1 and image2:
             combined_image = self.combine_images(image1, image2)

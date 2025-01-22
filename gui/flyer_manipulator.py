@@ -94,7 +94,6 @@ class FlyerManipulator:
         """
         self.apply_background_color()
         self.apply_layout()
-        self.image.save('flyer.png')
 
     def set_layout(self, layout_name):
         """
