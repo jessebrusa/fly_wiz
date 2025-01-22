@@ -1,9 +1,10 @@
 from tkinter import ttk
+import tkinter as tk
 from gui.widgets.content.left_frame_widgets.image_handler import ImageHandler
 from gui.widgets.content.left_frame_widgets.background_handler import BackgroundHandler
 from gui.widgets.content.left_frame_widgets.color_wheel_handler import ColorWheelHandler
 from gui.widgets.content.left_frame_widgets.search_handler import SearchHandler
-from gui.widgets.content.left_frame_widgets.ui_helpers import create_label_and_text_area, create_label_and_buttons
+from gui.widgets.content.left_frame_widgets.ui_helpers import UIHelpers
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
@@ -23,6 +24,7 @@ class LeftFrame(ttk.Frame):
         self.background_handler = BackgroundHandler(data_handler, main_app)
         self.color_wheel_handler = ColorWheelHandler(self, data_handler, main_app)
         self.search_handler = SearchHandler(data_handler, main_app.flyer_manipulator, self.update_ui)  # Correct initialization
+        self.ui_helpers = UIHelpers()  # Initialize UIHelpers
         self.create_styles()
         self.create_sections()
 
@@ -48,7 +50,7 @@ class LeftFrame(ttk.Frame):
             section_frame.grid_propagate(False)  
             section_frame.grid_rowconfigure(0, weight=1)  
             
-            text_area = create_label_and_text_area(section_frame, label_text)
+            text_area = self.ui_helpers.create_label_and_text_area(section_frame, label_text)
             if label_text == 'Title':
                 self.title_text_area = text_area
             elif label_text == 'Styled\nInfo':
@@ -63,7 +65,7 @@ class LeftFrame(ttk.Frame):
         self.image_section_frame.pack(fill="both", expand=True, padx=5, pady=5)
         self.image_section_frame.grid_propagate(False)  
         self.image_section_frame.grid_rowconfigure(0, weight=1)
-        create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
+        self.ui_helpers.create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
         
         # Create the remaining sections for the label and text areas
         for _, label_text in enumerate(label_list[1:]):
@@ -72,7 +74,7 @@ class LeftFrame(ttk.Frame):
             section_frame.grid_propagate(False)  
             section_frame.grid_rowconfigure(0, weight=1)  
             
-            text_area = create_label_and_text_area(section_frame, label_text)
+            text_area = self.ui_helpers.create_label_and_text_area(section_frame, label_text)
             if label_text == 'Title':
                 self.title_text_area = text_area
             elif label_text == 'Styled\nInfo':
@@ -92,4 +94,19 @@ class LeftFrame(ttk.Frame):
         """
         Update the UI by recreating the label and buttons.
         """
-        create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
+        self.ui_helpers.create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
+        self.update_text_areas()
+
+    def update_text_areas(self):
+        """
+        Update the text areas with the current data from the data handler.
+        """
+        data = self.data_handler.get_data()
+        self.title_text_area.delete("1.0", tk.END)
+        self.title_text_area.insert(tk.END, data.get("title", ""))
+        self.styled_info_text_area.delete("1.0", tk.END)
+        self.styled_info_text_area.insert(tk.END, data.get("styled_info", ""))
+        self.text_info_text_area.delete("1.0", tk.END)
+        self.text_info_text_area.insert(tk.END, data.get("text_info", ""))
+        self.footer_text_area.delete("1.0", tk.END)
+        self.footer_text_area.insert(tk.END, data.get("footer", ""))
