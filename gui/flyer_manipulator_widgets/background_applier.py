@@ -9,7 +9,6 @@ class BackgroundApplier:
         Apply the background color to the flyer image.
         """
         if image is None:
-            print("No image provided to apply background color.")
             return None
 
         try:
@@ -30,15 +29,12 @@ class BackgroundApplier:
             if gradient_state == 1 and color2:
                 image = Image.new('RGBA', (width, height))
                 self.apply_gradient_background(image, color1, color2, direction)
-                print(f"Applied gradient background: color1={color1}, color2={color2}, direction={direction}")
             else:
                 image = Image.new('RGBA', (width, height), color=color1 + (255,))
-                print(f"Applied solid background color: {color1}")
 
             self.data_handler.update_data('flyer', image)
             return image
         except Exception as e:
-            print(f"An error occurred while applying the background color: {e}")
             return image
 
     def apply_gradient_background(self, image, color1, color2, direction):

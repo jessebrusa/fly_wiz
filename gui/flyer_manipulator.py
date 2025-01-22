@@ -1,6 +1,7 @@
 from gui.flyer_manipulator_widgets.base_image_creator import BaseImageCreator
 from gui.flyer_manipulator_widgets.background_applier import BackgroundApplier
-from gui.flyer_manipulator_widgets.layouts.standard import Standard
+from gui.flyer_manipulator_widgets.layouts import standard, flyer, halfsheet, info, \
+    landscape_movie, large_picture, portrait_movie
 
 class FlyerManipulator:
     """
@@ -82,8 +83,22 @@ class FlyerManipulator:
         Applies the current layout to the flyer image.
         """
         if self.current_layout == 'standard':
-            layout = Standard(self.image, self.data_handler)
-        # Add other layouts as needed
+            layout = standard.Standard(self.image, self.data_handler)
+        elif self.current_layout == 'flyer':
+            layout = flyer.Flyer(self.image, self.data_handler)
+        elif self.current_layout == 'halfsheet':
+            layout = halfsheet.HalfSheet(self.image, self.data_handler)
+        elif self.current_layout == 'info':
+            layout = info.Info(self.image, self.data_handler)
+        elif self.current_layout == 'landscape_movie':
+            layout = landscape_movie.LandscapeMovie(self.image, self.data_handler)
+        elif self.current_layout == 'large_picture':
+            layout = large_picture.LargePicture(self.image, self.data_handler)
+        elif self.current_layout == 'portrait_movie':
+            layout = portrait_movie.PortraitMovie(self.image, self.data_handler)
+        else:
+            raise ValueError(f"Unknown layout: {self.current_layout}")
+        
         self.image = layout.apply_layout()
         self.update_data_handler()
 
@@ -103,6 +118,6 @@ class FlyerManipulator:
         layout_name : str
             The name of the layout to be applied.
         """
-        self.current_layout = layout_name
         print(f"Setting layout to: {layout_name}")
+        self.current_layout = layout_name
         self.update_flyer()

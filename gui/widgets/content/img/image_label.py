@@ -1,33 +1,10 @@
-import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 
-class ImageLabel(tk.Label):
-    """
-    A class to represent a label with an image that can be scaled.
-
-    Attributes
-    ----------
-    parent : widget
-        The parent widget.
-    image_path : str
-        The path to the image file.
-    width : int
-        The desired width of the image.
-    scale_factor : float
-        The factor by which to scale the image.
-
-    Methods
-    -------
-    load_and_scale_image():
-        Loads and scales the image.
-    on_click(event):
-        Handles the click event to scale down the image.
-    on_release(event):
-        Handles the release event to return the image to its original size.
-    """
-    def __init__(self, parent, image_path, width, scale_factor):
+class ImageLabel(ttk.Label):
+    def __init__(self, parent, image_path, width, scale_factor, on_click):
         """
-        Initializes the ImageLabel with the parent widget, image path, width, and scale factor.
+        Initializes the ImageLabel with the parent widget, image path, width, scale factor, and click handler.
 
         Parameters
         ----------
@@ -39,14 +16,17 @@ class ImageLabel(tk.Label):
             The desired width of the image.
         scale_factor : float
             The factor by which to scale the image.
+        on_click : function
+            The function to call when the image is clicked.
         """
-        super().__init__(parent, borderwidth=0, highlightthickness=0)
+        super().__init__(parent, borderwidth=0)
         self.image_path = image_path
         self.width = width
         self.scale_factor = scale_factor
+        self.on_click = on_click
         self.original_image, self.scaled_image = self.load_and_scale_image(self.scale_factor)
         self.config(image=self.scaled_image)
-        self.bind("<Button-1>", self.on_click)  # Bind left mouse click to the on_click method
+        self.bind("<ButtonPress-1>", self.on_press)  # Bind left mouse press to the on_press method
         self.bind("<ButtonRelease-1>", self.on_release)  # Bind left mouse release to the on_release method
 
     def load_and_scale_image(self, scale_factor):
@@ -71,29 +51,27 @@ class ImageLabel(tk.Label):
         scaled_image = image.resize((scaled_width, scaled_height), Image.LANCZOS)
         return ImageTk.PhotoImage(image), ImageTk.PhotoImage(scaled_image)
 
-    def on_click(self, event):
+    def on_press(self, event):
         """
-        Handles the click event to scale down the image.
+        Handles the press event to scale down the image.
 
         Parameters
         ----------
         event : Event
             The event object.
         """
-        print('clicked')
-        self.scale_factor = 0.9  # Set the scale factor to scale down the image slightly
-        _, self.scaled_image = self.load_and_scale_image(self.scale_factor)
+        _, self.scaled_image = self.load_and_scale_image(0.9)  # Scale down the image slightly
         self.config(image=self.scaled_image)
 
     def on_release(self, event):
         """
-        Handles the release event to return the image to its original size.
+        Handles the release event to return the image to its original size and trigger the click handler.
 
         Parameters
         ----------
         event : Event
             The event object.
         """
-        self.scale_factor = 1.0  # Set the scale factor to return the image to its original size
-        _, self.scaled_image = self.load_and_scale_image(self.scale_factor)
+        _, self.scaled_image = self.load_and_scale_image(1.0)  # Return the image to its original size
         self.config(image=self.scaled_image)
+        self.on_click(event)  # Trigger the click handler
