@@ -100,16 +100,10 @@ class RightFrame(ttk.Frame):
                 layout_name = layout_names[row * 3 + col]
                 image_path = image_paths[row * 3 + col]
                 image_label = ImageLabel(left_subsection, image_path, 110, 1, lambda event, name=layout_name: self.change_layout(name))
-                image_label.grid(row=row+1, column=col, sticky="nsew", padx=5, pady=5)  # Add padding to center the buttons
+                image_label.grid(row=row+1, column=col, sticky="nsew")
 
         # Configure the grid to ensure labels expand to fill the space
         self.configure_grid(left_subsection, 3, 3)
-
-        # Center the left_subsection within its parent
-        parent.grid_rowconfigure(0, weight=1)
-        parent.grid_columnconfigure(0, weight=1)
-        parent.grid_columnconfigure(1, weight=1)  # Add an extra column for centering
-        left_subsection.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)  # Place left_subsection in the center column
 
     def change_layout(self, layout_name):
         """
