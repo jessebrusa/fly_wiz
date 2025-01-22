@@ -88,12 +88,12 @@ class RightFrame(ttk.Frame):
         # Create a 3x2 grid of ImageLabels with layout names
         layout_names = ["standard", "flyer", "halfsheet", "info", "landscape_movie", "large_picture", "portrait_movie"]
         image_paths = [
-            "./gui/widgets/content/img/layout_1.jpg",
-            "./gui/widgets/content/img/layout_2.jpg",
-            "./gui/widgets/content/img/layout_3.jpg",
-            "./gui/widgets/content/img/layout_4.jpg",
-            "./gui/widgets/content/img/layout_5.jpg",
-            "./gui/widgets/content/img/layout_6.jpg"
+            "./gui/widgets/content/img/standard.jpg",
+            "./gui/widgets/content/img/flyer-halfsheet.jpg",
+            "./gui/widgets/content/img/info.jpg",
+            "./gui/widgets/content/img/landscape_movie.jpg",
+            "./gui/widgets/content/img/portrait_movie.jpg",
+            "./gui/widgets/content/img/large_picture.jpg"
         ]
         for row in range(2):
             for col in range(3):
