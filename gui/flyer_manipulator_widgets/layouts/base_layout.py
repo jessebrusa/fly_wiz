@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
+from .layout_interface import LayoutInterface
 
-class BaseLayout:
+class BaseLayout(LayoutInterface):
     def __init__(self, flyer_image, data_handler):
         self.flyer_image = flyer_image
         self.data_handler = data_handler
