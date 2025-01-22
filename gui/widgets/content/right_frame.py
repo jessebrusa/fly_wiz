@@ -4,37 +4,6 @@ from .img.image_label import ImageLabel
 from PIL import Image, ImageTk
 
 class RightFrame(ttk.Frame):
-    """
-    A class to represent the right frame of the GUI.
-
-    Attributes
-    ----------
-    parent : widget
-        The parent widget.
-    data_handler : DataHandler
-        The data handler instance.
-    main_app : FlyWizGui
-        The main application instance.
-
-    Methods
-    -------
-    __init__(parent, data_handler, main_app):
-        Initializes the right frame with the parent widget, data handler, and main application instance.
-    configure_main_frame_grid():
-        Configures the grid layout for the main frame.
-    create_first_section():
-        Creates and places the first section in the right frame.
-    create_second_section():
-        Creates and places the second section in the right frame.
-    create_left_subsection(parent):
-        Creates and places the left subsection in the second section.
-    create_right_subsection(parent):
-        Creates and places the right subsection in the second section.
-    save_data():
-        Opens a file dialog to pick a location and name for the file, then saves the data.
-    load_data():
-        Opens a file dialog to select a JSON file, then loads the data.
-    """
     def __init__(self, parent, data_handler, main_app):
         """
         Initializes the right frame with the parent widget, data handler, and main application instance.
@@ -116,15 +85,33 @@ class RightFrame(ttk.Frame):
         left_subsection = ttk.Frame(parent, borderwidth=1, relief="solid")
         left_subsection.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
-        # Create a 3x2 grid of ImageLabels
-        image_path = "./gui/widgets/content/img/layout_1.jpg"
+        # Create a 3x2 grid of ImageLabels with layout names
+        layout_names = ["standard", "flyer", "halfsheet", "info", "landscape_movie", "large_picture", "portrait_movie"]
+        image_paths = [
+            "./gui/widgets/content/img/layout_1.jpg",
+            "./gui/widgets/content/img/layout_1.jpg",
+            "./gui/widgets/content/img/layout_1.jpg",
+            "./gui/widgets/content/img/layout_1.jpg",
+            "./gui/widgets/content/img/layout_1.jpg",
+            "./gui/widgets/content/img/layout_1.jpg"
+        ]
         for row in range(2):
             for col in range(3):
+                layout_name = layout_names[row * 3 + col]
+                image_path = image_paths[row * 3 + col]
                 image_label = ImageLabel(left_subsection, image_path, 110, 1)
                 image_label.grid(row=row+1, column=col, sticky="nsew")
+                image_label.bind("<Button-1>", lambda event, name=layout_name: self.change_layout(name))
 
         # Configure the grid to ensure labels expand to fill the space
         self.configure_grid(left_subsection, 3, 3)
+
+    def change_layout(self, layout_name):
+        """
+        Change the layout of the flyer.
+        """
+        self.main_app.flyer_manipulator.set_layout(layout_name)
+        self.main_app.update_gui()
 
     def create_right_subsection(self, parent):
         """
@@ -184,6 +171,24 @@ class RightFrame(ttk.Frame):
             self.main_app.update_gui()
 
     def configure_grid(self, parent, rows, cols):
+        """
+        Configures the grid layout to ensure labels expand to fill the space.
+
+        Parameters
+        ----------
+        parent : widget
+            The parent widget.
+        rows : int
+            The number of rows in the grid.
+        cols : int
+            The number of columns in the grid.
+        """
+        for row in range(rows):
+            parent.grid_rowconfigure(row, weight=1)
+        for col in range(cols):
+            parent.grid_columnconfigure(col, weight=1)
+        parent.grid_rowconfigure(0, weight=1)
+        parent.grid_rowconfigure(rows, weight=1)
         """
         Configures the grid layout to ensure labels expand to fill the space.
 

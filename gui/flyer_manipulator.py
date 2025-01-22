@@ -1,7 +1,6 @@
 from gui.flyer_manipulator_widgets.base_image_creator import BaseImageCreator
 from gui.flyer_manipulator_widgets.background_applier import BackgroundApplier
 from gui.flyer_manipulator_widgets.layouts.standard import Standard
-# Import other layouts as needed
 
 class FlyerManipulator:
     """
@@ -105,4 +104,5 @@ class FlyerManipulator:
             The name of the layout to be applied.
         """
         self.current_layout = layout_name
+        print(f"Setting layout to: {layout_name}")
         self.update_flyer()
