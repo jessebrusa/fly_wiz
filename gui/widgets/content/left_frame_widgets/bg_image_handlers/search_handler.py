@@ -3,8 +3,6 @@ import tkinter as tk
 from io import BytesIO
 import requests
 from bs4 import BeautifulSoup
-import cv2
-import numpy as np
 
 class SearchHandler:
     def __init__(self, data_handler, flyer_manipulator, update_ui_callback):
@@ -82,20 +80,8 @@ class SearchHandler:
         """
         img = self.original_images[img_index]  # Get the original image
 
-        # Convert PIL image to OpenCV format
-        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-
-        # Upscale the image using INTER_CUBIC interpolation
-        upscale_factor = 2  # Define the upscale factor
-        width = int(img_cv.shape[1] * upscale_factor)
-        height = int(img_cv.shape[0] * upscale_factor)
-        dim = (width, height)
-        img_upscaled = cv2.resize(img_cv, dim, interpolation=cv2.INTER_CUBIC)
-
-        # Convert back to PIL format
-        img_upscaled_pil = Image.fromarray(cv2.cvtColor(img_upscaled, cv2.COLOR_BGR2RGB))
-
-        self.data_handler.update_data(image_key, img_upscaled_pil)
+        # Directly update the data handler with the selected image
+        self.data_handler.update_data(image_key, img)
         self.data_handler.save('test_save.json')
         self.flyer_manipulator.update_flyer()
         self.update_ui_callback()  # Call the callback to update the UI
