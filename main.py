@@ -1,4 +1,4 @@
-from data_handler import DataHandler
+from src.data_handler import DataHandler
 from flyer_manipulator import FlyerManipulator
 from gui.main_window import FlyWizGui
 
