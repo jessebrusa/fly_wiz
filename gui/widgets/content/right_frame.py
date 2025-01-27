@@ -1,7 +1,7 @@
 from tkinter import ttk
-from tkinter import filedialog
 from .right_frame_widgets.first_section import FirstSection
 from .right_frame_widgets.left_subsection import LeftSubsection
+from .right_frame_widgets.right_subsection import RightSubsection
 
 class RightFrame(ttk.Frame):
     def __init__(self, parent, data_handler, main_app):
@@ -85,53 +85,8 @@ class RightFrame(ttk.Frame):
         parent : widget
             The parent widget.
         """
-        right_subsection = ttk.Frame(parent, borderwidth=1, relief="solid")
-        right_subsection.grid(row=0, column=1, sticky="nsew", padx=5, pady=2)
-
-        # Create a frame to center the buttons vertically and horizontally
-        button_frame = ttk.Frame(right_subsection)
-        button_frame.grid(row=0, column=0, sticky="nsew")
-
-        # Configure the grid to ensure buttons expand to fill the space
-        right_subsection.grid_rowconfigure(0, weight=1)
-        right_subsection.grid_columnconfigure(0, weight=1)
-        button_frame.grid_rowconfigure(0, weight=1)
-        button_frame.grid_rowconfigure(1, weight=1)
-        button_frame.grid_columnconfigure(0, weight=1)
-        button_frame.grid_columnconfigure(1, weight=1)
-
-        button_width = 8  
-
-        save_button = ttk.Button(button_frame, text="Save", width=button_width, command=self.save_data)
-        save_button.grid(row=0, column=0, padx=5, pady=2, sticky="nsew")
-
-        load_button = ttk.Button(button_frame, text="Load", width=button_width, command=self.load_data)
-        load_button.grid(row=0, column=1, padx=5, pady=2, sticky="nsew")
-
-        export_button = ttk.Button(button_frame, text="Export", width=button_width)
-        export_button.grid(row=1, column=0, padx=5, pady=15, sticky="nsew")
-
-        print_button = ttk.Button(button_frame, text="Print", width=button_width)
-        print_button.grid(row=1, column=1, padx=5, pady=15, sticky="nsew")
-
-    def save_data(self):
-        """
-        Open a file dialog to pick a location and name for the file, then save the data.
-        """
-        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
-        if file_path:
-            self.data_handler.save(file_path)
-            print(f"Data saved to {file_path}")
-
-    def load_data(self):
-        """
-        Open a file dialog to select a JSON file, then load the data.
-        """
-        file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
-        if file_path:
-            self.data_handler.load(file_path)
-            print(f"Data loaded from {file_path}")
-            self.main_app.update_gui()
+        self.right_subsection = RightSubsection(parent, self.data_handler, self.main_app)
+        self.right_subsection.grid(row=0, column=1, sticky="nsew", padx=5, pady=2)
 
     def configure_grid(self, parent, rows, cols):
         """
