@@ -1,10 +1,15 @@
-from tkinter import ttk
 import tkinter as tk
-from gui.widgets.content.left_frame_widgets.image_handler import ImageHandler
-from gui.widgets.content.left_frame_widgets.background_handler import BackgroundHandler
-from gui.widgets.content.left_frame_widgets.color_wheel_handler import ColorWheelHandler
-from gui.widgets.content.left_frame_widgets.search_handler import SearchHandler
+from tkinter import ttk
+from gui.widgets.content.left_frame_widgets.handlers.image_handler import ImageHandler
+from gui.widgets.content.left_frame_widgets.handlers.background_handler import BackgroundHandler
+from gui.widgets.content.left_frame_widgets.handlers.color_wheel_handler import ColorWheelHandler
+from gui.widgets.content.left_frame_widgets.handlers.search_handler import SearchHandler
 from gui.widgets.content.left_frame_widgets.ui_helpers import UIHelpers
+from gui.widgets.content.left_frame_widgets.title_section import TitleSection
+from gui.widgets.content.left_frame_widgets.styled_info_section import StyledInfoSection
+from gui.widgets.content.left_frame_widgets.text_info_section import TextInfoSection
+from gui.widgets.content.left_frame_widgets.footer_section import FooterSection
+from gui.widgets.content.left_frame_widgets.image_section import ImageSection
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
@@ -41,48 +46,20 @@ class LeftFrame(ttk.Frame):
         """
         Create sections within the LeftFrame.
         """
-        label_list = ['Title', 'Styled\nInfo', 'Text\nInfo', 'Footer']
-        
-        # Create the first section for the label and text areas
-        for _, label_text in enumerate(label_list[:1]):
-            section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
-            section_frame.pack(fill="both", expand=True, padx=5, pady=5)
-            section_frame.grid_propagate(False)  
-            section_frame.grid_rowconfigure(0, weight=1)  
-            
-            text_area = self.ui_helpers.create_label_and_text_area(section_frame, label_text)
-            if label_text == 'Title':
-                self.title_text_area = text_area
-            elif label_text == 'Styled\nInfo':
-                self.styled_info_text_area = text_area
-            elif label_text == 'Text\nInfo':
-                self.text_info_text_area = text_area
-            elif label_text == 'Footer':
-                self.footer_text_area = text_area
-        
+        self.title_section = TitleSection(self, self.ui_helpers)
+        self.title_text_area = self.title_section.text_area
+
+        self.styled_info_section = StyledInfoSection(self, self.ui_helpers)
+        self.styled_info_text_area = self.styled_info_section.text_area
+
+        self.text_info_section = TextInfoSection(self, self.ui_helpers)
+        self.text_info_text_area = self.text_info_section.text_area
+
+        self.footer_section = FooterSection(self, self.ui_helpers)
+        self.footer_text_area = self.footer_section.text_area
+
         # Create the section for the image buttons
-        self.image_section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
-        self.image_section_frame.pack(fill="both", expand=True, padx=5, pady=5)
-        self.image_section_frame.grid_propagate(False)  
-        self.image_section_frame.grid_rowconfigure(0, weight=1)
-        self.ui_helpers.create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
-        
-        # Create the remaining sections for the label and text areas
-        for _, label_text in enumerate(label_list[1:]):
-            section_frame = ttk.Frame(self, borderwidth=1, relief="solid", width=200)
-            section_frame.pack(fill="both", expand=True, padx=5, pady=5)
-            section_frame.grid_propagate(False)  
-            section_frame.grid_rowconfigure(0, weight=1)  
-            
-            text_area = self.ui_helpers.create_label_and_text_area(section_frame, label_text)
-            if label_text == 'Title':
-                self.title_text_area = text_area
-            elif label_text == 'Styled\nInfo':
-                self.styled_info_text_area = text_area
-            elif label_text == 'Text\nInfo':
-                self.text_info_text_area = text_area
-            elif label_text == 'Footer':
-                self.footer_text_area = text_area
+        self.image_section = ImageSection(self, self.ui_helpers, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
 
     def open_color_wheel_window(self, gradient=False):
         """
@@ -94,7 +71,7 @@ class LeftFrame(ttk.Frame):
         """
         Update the UI by recreating the label and buttons.
         """
-        self.ui_helpers.create_label_and_buttons(self.image_section_frame, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
+        self.image_section.create_section()
         self.update_text_areas()
 
     def update_text_areas(self):
