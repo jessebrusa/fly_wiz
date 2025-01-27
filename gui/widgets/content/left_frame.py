@@ -41,6 +41,8 @@ class LeftFrame(ttk.Frame):
         self.title_section = TitleSection(self)
         self.title_text_area = self.title_section.text_area
 
+        self.bg_image_section = BgImageSection(self, self.data_handler, self.main_app)
+
         self.styled_info_section = StyledInfoSection(self)
         self.styled_info_text_area = self.styled_info_section.text_area
 
@@ -49,9 +51,6 @@ class LeftFrame(ttk.Frame):
 
         self.footer_section = FooterSection(self)
         self.footer_text_area = self.footer_section.text_area
-
-        # Create the section for the image buttons
-        self.bg_image_section = BgImageSection(self, self.data_handler, self.main_app)
 
     def update_text_areas(self):
         """

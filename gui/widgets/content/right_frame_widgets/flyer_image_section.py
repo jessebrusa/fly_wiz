@@ -1,5 +1,3 @@
-# gui/widgets/content/right_frame_widgets/flyer_image_section.py
-
 from tkinter import ttk
 from PIL import Image, ImageTk
 
