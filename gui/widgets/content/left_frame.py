@@ -9,7 +9,7 @@ from gui.widgets.content.left_frame_widgets.title_section import TitleSection
 from gui.widgets.content.left_frame_widgets.styled_info_section import StyledInfoSection
 from gui.widgets.content.left_frame_widgets.text_info_section import TextInfoSection
 from gui.widgets.content.left_frame_widgets.footer_section import FooterSection
-from gui.widgets.content.left_frame_widgets.image_section import ImageSection
+from gui.widgets.content.left_frame_widgets.bg_image_section import BgImageSection
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
@@ -49,6 +49,9 @@ class LeftFrame(ttk.Frame):
         self.title_section = TitleSection(self, self.ui_helpers)
         self.title_text_area = self.title_section.text_area
 
+        # Create the section for the image buttons
+        self.bg_image_section = BgImageSection(self, self.ui_helpers, self.image_handler, self.color_wheel_handler, self.search_handler.open_search_window)
+
         self.styled_info_section = StyledInfoSection(self, self.ui_helpers)
         self.styled_info_text_area = self.styled_info_section.text_area
 
@@ -58,20 +61,11 @@ class LeftFrame(ttk.Frame):
         self.footer_section = FooterSection(self, self.ui_helpers)
         self.footer_text_area = self.footer_section.text_area
 
-        # Create the section for the image buttons
-        self.image_section = ImageSection(self, self.ui_helpers, self.image_handler, self.open_color_wheel_window, self.search_handler.open_search_window)
-
-    def open_color_wheel_window(self, gradient=False):
-        """
-        Open a window with one or two squares for color selection.
-        """
-        self.color_wheel_handler.open_color_wheel_window(gradient)
-
     def update_ui(self):
         """
         Update the UI by recreating the label and buttons.
         """
-        self.image_section.create_section()
+        self.bg_image_section.create_section()
         self.update_text_areas()
 
     def update_text_areas(self):

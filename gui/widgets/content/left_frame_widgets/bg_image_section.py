@@ -3,10 +3,10 @@ from .handlers.color_picker_handler import ColorPickerHandler
 
 LABEL_FONT = ("Helvetica", 16)
 
-class ImageSection(ttk.Frame):
-    def __init__(self, parent, ui_helpers, image_handler, open_color_wheel_window, open_search_window):
+class BgImageSection(ttk.Frame):
+    def __init__(self, parent, ui_helpers, image_handler, color_wheel_handler, open_search_window):
         """
-        Initializes the image section with the parent widget, UI helpers, image handler, and callbacks.
+        Initializes the background image section with the parent widget, UI helpers, image handler, and callbacks.
 
         Parameters
         ----------
@@ -16,15 +16,15 @@ class ImageSection(ttk.Frame):
             The UI helpers instance.
         image_handler : ImageHandler
             The image handler instance.
-        open_color_wheel_window : function
-            The callback function to open the color wheel window.
+        color_wheel_handler : ColorWheelHandler
+            The color wheel handler instance.
         open_search_window : function
             The callback function to open the search window.
         """
         super().__init__(parent, borderwidth=1, relief="solid", width=200)
         self.ui_helpers = ui_helpers
         self.image_handler = image_handler
-        self.open_color_wheel_window = open_color_wheel_window
+        self.color_wheel_handler = color_wheel_handler
         self.open_search_window = open_search_window
         self.pack(fill="both", expand=True, padx=5, pady=5)
         self.grid_propagate(False)
@@ -33,13 +33,13 @@ class ImageSection(ttk.Frame):
 
     def create_section(self):
         """
-        Creates and places the content in the image section.
+        Creates and places the content in the background image section.
         """
         self.create_label_and_buttons()
 
     def create_label_and_buttons(self):
         """
-        Create a label and buttons within the image section.
+        Create a label and buttons within the background image section.
         """
         # Clear the parent frame to avoid duplicate widgets
         for widget in self.winfo_children():
@@ -113,3 +113,9 @@ class ImageSection(ttk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=1)
+
+    def open_color_wheel_window(self, gradient=False):
+        """
+        Open a window with one or two squares for color selection.
+        """
+        self.color_wheel_handler.open_color_wheel_window(gradient)
