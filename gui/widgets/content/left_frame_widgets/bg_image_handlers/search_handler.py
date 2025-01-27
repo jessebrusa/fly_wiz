@@ -1,5 +1,3 @@
-# gui/widgets/content/left_frame_widgets/bg_image_handlers/search_handler.py
-
 from PIL import Image, ImageTk
 import tkinter as tk
 from io import BytesIO
@@ -50,16 +48,25 @@ class SearchHandler:
         """
         results_window = tk.Toplevel()
         results_window.title("Search Results")
-        results_window.geometry("800x200")
+        results_window.geometry("800x400")
 
         for i, img in enumerate(img_objects):
             self.original_images[i] = img  # Store the original image
             thumbnail_img = img.copy()
             thumbnail_img.thumbnail((150, 150), Image.LANCZOS)  # Use LANCZOS for high-quality resizing
             img_tk = ImageTk.PhotoImage(thumbnail_img)
-            img_label = tk.Label(results_window, image=img_tk)
+            
+            # Create a frame for each image and label
+            frame = tk.Frame(results_window)
+            frame.grid(row=i // 5, column=i % 5, padx=5, pady=5)
+            
+            # Add a label with a larger font size above each image
+            label = tk.Label(frame, text=f"Image {i+1}", font=("Helvetica", 12))
+            label.pack()
+            
+            img_label = tk.Label(frame, image=img_tk)
             img_label.image = img_tk
-            img_label.grid(row=i // 5, column=i % 5, padx=5, pady=5)
+            img_label.pack()
             img_label.bind("<Button-1>", lambda event, img_index=i: self.select_image(img_index, image_key, results_window))
 
     def select_image(self, img_index, image_key, results_window):
@@ -91,7 +98,22 @@ class SearchHandler:
         """
         Open a search window to search for images.
         """
-        query = simpledialog.askstring("Search", "Enter search query:")
-        if query:
-            img_objects = self.google_img_search(query)
-            self.display_search_results(img_objects, image_key)
+        search_window = tk.Toplevel()
+        search_window.title("Search")
+        search_window.geometry("400x150")
+
+        label = tk.Label(search_window, text="Enter search query:", font=("Helvetica", 14))
+        label.pack(pady=10)
+
+        query_entry = tk.Entry(search_window, font=("Helvetica", 14), width=30)
+        query_entry.pack(pady=10)
+
+        def submit_query():
+            query = query_entry.get()
+            if query:
+                img_objects = self.google_img_search(query)
+                self.display_search_results(img_objects, image_key)
+            search_window.destroy()
+
+        submit_button = tk.Button(search_window, text="Submit", font=("Helvetica", 14), command=submit_query)
+        submit_button.pack(pady=10)
