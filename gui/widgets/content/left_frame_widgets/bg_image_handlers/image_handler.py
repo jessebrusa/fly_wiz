@@ -39,3 +39,9 @@ class ImageHandler:
 
         except Exception as e:
             print(f"An error occurred while removing the image: {e}")
+
+    def is_image_present(self, image_key):
+        """
+        Check if an image is present in the data handler.
+        """
+        return self.data_handler.get_data().get(image_key) is not None

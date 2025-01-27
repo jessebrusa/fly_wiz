@@ -50,24 +50,3 @@ class LeftFrame(ttk.Frame):
 
         # Create the section for the image buttons
         self.bg_image_section = BgImageSection(self, self.data_handler, self.main_app)
-
-    def update_ui(self):
-        """
-        Update the UI by recreating the label and buttons.
-        """
-        self.bg_image_section.update_ui()
-        self.update_text_areas()
-
-    def update_text_areas(self):
-        """
-        Update the text areas with the current data from the data handler.
-        """
-        data = self.data_handler.get_data()
-        self.title_text_area.delete("1.0", tk.END)
-        self.title_text_area.insert(tk.END, data.get("title", ""))
-        self.styled_info_text_area.delete("1.0", tk.END)
-        self.styled_info_text_area.insert(tk.END, data.get("styled_info", ""))
-        self.text_info_text_area.delete("1.0", tk.END)
-        self.text_info_text_area.insert(tk.END, data.get("text_info", ""))
-        self.footer_text_area.delete("1.0", tk.END)
-        self.footer_text_area.insert(tk.END, data.get("footer", ""))

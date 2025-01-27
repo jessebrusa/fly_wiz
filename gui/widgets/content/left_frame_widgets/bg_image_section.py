@@ -63,51 +63,9 @@ class BgImageSection(ttk.Frame):
         color_wheel_button = ttk.Button(button_frame_3, text="Color / Direction", style="Small.TButton", width=14, command=self.open_color_wheel_window)
         color_wheel_button.pack(side="left", padx=5)
 
-        # Check if images are selected
-        image1_selected = self.data_handler.get_data().get('image1') is not None
-        image2_selected = self.data_handler.get_data().get('image2') is not None
-
-        # Label for first image
-        label_text_1 = "Image 1" + (" ✓:" if image1_selected else " :")
-        label = ttk.Label(self, text=label_text_1, font=LABEL_FONT, width=10, anchor="center")
-        label.grid(row=1, column=0, padx=5, pady=5, sticky="ns")
-
-        # Frame for the first set of buttons
-        button_frame_1 = ttk.Frame(self)
-        button_frame_1.grid(row=1, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
-
-        browse_button_1 = ttk.Button(button_frame_1, text="Browse", style="Small.TButton", width=8, 
-                                     command=lambda: self.image_handler.browse_image('image1'))
-        browse_button_1.pack(side="left", padx=5)
-
-        search_button_1 = ttk.Button(button_frame_1, text="Search", style="Small.TButton", width=8, 
-                                     command=lambda: self.search_handler.open_search_window('image1'))
-        search_button_1.pack(side="left", padx=5)
-        
-        remove_button_1 = ttk.Button(button_frame_1, text="Remove", style="Small.TButton", width=8, 
-                                     command=lambda: self.image_handler.remove_image('image1'))
-        remove_button_1.pack(side="left", padx=5)
-
-        # Label for second image
-        label_text_2 = "Image 2" + (" ✓:" if image2_selected else " :")
-        second_image_label = ttk.Label(self, text=label_text_2, font=LABEL_FONT, width=10, anchor="center")
-        second_image_label.grid(row=2, column=0, padx=5, pady=5, sticky="ns")
-
-        # Frame for the second set of buttons
-        button_frame_2 = ttk.Frame(self)
-        button_frame_2.grid(row=2, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
-
-        browse_button_2 = ttk.Button(button_frame_2, text="Browse", style="Small.TButton", width=8, 
-                                     command=lambda: self.image_handler.browse_image('image2'))
-        browse_button_2.pack(side="left", padx=5)
-
-        search_button_2 = ttk.Button(button_frame_2, text="Search", style="Small.TButton", width=8, 
-                                     command=lambda: self.search_handler.open_search_window('image2'))
-        search_button_2.pack(side="left", padx=5)
-        
-        remove_button_2 = ttk.Button(button_frame_2, text="Remove", style="Small.TButton", width=8, 
-                                     command=lambda: self.image_handler.remove_image('image2'))
-        remove_button_2.pack(side="left", padx=5)
+        # Create labels and buttons for images
+        self.create_image_section('image1', 1)
+        self.create_image_section('image2', 2)
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
@@ -115,6 +73,37 @@ class BgImageSection(ttk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=1)
+
+    def create_image_section(self, image_key, row):
+        """
+        Create a section for an image with a label and buttons.
+
+        Parameters
+        ----------
+        image_key : str
+            The key for the image in the data handler.
+        row : int
+            The row in which to place the section.
+        """
+        image_selected = self.image_handler.is_image_present(image_key)
+        label_text = f"Image {row}" + (" ✓:" if image_selected else " :")
+        label = ttk.Label(self, text=label_text, font=LABEL_FONT, width=10, anchor="center")
+        label.grid(row=row, column=0, padx=5, pady=5, sticky="ns")
+
+        button_frame = ttk.Frame(self)
+        button_frame.grid(row=row, column=1, columnspan=3, padx=5, pady=2, sticky="nsew")
+
+        browse_button = ttk.Button(button_frame, text="Browse", style="Small.TButton", width=8, 
+                                   command=lambda: self.image_handler.browse_image(image_key))
+        browse_button.pack(side="left", padx=5)
+
+        search_button = ttk.Button(button_frame, text="Search", style="Small.TButton", width=8, 
+                                   command=lambda: self.search_handler.open_search_window(image_key))
+        search_button.pack(side="left", padx=5)
+        
+        remove_button = ttk.Button(button_frame, text="Remove", style="Small.TButton", width=8, 
+                                   command=lambda: self.image_handler.remove_image(image_key))
+        remove_button.pack(side="left", padx=5)
 
     def open_color_wheel_window(self, gradient=False):
         """
@@ -124,6 +113,13 @@ class BgImageSection(ttk.Frame):
 
     def update_ui(self):
         """
-        Update the UI by recreating the label and buttons.
+        Update the UI by updating the labels and buttons.
         """
-        self.create_section()
+        self.update_labels_and_buttons()
+
+    def update_labels_and_buttons(self):
+        """
+        Update the labels and buttons within the background image section.
+        """
+        self.create_image_section('image1', 1)
+        self.create_image_section('image2', 2)
