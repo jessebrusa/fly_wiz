@@ -62,4 +62,3 @@ class LayoutSection(ttk.Frame):
         Change the layout of the flyer.
         """
         self.main_app.flyer_manipulator.set_layout(layout_name)
-        self.main_app.update_gui()

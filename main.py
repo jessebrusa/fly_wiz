@@ -10,6 +10,7 @@ class FlyWizApp:
         self.data_handler = DataHandler()
         self.flyer_manipulator = FlyerManipulator(self.data_handler, self)
         self.app = FlyWizGui(self.data_handler, self.flyer_manipulator)
+        self.flyer_manipulator.main_app = self.app  
 
     def run(self):
         """
