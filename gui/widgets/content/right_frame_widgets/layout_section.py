@@ -1,5 +1,5 @@
 from tkinter import ttk
-from ..img.image_label import ImageLabel
+from .layout_section_tools.image_label import ImageLabel
 
 class LayoutSection(ttk.Frame):
     def __init__(self, parent, main_app):
@@ -35,7 +35,7 @@ class LayoutSection(ttk.Frame):
                 layout_name = layout_names[row * 3 + col]
                 image_path = image_paths[row * 3 + col]
                 
-                image_label = ImageLabel(self, image_path, 110, 1, lambda event, name=layout_name: self.change_layout(name))
+                image_label = ImageLabel(self, image_path, 110, 1, lambda name=layout_name: self.change_layout(name))
                 image_label.grid(row=row+1, column=col, sticky="nsew", padx=5, pady=5)
 
         # Configure the grid to ensure labels expand to fill the space

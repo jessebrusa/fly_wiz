@@ -33,8 +33,8 @@ class ImageLabel(ttk.Frame):
         self.image_id = self.canvas.create_image(0, 0, anchor="nw", image=self.scaled_image)
 
         # Bind click events to the image within the canvas
-        self.canvas.tag_bind(self.image_id, "<ButtonPress-1>", self.on_press)
-        self.canvas.tag_bind(self.image_id, "<ButtonRelease-1>", self.on_release)
+        self.canvas.tag_bind(self.image_id, "<ButtonPress-1>", lambda event: self.on_press())
+        self.canvas.tag_bind(self.image_id, "<ButtonRelease-1>", lambda event: self.on_release())
 
     def load_and_scale_image(self, scale_factor):
         """
@@ -65,18 +65,14 @@ class ImageLabel(ttk.Frame):
         _, self.scaled_image = self.load_and_scale_image(0.9)  # Scale down the image slightly
         self.update_image_position()
 
-    def on_release(self, event):
+
+    def on_release(self):
         """
         Handles the release event to return the image to its original size and trigger the click handler.
-
-        Parameters
-        ----------
-        event : Event
-            The event object.
         """
         _, self.scaled_image = self.load_and_scale_image(1.0)  # Return the image to its original size
         self.update_image_position()
-        self.on_click(event)  # Trigger the click handler
+        self.on_click()   # Trigger the click handler
 
     def update_image_position(self):
         """
