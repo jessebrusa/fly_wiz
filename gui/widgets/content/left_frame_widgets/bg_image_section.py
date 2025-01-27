@@ -1,28 +1,33 @@
 from tkinter import ttk
-from .handlers.color_picker_handler import ColorPickerHandler
+from .bg_image_handlers.image_handler import ImageHandler
+from .bg_image_handlers.background_handler import BackgroundHandler
+from .bg_image_handlers.color_wheel_handler import ColorWheelHandler
+from .bg_image_handlers.search_handler import SearchHandler
+from .bg_image_handlers.color_picker_handler import ColorPickerHandler
 
 LABEL_FONT = ("Helvetica", 16)
 
 class BgImageSection(ttk.Frame):
-    def __init__(self, parent, image_handler, color_wheel_handler, open_search_window):
+    def __init__(self, parent, data_handler, main_app):
         """
-        Initializes the background image section with the parent widget, image handler, color wheel handler, and callbacks.
+        Initializes the background image section with the parent widget, data handler, and main application instance.
 
         Parameters
         ----------
         parent : widget
             The parent widget.
-        image_handler : ImageHandler
-            The image handler instance.
-        color_wheel_handler : ColorWheelHandler
-            The color wheel handler instance.
-        open_search_window : function
-            The callback function to open the search window.
+        data_handler : DataHandler
+            The data handler instance.
+        main_app : FlyWizGui
+            The main application instance.
         """
         super().__init__(parent, borderwidth=1, relief="solid", width=200)
-        self.image_handler = image_handler
-        self.color_wheel_handler = color_wheel_handler
-        self.open_search_window = open_search_window
+        self.data_handler = data_handler
+        self.main_app = main_app
+        self.image_handler = ImageHandler(data_handler, main_app, self.update_ui)
+        self.background_handler = BackgroundHandler(data_handler, main_app)
+        self.color_wheel_handler = ColorWheelHandler(self, data_handler, main_app)
+        self.search_handler = SearchHandler(data_handler, main_app.flyer_manipulator, self.update_ui)
         self.pack(fill="both", expand=True, padx=5, pady=5)
         self.grid_propagate(False)
         self.grid_rowconfigure(0, weight=1)
@@ -51,7 +56,7 @@ class BgImageSection(ttk.Frame):
         button_frame_3 = ttk.Frame(self)
         button_frame_3.grid(row=0, column=1, columnspan=2, padx=5, pady=2, sticky="nsew")
 
-        color_picker_handler = ColorPickerHandler(self.image_handler.data_handler, self.image_handler.main_app.flyer_manipulator)
+        color_picker_handler = ColorPickerHandler(self.data_handler, self.main_app.flyer_manipulator)
         color_picker_button = ttk.Button(button_frame_3, text="Color Picker", style="Small.TButton", width=14, command=color_picker_handler.extract_colors)
         color_picker_button.pack(side="left", padx=5)
 
@@ -59,8 +64,8 @@ class BgImageSection(ttk.Frame):
         color_wheel_button.pack(side="left", padx=5)
 
         # Check if images are selected
-        image1_selected = self.image_handler.data_handler.get_data().get('image1') is not None
-        image2_selected = self.image_handler.data_handler.get_data().get('image2') is not None
+        image1_selected = self.data_handler.get_data().get('image1') is not None
+        image2_selected = self.data_handler.get_data().get('image2') is not None
 
         # Label for first image
         label_text_1 = "Image 1" + (" ✓:" if image1_selected else " :")
@@ -76,7 +81,7 @@ class BgImageSection(ttk.Frame):
         browse_button_1.pack(side="left", padx=5)
 
         search_button_1 = ttk.Button(button_frame_1, text="Search", style="Small.TButton", width=8, 
-                                     command=lambda: self.open_search_window('image1'))
+                                     command=lambda: self.search_handler.open_search_window('image1'))
         search_button_1.pack(side="left", padx=5)
         
         remove_button_1 = ttk.Button(button_frame_1, text="Remove", style="Small.TButton", width=8, 
@@ -97,7 +102,7 @@ class BgImageSection(ttk.Frame):
         browse_button_2.pack(side="left", padx=5)
 
         search_button_2 = ttk.Button(button_frame_2, text="Search", style="Small.TButton", width=8, 
-                                     command=lambda: self.open_search_window('image2'))
+                                     command=lambda: self.search_handler.open_search_window('image2'))
         search_button_2.pack(side="left", padx=5)
         
         remove_button_2 = ttk.Button(button_frame_2, text="Remove", style="Small.TButton", width=8, 
@@ -116,3 +121,9 @@ class BgImageSection(ttk.Frame):
         Open a window with one or two squares for color selection.
         """
         self.color_wheel_handler.open_color_wheel_window(gradient)
+
+    def update_ui(self):
+        """
+        Update the UI by recreating the label and buttons.
+        """
+        self.create_section()

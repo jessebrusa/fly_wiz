@@ -1,9 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from gui.widgets.content.left_frame_widgets.handlers.image_handler import ImageHandler
-from gui.widgets.content.left_frame_widgets.handlers.background_handler import BackgroundHandler
-from gui.widgets.content.left_frame_widgets.handlers.color_wheel_handler import ColorWheelHandler
-from gui.widgets.content.left_frame_widgets.handlers.search_handler import SearchHandler
 from gui.widgets.content.left_frame_widgets.title_section import TitleSection
 from gui.widgets.content.left_frame_widgets.styled_info_section import StyledInfoSection
 from gui.widgets.content.left_frame_widgets.text_info_section import TextInfoSection
@@ -24,10 +20,6 @@ class LeftFrame(ttk.Frame):
         super().__init__(parent, borderwidth=2, relief="solid")
         self.data_handler = data_handler
         self.main_app = main_app  # Set the main_app attribute
-        self.image_handler = ImageHandler(data_handler, main_app, self.update_ui)
-        self.background_handler = BackgroundHandler(data_handler, main_app)
-        self.color_wheel_handler = ColorWheelHandler(self, data_handler, main_app)
-        self.search_handler = SearchHandler(data_handler, main_app.flyer_manipulator, self.update_ui)  # Correct initialization
         self.create_styles()
         self.create_sections()
 
@@ -57,13 +49,13 @@ class LeftFrame(ttk.Frame):
         self.footer_text_area = self.footer_section.text_area
 
         # Create the section for the image buttons
-        self.bg_image_section = BgImageSection(self, self.image_handler, self.color_wheel_handler, self.search_handler.open_search_window)
+        self.bg_image_section = BgImageSection(self, self.data_handler, self.main_app)
 
     def update_ui(self):
         """
         Update the UI by recreating the label and buttons.
         """
-        self.bg_image_section.create_section()
+        self.bg_image_section.update_ui()
         self.update_text_areas()
 
     def update_text_areas(self):
