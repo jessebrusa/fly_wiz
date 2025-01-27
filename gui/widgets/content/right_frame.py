@@ -1,7 +1,7 @@
 from tkinter import ttk
 from tkinter import filedialog
 from .img.image_label import ImageLabel
-from PIL import Image, ImageTk
+from .right_frame_widgets.first_section import FirstSection
 
 class RightFrame(ttk.Frame):
     def __init__(self, parent, data_handler, main_app):
@@ -40,26 +40,9 @@ class RightFrame(ttk.Frame):
         """
         Creates and places the first section in the right frame.
         """
-        self.first_section = ttk.Frame(self, borderwidth=1, relief="solid")
+        self.first_section = FirstSection(self, self.data_handler)
         self.first_section.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
-        
-        try:
-            image = self.data_handler.get_data().get('flyer')
-            if image:
-                # Set the desired resolution for display with padding
-                desired_width = 650  # Adjusted width to fit within the section
-                desired_height = 425  # Adjusted height to fit within the section
-                scaled_image = image.resize((desired_width, desired_height), Image.LANCZOS)
-                
-                image_tk = ImageTk.PhotoImage(scaled_image)
-                self.image_label = ttk.Label(self.first_section, image=image_tk)
-                self.image_label.image = image_tk  
-                self.image_label.pack(expand=True, padx=10, pady=10)  # Add padding around the image
-            else:
-                self.image_label = ttk.Label(self.first_section, text="No image found")
-                self.image_label.pack(expand=True, padx=10, pady=10)  # Add padding around the label
-        except Exception as e:
-            print(f"An error occurred while creating the first section: {e}")
+        self.image_label = self.first_section.image_label  # Reference the image_label from FirstSection
 
     def create_second_section(self):
         """
