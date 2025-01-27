@@ -1,19 +1,15 @@
 import tkinter as tk
-from tkinter import ttk
 from gui.widgets.header import HeaderSection
 from gui.widgets.content.content import ContentSection
-from gui.data_handler import DataHandler
-from gui.flyer_manipulator import FlyerManipulator
 import logging
-from PIL import Image, ImageTk
 
 class FlyWizGui(tk.Tk):
-    def __init__(self):
+    def __init__(self, data_handler, flyer_manipulator):
         super().__init__()
         self.title("Flyer Wizard")
         self.geometry("1200x800")
-        self.data_handler = DataHandler()
-        self.flyer_manipulator = FlyerManipulator(self.data_handler, self)
+        self.data_handler = data_handler
+        self.flyer_manipulator = flyer_manipulator
         self.header_section = HeaderSection(self)
         self.header_section.pack(side="top", fill="x")
         self.content_section = ContentSection(self, self.data_handler, self)

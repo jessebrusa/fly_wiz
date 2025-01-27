@@ -1,3 +1,5 @@
+from data_handler import DataHandler
+from flyer_manipulator import FlyerManipulator
 from gui.main_window import FlyWizGui
 
 def main():
@@ -7,7 +9,9 @@ def main():
     Initializes the FlyWizGui application and starts the main event loop.
     """
     try:
-        app = FlyWizGui()
+        data_handler = DataHandler()
+        flyer_manipulator = FlyerManipulator(data_handler)
+        app = FlyWizGui(data_handler, flyer_manipulator)
         app.mainloop()
     except Exception as e:
         print(f"An error occurred: {e}")

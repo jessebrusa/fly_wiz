@@ -1,8 +1,6 @@
-# gui/flyer_manipulator.py
-
-from gui.flyer_manipulator_widgets.base_image_creator import BaseImageCreator
-from gui.flyer_manipulator_widgets.background_applier import BackgroundApplier
-from gui.flyer_manipulator_widgets.layouts import standard, flyer, halfsheet, info, \
+from flyer_manipulator_tools.base_image_creator import BaseImageCreator
+from flyer_manipulator_tools.background_applier import BackgroundApplier
+from flyer_manipulator_tools.layouts import standard, flyer, halfsheet, info, \
     landscape_movie, large_picture, portrait_movie
 
 class FlyerManipulator:
