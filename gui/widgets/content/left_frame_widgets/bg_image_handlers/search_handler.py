@@ -107,7 +107,6 @@ class SearchHandler:
         """
         search_window = tk.Toplevel()
         search_window.title("Search")
-        search_window.geometry("400x200")
 
         label = tk.Label(search_window, text="Enter search query:", font=("Helvetica", 14))
         label.pack(pady=10)
@@ -124,3 +123,9 @@ class SearchHandler:
 
         submit_button = tk.Button(search_window, text="Submit", font=("Helvetica", 14), command=submit_query)
         submit_button.pack(pady=10)
+
+        # Calculate the required window size based on the content
+        search_window.update_idletasks()
+        window_width = search_window.winfo_reqwidth() + 20
+        window_height = search_window.winfo_reqheight() + 20
+        search_window.geometry(f"{window_width}x{window_height}")
