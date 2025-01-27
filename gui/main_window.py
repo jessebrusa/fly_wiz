@@ -1,5 +1,3 @@
-# gui/main_window.py
-
 import tkinter as tk
 from tkinter import ttk
 from gui.widgets.header import HeaderSection
@@ -50,13 +48,3 @@ class FlyWizGui(tk.Tk):
             logging.error(f"An error occurred while getting the text: {e}")
 
         self.after(250, self.check_text)
-
-    def update_flyer(self):
-        """
-        Updates the flyer by placing images on it.
-        """
-        try:
-            self.flyer_manipulator.update_flyer()
-            # Remove the call to update_gui
-        except Exception as e:
-            logging.error(f"An error occurred while updating the flyer: {e}")

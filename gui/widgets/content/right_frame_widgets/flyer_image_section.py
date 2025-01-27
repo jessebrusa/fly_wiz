@@ -1,5 +1,3 @@
-# gui/widgets/content/right_frame_widgets/flyer_image_section.py
-
 from tkinter import ttk
 from PIL import Image, ImageTk
 
@@ -41,6 +39,24 @@ class FlyerImageSection(ttk.Frame):
             print(f"An error occurred while creating the flyer image section: {e}")
 
     def update_image(self):
+        """
+        Update the image in the flyer image section.
+        """
+        try:
+            image = self.data_handler.get_data().get('flyer')
+            if image:
+                desired_width = 650  
+                desired_height = 425  
+                scaled_image = image.resize((desired_width, desired_height), Image.LANCZOS)
+                
+                image_tk = ImageTk.PhotoImage(scaled_image)
+                self.image_label.config(image=image_tk)
+                self.image_label.image = image_tk  
+            else:
+                self.image_label.config(text="No image found")
+                self.image_label.image = None
+        except Exception as e:
+            print(f"An error occurred while updating the flyer image: {e}")
         """
         Update the image in the flyer image section.
         """

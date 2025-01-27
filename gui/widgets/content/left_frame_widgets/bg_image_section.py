@@ -124,3 +124,9 @@ class BgImageSection(ttk.Frame):
         for widget in self.winfo_children():
             widget.destroy()
         self.create_label_and_buttons()
+        """
+        Update the labels and buttons within the background image section.
+        """
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.create_label_and_buttons()

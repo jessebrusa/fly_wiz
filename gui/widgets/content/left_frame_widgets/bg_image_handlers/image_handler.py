@@ -1,5 +1,3 @@
-# gui/widgets/content/left_frame_widgets/bg_image_handlers/image_handler.py
-
 from tkinter import filedialog
 from PIL import Image
 
@@ -19,7 +17,7 @@ class ImageHandler:
                 image = Image.open(file_path)
                 self.data_handler.update_data(image_key, image)
                 self.main_app.flyer_manipulator.change_made = True
-                self.main_app.update_flyer()
+                self.main_app.flyer_manipulator.update_flyer()
                 self.update_ui_callback()  # Call the callback to update the UI
         except Exception as e:
             print(f"An error occurred while browsing for an image: {e}")
@@ -36,7 +34,7 @@ class ImageHandler:
                 self.data_handler.update_data('combined_image', None)
             
             self.main_app.flyer_manipulator.change_made = True
-            self.main_app.update_flyer()
+            self.main_app.flyer_manipulator.update_flyer()
             self.update_ui_callback()  # Call the callback to update the UI
 
         except Exception as e:

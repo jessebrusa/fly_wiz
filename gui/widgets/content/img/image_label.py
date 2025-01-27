@@ -50,29 +50,20 @@ class ImageLabel(ttk.Frame):
         tuple
             The original and scaled images.
         """
-        print(f"Loading and scaling image with scale factor: {scale_factor}")
         image = Image.open(self.image_path)
         height = int((8.5 / 11) * self.width)  # Calculate height based on the ratio 8.5 by 11
         image = image.resize((self.width, height), Image.LANCZOS)  # Resize the image
         scaled_width = int(self.width * scale_factor)  # Scale width
         scaled_height = int(height * scale_factor)  # Scale height
         scaled_image = image.resize((scaled_width, scaled_height), Image.LANCZOS)
-        print(f"Scaled image size: {scaled_width}x{scaled_height}")
         return ImageTk.PhotoImage(image), ImageTk.PhotoImage(scaled_image)
 
-    def on_press(self, event):
+    def on_press(self):
         """
         Handles the press event to scale down the image.
-
-        Parameters
-        ----------
-        event : Event
-            The event object.
         """
-        print('Image clicked!')
         _, self.scaled_image = self.load_and_scale_image(0.9)  # Scale down the image slightly
         self.update_image_position()
-        print('Image scaled down.')
 
     def on_release(self, event):
         """
@@ -83,10 +74,8 @@ class ImageLabel(ttk.Frame):
         event : Event
             The event object.
         """
-        print('Image released!')
         _, self.scaled_image = self.load_and_scale_image(1.0)  # Return the image to its original size
         self.update_image_position()
-        print('Image returned to original size.')
         self.on_click(event)  # Trigger the click handler
 
     def update_image_position(self):
