@@ -70,6 +70,7 @@ class SearchHandler:
 
         query_entry = tk.Entry(search_window, font=("Helvetica", 14), width=30)
         query_entry.pack(pady=10)
+        query_entry.focus_set()  # Set focus to the input field
 
         def submit_query():
             query = query_entry.get()
@@ -80,6 +81,9 @@ class SearchHandler:
 
         submit_button = tk.Button(search_window, text="Submit", font=("Helvetica", 14), command=submit_query)
         submit_button.pack(pady=10)
+
+        # Bind the Enter key to the submit button
+        search_window.bind('<Return>', lambda event: submit_query())
 
         # Calculate the required window size based on the content
         search_window.update_idletasks()
