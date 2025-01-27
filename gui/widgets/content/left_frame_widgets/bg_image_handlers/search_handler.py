@@ -3,7 +3,6 @@ import tkinter as tk
 from io import BytesIO
 import requests
 from bs4 import BeautifulSoup
-from tkinter import simpledialog
 import cv2
 import numpy as np
 
@@ -35,7 +34,7 @@ class SearchHandler:
                     img_response = requests.get(img_url)
                     img = Image.open(BytesIO(img_response.content))
                     img_objects.append(img)
-                    if len(img_objects) == 5:
+                    if len(img_objects) == 10:  # Change the limit to 10
                         break
                 except Exception as e:
                     print(f"Failed to download image from {img_url}: {e}")
@@ -100,7 +99,7 @@ class SearchHandler:
         """
         search_window = tk.Toplevel()
         search_window.title("Search")
-        search_window.geometry("400x150")
+        search_window.geometry("400x200")
 
         label = tk.Label(search_window, text="Enter search query:", font=("Helvetica", 14))
         label.pack(pady=10)

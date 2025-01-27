@@ -1,6 +1,3 @@
-# gui/widgets/content/left_frame_widgets/bg_image_section.py
-
-import tkinter as tk
 from tkinter import ttk
 from .bg_image_handlers.image_handler import ImageHandler
 from .bg_image_handlers.background_handler import BackgroundHandler
