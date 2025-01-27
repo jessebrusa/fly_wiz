@@ -1,3 +1,5 @@
+# gui/widgets/content/left_frame_widgets/bg_image_handlers/image_handler.py
+
 from tkinter import filedialog
 from PIL import Image
 
@@ -42,6 +44,6 @@ class ImageHandler:
 
     def is_image_present(self, image_key):
         """
-        Check if an image is present in the data handler.
+        Check if an image is present in the data handler for the given image key.
         """
         return self.data_handler.get_data().get(image_key) is not None

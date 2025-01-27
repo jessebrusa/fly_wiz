@@ -9,46 +9,50 @@ class ColorPickerHandler:
 
     def extract_colors(self):
         """
-        Extract the two most represented colors and the darkest and lightest colors from the image(s).
-        Store these colors in the data handler.
+        Extract colors from the flyer image and update the data handler.
         """
-        combined_image = self.data_handler.get_data().get('combined_image')
-        image1 = self.data_handler.get_data().get('image1')
-        image2 = self.data_handler.get_data().get('image2')
+        try:
+            combined_image = self.data_handler.get_data().get('combined_image')
+            image1 = self.data_handler.get_data().get('image1')
+            image2 = self.data_handler.get_data().get('image2')
 
-        if combined_image:
-            self.extract_colors_from_image(combined_image)
-        elif image1:
-            self.extract_colors_from_image(image1)
-        elif image2:
-            self.extract_colors_from_image(image2)
-        else:
-            # No images provided, set default colors
-            self.data_handler.update_data('bg_color', {
-                'color1': (255, 255, 255),
-                'color2': (255, 255, 255),
-                'direction': 'Top to Bottom',
-                'gradient_state': 1
-            })
-            self.data_handler.update_data('lightest_color', (255, 255, 255))
-            self.data_handler.update_data('darkest_color', (0, 0, 0))
+            if combined_image:
+                self.extract_colors_from_image(combined_image)
+            elif image1:
+                self.extract_colors_from_image(image1)
+            elif image2:
+                self.extract_colors_from_image(image2)
+            else:
+                # No images provided, set default colors
+                self.data_handler.update_data('bg_color', {
+                    'color1': (255, 255, 255),
+                    'color2': (255, 255, 255),
+                    'direction': 'Top to Bottom',
+                    'gradient_state': 1
+                })
+                self.data_handler.update_data('lightest_color', (255, 255, 255))
+                self.data_handler.update_data('darkest_color', (0, 0, 0))
 
-        # Print the extracted colors
-        bg_color = self.data_handler.get_data().get('bg_color')
-        lightest_color = self.data_handler.get_data().get('lightest_color')
-        darkest_color = self.data_handler.get_data().get('darkest_color')
-        print("Extracted colors:", bg_color, lightest_color, darkest_color)
+            # Print the extracted colors
+            bg_color = self.data_handler.get_data().get('bg_color')
+            lightest_color = self.data_handler.get_data().get('lightest_color')
+            darkest_color = self.data_handler.get_data().get('darkest_color')
+            print("Extracted colors:", bg_color, lightest_color, darkest_color)
 
-        # Call the flyer manipulator to apply the background color
-        self.flyer_manipulator.apply_background_color()
-        print("Applied background color")
+            # Call the flyer manipulator to apply the background color
+            self.flyer_manipulator.apply_background_color()
+            print("Applied background color")
 
-        # Update the flyer
-        self.flyer_manipulator.main_app.update_flyer()
+            # Update the flyer
+            self.flyer_manipulator.update_flyer()
 
-        # Update the GUI
-        self.flyer_manipulator.main_app.update_gui()
+            # Update the individual sections
+            self.flyer_manipulator.main_app.content_section.left_frame.bg_image_section.update_ui()
+            self.flyer_manipulator.main_app.content_section.right_frame.flyer_image_section.update_image()
 
+        except Exception as e:
+            print(f"An error occurred while extracting colors: {e}")
+    
     def extract_colors_from_image(self, image):
         """
         Extract the two most represented colors and the darkest and lightest colors from the image.

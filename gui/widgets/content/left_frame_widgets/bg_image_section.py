@@ -1,3 +1,6 @@
+# gui/widgets/content/left_frame_widgets/bg_image_section.py
+
+import tkinter as tk
 from tkinter import ttk
 from .bg_image_handlers.image_handler import ImageHandler
 from .bg_image_handlers.background_handler import BackgroundHandler
@@ -121,5 +124,6 @@ class BgImageSection(ttk.Frame):
         """
         Update the labels and buttons within the background image section.
         """
-        self.create_image_section('image1', 1)
-        self.create_image_section('image2', 2)
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.create_label_and_buttons()

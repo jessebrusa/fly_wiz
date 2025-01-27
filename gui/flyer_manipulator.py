@@ -1,38 +1,11 @@
+# gui/flyer_manipulator.py
+
 from gui.flyer_manipulator_widgets.base_image_creator import BaseImageCreator
 from gui.flyer_manipulator_widgets.background_applier import BackgroundApplier
 from gui.flyer_manipulator_widgets.layouts import standard, flyer, halfsheet, info, \
     landscape_movie, large_picture, portrait_movie
 
 class FlyerManipulator:
-    """
-    A class to create and manipulate a base blank image.
-
-    Attributes
-    ----------
-    image : Image
-        The Pillow image to be manipulated.
-    data_handler : DataHandler
-        The data handler instance to update data.
-    main_app : FlyWizGui
-        The main application instance.
-    current_layout : str
-        The current layout being used.
-
-    Methods
-    -------
-    create_base_image():
-        Creates a base blank image with dimensions 11 inches by 8.5 inches.
-    update_data_handler():
-        Updates the data handler with the current image.
-    apply_background_color():
-        Apply the background color from the data handler to the flyer image.
-    place_images_on_flyer():
-        Places images from data_handler on the flyer image.
-    update_flyer():
-        Updates the flyer by placing images on it.
-    set_layout(layout_name):
-        Sets the current layout and updates the flyer.
-    """
     def __init__(self, data_handler, main_app):
         """
         Initializes the FlyerManipulator and creates the base blank image.
@@ -108,6 +81,7 @@ class FlyerManipulator:
         """
         self.apply_background_color()
         self.apply_layout()
+        self.main_app.content_section.right_frame.flyer_image_section.update_image()
 
     def set_layout(self, layout_name):
         """

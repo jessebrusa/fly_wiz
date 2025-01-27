@@ -1,3 +1,5 @@
+# gui/widgets/content/content.py
+
 from tkinter import ttk
 from gui.widgets.content.left_frame import LeftFrame
 from gui.widgets.content.right_frame import RightFrame
@@ -63,16 +65,6 @@ class ContentSection(ttk.Frame):
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
     def create_right_frame(self):
-        """
-        Creates and places the right frame in the content section.
-        """
-        self.right_frame = RightFrame(self, self.data_handler, self.main_app)
-        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
-        """
-        Creates and places the right frame in the content section.
-        """
-        self.right_frame = RightFrame(self, self.data_handler, self.main_app)
-        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
         """
         Creates and places the right frame in the content section.
         """

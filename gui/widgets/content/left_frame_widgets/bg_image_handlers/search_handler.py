@@ -1,3 +1,5 @@
+# gui/widgets/content/left_frame_widgets/bg_image_handlers/search_handler.py
+
 from PIL import Image, ImageTk
 import tkinter as tk
 from io import BytesIO
@@ -82,7 +84,6 @@ class SearchHandler:
         self.data_handler.update_data(image_key, img_upscaled_pil)
         self.data_handler.save('test_save.json')
         self.flyer_manipulator.update_flyer()
-        self.flyer_manipulator.main_app.update_gui()
         self.update_ui_callback()  # Call the callback to update the UI
         results_window.destroy()
 
