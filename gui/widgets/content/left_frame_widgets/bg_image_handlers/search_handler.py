@@ -45,19 +45,27 @@ class SearchHandler:
         """
         Display the search results in a new window.
         """
+        # Calculate the required window size
+        num_images = len(img_objects)
+        num_columns = 5
+        num_rows = (num_images + num_columns - 1) // num_columns
+        thumbnail_size = 150
+        window_width = num_columns * (thumbnail_size + 10) + 20
+        window_height = num_rows * (thumbnail_size + 50) + 20
+
         results_window = tk.Toplevel()
         results_window.title("Search Results")
-        results_window.geometry("800x400")
+        results_window.geometry(f"{window_width}x{window_height}")
 
         for i, img in enumerate(img_objects):
             self.original_images[i] = img  # Store the original image
             thumbnail_img = img.copy()
-            thumbnail_img.thumbnail((150, 150), Image.LANCZOS)  # Use LANCZOS for high-quality resizing
+            thumbnail_img.thumbnail((thumbnail_size, thumbnail_size), Image.LANCZOS)  # Use LANCZOS for high-quality resizing
             img_tk = ImageTk.PhotoImage(thumbnail_img)
             
             # Create a frame for each image and label
             frame = tk.Frame(results_window)
-            frame.grid(row=i // 5, column=i % 5, padx=5, pady=5)
+            frame.grid(row=i // num_columns, column=i % num_columns, padx=5, pady=5)
             
             # Add a label with a larger font size above each image
             label = tk.Label(frame, text=f"Image {i+1}", font=("Helvetica", 12))
