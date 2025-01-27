@@ -1,8 +1,6 @@
 from PIL import Image, ImageTk
 import tkinter as tk
-from io import BytesIO
-import requests
-from bs4 import BeautifulSoup
+from .image_search.image_search import ImageSearch
 
 class SearchHandler:
     def __init__(self, data_handler, flyer_manipulator, update_ui_callback):
@@ -10,34 +8,7 @@ class SearchHandler:
         self.flyer_manipulator = flyer_manipulator
         self.update_ui_callback = update_ui_callback
         self.original_images = {}  # Dictionary to store original images
-
-    def google_img_search(self, query):
-        """
-        Perform a Google image search and return a list of image objects.
-        """
-        search_url = f"https://www.google.com/search?tbm=isch&q={query}"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
-        }
-        response = requests.get(search_url, headers=headers)
-        soup = BeautifulSoup(response.text, "html.parser")
-        img_tags = soup.find_all("img")
-
-        img_objects = []
-        for img_tag in img_tags:
-            img_url = img_tag.get("src")
-            if img_url and img_url.startswith("http"):
-                try:
-                    # Attempt to find the original source of the image
-                    img_response = requests.get(img_url)
-                    img = Image.open(BytesIO(img_response.content))
-                    img_objects.append(img)
-                    if len(img_objects) == 10:  # Change the limit to 10
-                        break
-                except Exception as e:
-                    print(f"Failed to download image from {img_url}: {e}")
-
-        return img_objects
+        self.image_search = ImageSearch()  # Initialize the ImageSearch class
 
     def display_search_results(self, img_objects, image_key):
         """
@@ -103,7 +74,7 @@ class SearchHandler:
         def submit_query():
             query = query_entry.get()
             if query:
-                img_objects = self.google_img_search(query)
+                img_objects = self.image_search.google_img_search(query)
                 self.display_search_results(img_objects, image_key)
             search_window.destroy()
 
