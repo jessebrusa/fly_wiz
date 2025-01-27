@@ -4,16 +4,14 @@ from .handlers.color_picker_handler import ColorPickerHandler
 LABEL_FONT = ("Helvetica", 16)
 
 class BgImageSection(ttk.Frame):
-    def __init__(self, parent, ui_helpers, image_handler, color_wheel_handler, open_search_window):
+    def __init__(self, parent, image_handler, color_wheel_handler, open_search_window):
         """
-        Initializes the background image section with the parent widget, UI helpers, image handler, and callbacks.
+        Initializes the background image section with the parent widget, image handler, color wheel handler, and callbacks.
 
         Parameters
         ----------
         parent : widget
             The parent widget.
-        ui_helpers : UIHelpers
-            The UI helpers instance.
         image_handler : ImageHandler
             The image handler instance.
         color_wheel_handler : ColorWheelHandler
@@ -22,7 +20,6 @@ class BgImageSection(ttk.Frame):
             The callback function to open the search window.
         """
         super().__init__(parent, borderwidth=1, relief="solid", width=200)
-        self.ui_helpers = ui_helpers
         self.image_handler = image_handler
         self.color_wheel_handler = color_wheel_handler
         self.open_search_window = open_search_window

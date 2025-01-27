@@ -4,7 +4,6 @@ from gui.widgets.content.left_frame_widgets.handlers.image_handler import ImageH
 from gui.widgets.content.left_frame_widgets.handlers.background_handler import BackgroundHandler
 from gui.widgets.content.left_frame_widgets.handlers.color_wheel_handler import ColorWheelHandler
 from gui.widgets.content.left_frame_widgets.handlers.search_handler import SearchHandler
-from gui.widgets.content.left_frame_widgets.ui_helpers import UIHelpers
 from gui.widgets.content.left_frame_widgets.title_section import TitleSection
 from gui.widgets.content.left_frame_widgets.styled_info_section import StyledInfoSection
 from gui.widgets.content.left_frame_widgets.text_info_section import TextInfoSection
@@ -29,7 +28,6 @@ class LeftFrame(ttk.Frame):
         self.background_handler = BackgroundHandler(data_handler, main_app)
         self.color_wheel_handler = ColorWheelHandler(self, data_handler, main_app)
         self.search_handler = SearchHandler(data_handler, main_app.flyer_manipulator, self.update_ui)  # Correct initialization
-        self.ui_helpers = UIHelpers()  # Initialize UIHelpers
         self.create_styles()
         self.create_sections()
 
@@ -46,20 +44,20 @@ class LeftFrame(ttk.Frame):
         """
         Create sections within the LeftFrame.
         """
-        self.title_section = TitleSection(self, self.ui_helpers)
+        self.title_section = TitleSection(self)
         self.title_text_area = self.title_section.text_area
 
-        # Create the section for the image buttons
-        self.bg_image_section = BgImageSection(self, self.ui_helpers, self.image_handler, self.color_wheel_handler, self.search_handler.open_search_window)
-
-        self.styled_info_section = StyledInfoSection(self, self.ui_helpers)
+        self.styled_info_section = StyledInfoSection(self)
         self.styled_info_text_area = self.styled_info_section.text_area
 
-        self.text_info_section = TextInfoSection(self, self.ui_helpers)
+        self.text_info_section = TextInfoSection(self)
         self.text_info_text_area = self.text_info_section.text_area
 
-        self.footer_section = FooterSection(self, self.ui_helpers)
+        self.footer_section = FooterSection(self)
         self.footer_text_area = self.footer_section.text_area
+
+        # Create the section for the image buttons
+        self.bg_image_section = BgImageSection(self, self.image_handler, self.color_wheel_handler, self.search_handler.open_search_window)
 
     def update_ui(self):
         """
