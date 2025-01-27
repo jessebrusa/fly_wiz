@@ -1,10 +1,10 @@
 from tkinter import ttk
 from tkinter import filedialog
 
-class RightSubsection(ttk.Frame):
+class ExportSection(ttk.Frame):
     def __init__(self, parent, data_handler, main_app):
         """
-        Initializes the right subsection with the parent widget, data handler, and main application instance.
+        Initializes the export section with the parent widget, data handler, and main application instance.
 
         Parameters
         ----------
@@ -18,11 +18,11 @@ class RightSubsection(ttk.Frame):
         super().__init__(parent, borderwidth=1, relief="solid")
         self.data_handler = data_handler
         self.main_app = main_app
-        self.create_subsection()
+        self.create_section()
 
-    def create_subsection(self):
+    def create_section(self):
         """
-        Creates and places the content in the right subsection.
+        Creates and places the content in the export section.
         """
         # Create a frame to center the buttons vertically and horizontally
         button_frame = ttk.Frame(self)

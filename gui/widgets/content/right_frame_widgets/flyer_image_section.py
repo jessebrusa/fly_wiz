@@ -1,12 +1,10 @@
-# gui/widgets/content/right_frame_widgets/first_section.py
-
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-class FirstSection(ttk.Frame):
+class FlyerImageSection(ttk.Frame):
     def __init__(self, parent, data_handler):
         """
-        Initializes the first section with the parent widget and data handler.
+        Initializes the flyer image section with the parent widget and data handler.
 
         Parameters
         ----------
@@ -21,14 +19,13 @@ class FirstSection(ttk.Frame):
 
     def create_section(self):
         """
-        Creates and places the content in the first section.
+        Creates and places the content in the flyer image section.
         """
         try:
             image = self.data_handler.get_data().get('flyer')
             if image:
-                # Set the desired resolution for display with padding
-                desired_width = 650  # Adjusted width to fit within the section
-                desired_height = 425  # Adjusted height to fit within the section
+                desired_width = 650  
+                desired_height = 425  
                 scaled_image = image.resize((desired_width, desired_height), Image.LANCZOS)
                 
                 image_tk = ImageTk.PhotoImage(scaled_image)
@@ -39,4 +36,4 @@ class FirstSection(ttk.Frame):
                 self.image_label = ttk.Label(self, text="No image found")
                 self.image_label.pack(expand=True, padx=10, pady=10)  # Add padding around the label
         except Exception as e:
-            print(f"An error occurred while creating the first section: {e}")
+            print(f"An error occurred while creating the flyer image section: {e}")

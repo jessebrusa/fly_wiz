@@ -1,25 +1,25 @@
 from tkinter import ttk
 from ..img.image_label import ImageLabel
 
-class LeftSubsection(ttk.Frame):
-    def __init__(self, parent, change_layout_callback):
+class LayoutSection(ttk.Frame):
+    def __init__(self, parent, main_app):
         """
-        Initializes the left subsection with the parent widget and change layout callback.
+        Initializes the layout section with the parent widget and main application instance.
 
         Parameters
         ----------
         parent : widget
             The parent widget.
-        change_layout_callback : function
-            The callback function to change the layout.
+        main_app : FlyWizGui
+            The main application instance.
         """
         super().__init__(parent, borderwidth=1, relief="solid")
-        self.change_layout_callback = change_layout_callback
-        self.create_subsection()
+        self.main_app = main_app
+        self.create_section()
 
-    def create_subsection(self):
+    def create_section(self):
         """
-        Creates and places the content in the left subsection.
+        Creates and places the content in the layout section.
         """
         layout_names = ["standard", "flyer", "halfsheet", "info", "landscape_movie", "large_picture", "portrait_movie"]
         image_paths = [
@@ -35,7 +35,7 @@ class LeftSubsection(ttk.Frame):
                 layout_name = layout_names[row * 3 + col]
                 image_path = image_paths[row * 3 + col]
                 
-                image_label = ImageLabel(self, image_path, 110, 1, lambda event, name=layout_name: self.change_layout_callback(name))
+                image_label = ImageLabel(self, image_path, 110, 1, lambda event, name=layout_name: self.change_layout(name))
                 image_label.grid(row=row+1, column=col, sticky="nsew", padx=5, pady=5)
 
         # Configure the grid to ensure labels expand to fill the space
@@ -56,3 +56,10 @@ class LeftSubsection(ttk.Frame):
             self.grid_rowconfigure(row, weight=1)
         for col in range(cols):
             self.grid_columnconfigure(col, weight=1)
+
+    def change_layout(self, layout_name):
+        """
+        Change the layout of the flyer.
+        """
+        self.main_app.flyer_manipulator.set_layout(layout_name)
+        self.main_app.update_gui()
