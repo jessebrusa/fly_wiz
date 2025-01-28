@@ -28,7 +28,6 @@ class TitleSection(BaseSection):
 
     def update_text(self):
         if self.title_text_changed():
-            print(f"Title text changed: {self.get_title_text()}")
             self.set_title_text(self.get_title_text())
             self.update_data_handler()
             self.update_flyer_manipulator()
