@@ -5,7 +5,7 @@ LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
 
 class BaseSection(ttk.Frame):
-    def __init__(self, parent, label_text):
+    def __init__(self, parent, label_text, data_handler=None):
         """
         Initializes the base section with the parent widget and label text.
 
@@ -18,6 +18,7 @@ class BaseSection(ttk.Frame):
         """
         super().__init__(parent, borderwidth=1, relief="solid", width=200)
         self.label_text = label_text
+        self.data_handler = data_handler
         self.pack(fill="both", expand=True, padx=5, pady=5)
         self.grid_propagate(False)
         self.grid_rowconfigure(0, weight=1)

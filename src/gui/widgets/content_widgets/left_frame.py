@@ -36,7 +36,7 @@ class LeftFrame(ttk.Frame):
         """
         Create sections within the LeftFrame.
         """
-        self.title_section = TitleSection(self)
+        self.title_section = TitleSection(self, self.data_handler)
         self.title_text_area = self.title_section.text_area
 
         self.bg_image_section = BgImageSection(self, self.data_handler, self.main_app)
