@@ -1,6 +1,6 @@
-from flyer_manipulator_tools.base_image_creator import BaseImageCreator
-from flyer_manipulator_tools.background_applier import BackgroundApplier
-from flyer_manipulator_tools.layouts import standard, flyer, halfsheet, info, landscape_movie, large_picture, portrait_movie
+from src.flyer_manipulator_tools.base_image_creator import BaseImageCreator
+from src.flyer_manipulator_tools.background_applier import BackgroundApplier
+from src.flyer_manipulator_tools.layouts import standard, flyer, halfsheet, info, landscape_movie, large_picture, portrait_movie
 
 class FlyerManipulator:
     def __init__(self, data_handler, main_app):
