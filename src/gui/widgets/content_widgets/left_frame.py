@@ -1,12 +1,10 @@
-# gui/widgets/content/left_frame.py
-
 import tkinter as tk
 from tkinter import ttk
-from gui.widgets.content.left_frame_widgets.title_section import TitleSection
-from gui.widgets.content.left_frame_widgets.styled_info_section import StyledInfoSection
-from gui.widgets.content.left_frame_widgets.text_info_section import TextInfoSection
-from gui.widgets.content.left_frame_widgets.footer_section import FooterSection
-from gui.widgets.content.left_frame_widgets.bg_image_section import BgImageSection
+from .left_frame_widgets.title_section import TitleSection
+from .left_frame_widgets.styled_info_section import StyledInfoSection
+from .left_frame_widgets.text_info_section import TextInfoSection
+from .left_frame_widgets.footer_section import FooterSection
+from .left_frame_widgets.bg_image_section import BgImageSection
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)

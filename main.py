@@ -1,6 +1,6 @@
 from src.data_handler import DataHandler
 from src.flyer_manipulator import FlyerManipulator
-from gui.main_window import FlyWizGui
+from src.gui.main_window import FlyWizGui
 
 class FlyWizApp:
     def __init__(self):

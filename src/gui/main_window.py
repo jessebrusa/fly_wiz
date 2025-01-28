@@ -1,6 +1,6 @@
 import tkinter as tk
-from gui.widgets.header import HeaderSection
-from gui.widgets.content.content import ContentSection
+from .widgets.header import HeaderSection
+from .widgets.content import ContentSection
 import logging
 
 class FlyWizGui(tk.Tk):

@@ -1,5 +1,6 @@
 from tkinter import ttk
 from .layout_section_tools.image_label import ImageLabel
+import os
 
 class LayoutSection(ttk.Frame):
     def __init__(self, parent, main_app):
@@ -23,18 +24,20 @@ class LayoutSection(ttk.Frame):
         """
         layout_names = ["standard", "flyer", "halfsheet", "info", "landscape_movie", "large_picture", "portrait_movie"]
         image_paths = [
-            "./gui/widgets/content/img/standard.jpg",
-            "./gui/widgets/content/img/flyer-halfsheet.jpg",
-            "./gui/widgets/content/img/info.jpg",
-            "./gui/widgets/content/img/landscape_movie.jpg",
-            "./gui/widgets/content/img/portrait_movie.jpg",
-            "./gui/widgets/content/img/large_picture.jpg"
+            os.path.join(os.path.dirname(__file__), "layout_section_tools", "layout_images", "standard.jpg"),
+            os.path.join(os.path.dirname(__file__), "layout_section_tools", "layout_images", "flyer-halfsheet.jpg"),
+            os.path.join(os.path.dirname(__file__), "layout_section_tools", "layout_images", "info.jpg"),
+            os.path.join(os.path.dirname(__file__), "layout_section_tools", "layout_images", "landscape_movie.jpg"),
+            os.path.join(os.path.dirname(__file__), "layout_section_tools", "layout_images", "portrait_movie.jpg"),
+            os.path.join(os.path.dirname(__file__), "layout_section_tools", "layout_images", "large_picture.jpg")
         ]
+        
+
+
         for row in range(2):
             for col in range(3):
                 layout_name = layout_names[row * 3 + col]
                 image_path = image_paths[row * 3 + col]
-                
                 image_label = ImageLabel(self, image_path, 110, 1, lambda name=layout_name: self.change_layout(name))
                 image_label.grid(row=row+1, column=col, sticky="nsew", padx=5, pady=5)
 
