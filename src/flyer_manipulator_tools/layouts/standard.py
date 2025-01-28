@@ -61,14 +61,36 @@ class Standard(BaseLayout):
         x = (image_width - text_width) // 2
         return x
 
-    def place_title(self, y=100, font_size=None, color="black"):
+    def center_text_vertically_top_25(self, text, font):
+        """
+        Calculate the y-coordinate to center the text vertically within the top 25% of the flyer.
+
+        Parameters
+        ----------
+        text : str
+            The text to be centered.
+        font : ImageFont
+            The font used to render the text.
+
+        Returns
+        -------
+        int
+            The y-coordinate to center the text vertically within the top 25% of the flyer.
+        """
+        draw = ImageDraw.Draw(self.flyer_image)
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_height = text_bbox[3] - text_bbox[1]
+        image_height = self.flyer_image.height
+        top_25_height = image_height // 4
+        y = (top_25_height - text_height) // 2
+        return y
+
+    def place_title(self, font_size=None, color="black"):
         """
         Place the title text on the flyer at a specific location for the standard layout.
 
         Parameters
         ----------
-        y : int
-            The y-coordinate of the title text.
         font_size : int or None
             The size of the font. If None, the default size from the data handler is used.
         color : str
@@ -87,8 +109,11 @@ class Standard(BaseLayout):
             print(f"Failed to load font: {font_path}. Using default font.")
             font = ImageFont.load_default()
         
-        # Calculate the x-coordinate to center the text
+        # Calculate the x-coordinate to center the text horizontally
         x = self.center_text_horizontally(title_text, font)
+        
+        # Calculate the y-coordinate to center the text vertically within the top 25%
+        y = self.center_text_vertically_top_25(title_text, font)
         
         # Draw the text on the flyer
         draw = ImageDraw.Draw(self.flyer_image)
@@ -98,12 +123,6 @@ class Standard(BaseLayout):
         """
         Apply the standard layout to the flyer.
         """
-        self.place_title(y=100, color="black")
-
-        return self.flyer_image
-        """
-        Apply the standard layout to the flyer.
-        """
-        self.place_title(y=100, color="black")
+        self.place_title(color="black")
 
         return self.flyer_image
