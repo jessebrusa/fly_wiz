@@ -58,6 +58,7 @@ class FlyerManipulator:
         self.main_app.content_section.right_frame.flyer_image_section.update_image()
 
     def update_flyer(self):
+        print("Updating flyer...")
         self.apply_background_color()
         self.apply_layout()
         self.update_flyer_image_gui()

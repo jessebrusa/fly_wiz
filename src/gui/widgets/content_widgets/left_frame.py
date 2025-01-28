@@ -36,7 +36,7 @@ class LeftFrame(ttk.Frame):
         """
         Create sections within the LeftFrame.
         """
-        self.title_section = TitleSection(self, self.data_handler)
+        self.title_section = TitleSection(self, self.data_handler, self.main_app)
         self.title_text_area = self.title_section.text_area
 
         self.bg_image_section = BgImageSection(self, self.data_handler, self.main_app)
@@ -49,17 +49,3 @@ class LeftFrame(ttk.Frame):
 
         self.footer_section = FooterSection(self)
         self.footer_text_area = self.footer_section.text_area
-
-    def update_text_areas(self):
-        """
-        Update the text areas with the current data from the data handler.
-        """
-        data = self.data_handler.get_data()
-        self.title_text_area.delete("1.0", tk.END)
-        self.title_text_area.insert(tk.END, data.get("title", ""))
-        self.styled_info_text_area.delete("1.0", tk.END)
-        self.styled_info_text_area.insert(tk.END, data.get("styled_info", ""))
-        self.text_info_text_area.delete("1.0", tk.END)
-        self.text_info_text_area.insert(tk.END, data.get("text_info", ""))
-        self.footer_text_area.delete("1.0", tk.END)
-        self.footer_text_area.insert(tk.END, data.get("footer", ""))
