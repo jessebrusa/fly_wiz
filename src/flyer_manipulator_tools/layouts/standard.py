@@ -6,11 +6,11 @@ class Standard(BaseLayout):
         super().__init__(flyer_image, data_handler)
         self.font_paths = {
             "Bernard Condensed": "src/flyer_manipulator_tools/layouts/fonts/BernardMTCondensed.ttf",
-            "Arial": "path/to/arial.ttf",
-            "Courier": "path/to/courier.ttf",
-            "Helvetica": "path/to/helvetica.ttf",
-            "Times New Roman": "path/to/times_new_roman.ttf",
-            "Verdana": "path/to/verdana.ttf"
+            "Arial": "src\flyer_manipulator_tools\layouts\fonts\Arial.ttf",
+            "Courier": "src\flyer_manipulator_tools\layouts\fonts\CourierPrime-Bold.ttf",
+            "Helvetica": "src\flyer_manipulator_tools\layouts\fonts\Helvetica-Bold.ttf",
+            "Times New Roman": "src\flyer_manipulator_tools\layouts\fonts\times new roman bold.ttf",
+            "Verdana": "src\flyer_manipulator_tools\layouts\fonts\VERDANAI.TTF"
         }
         self.apply_layout()
 
