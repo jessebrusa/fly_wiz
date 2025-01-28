@@ -35,7 +35,7 @@ class DataHandler:
             'title': {
                 'text': '',
                 'font': 'Bernard Condensed',
-                'font_size': 40,
+                'font_size': 60,
             },
             'styled_info': '',
             'text_info': '',

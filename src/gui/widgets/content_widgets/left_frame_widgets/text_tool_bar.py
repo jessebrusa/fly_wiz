@@ -2,10 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 
 class TextToolBar(tk.Frame):
-    def __init__(self, parent, data_handler, show_align_buttons=True, show_font_dropdown=True, 
+    def __init__(self, parent, data_handler, flyer_manipulator, show_align_buttons=True, show_font_dropdown=True, 
                  show_font_size_dropdown=True, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.data_handler = data_handler  # Store the data_handler instance
+        self.flyer_manipulator = flyer_manipulator  # Store the flyer_manipulator instance
         self.show_align_buttons = show_align_buttons
         self.show_font_dropdown = show_font_dropdown
         self.show_font_size_dropdown = show_font_size_dropdown
@@ -46,9 +47,10 @@ class TextToolBar(tk.Frame):
             # Create a dropdown for font sizes
             self.font_size_var = tk.StringVar()
             self.font_size_dropdown = ttk.Combobox(self, textvariable=self.font_size_var)
-            self.font_size_dropdown['values'] = tuple(str(size) for size in range(8, 73, 2))
+            self.font_size_dropdown['values'] = tuple(str(size) for size in range(40, 201, 2))
             self.font_size_dropdown.grid(row=0, column=col, padx=5, pady=0, sticky="ew")
-            self.font_size_dropdown.current(4)  # Set default value (16)
+            self.font_size_dropdown.current(self.font_size_dropdown['values'].index('70'))  # Set default value (70)
+            self.font_size_dropdown.bind("<<ComboboxSelected>>", self.on_font_size_selected)
             col += 1
 
         # Configure grid to ensure elements are spaced evenly
@@ -63,6 +65,21 @@ class TextToolBar(tk.Frame):
         title_data = self.data_handler.get_data().get('title', {})
         title_data['font'] = selected_font
         self.data_handler.update_data('title', title_data)
+        
+        # Call the update_flyer method of the flyer_manipulator
+        self.flyer_manipulator.update_flyer()
+
+    def on_font_size_selected(self, event):
+        selected_font_size = self.font_size_var.get()
+        print(f"Selected font size: {selected_font_size}")
+        
+        # Update the DataHandler with the selected font size
+        title_data = self.data_handler.get_data().get('title', {})
+        title_data['font_size'] = int(selected_font_size)
+        self.data_handler.update_data('title', title_data)
+        
+        # Call the update_flyer method of the flyer_manipulator
+        self.flyer_manipulator.update_flyer()
 
     def left_align(self):
         print("Left align")
@@ -71,5 +88,4 @@ class TextToolBar(tk.Frame):
         print("Center align")
 
     def right_align(self):
-        print("Right align")
         print("Right align")
