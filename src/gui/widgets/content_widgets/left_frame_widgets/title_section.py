@@ -3,7 +3,7 @@ from .base_section import BaseSection
 
 class TitleSection(BaseSection):
     def __init__(self, parent, data_handler, main_app):
-        super().__init__(parent, 'Title')
+        super().__init__(parent, 'Title', data_handler=data_handler, show_align_buttons=False)
         self.data_handler = data_handler
         self.main_app = main_app  
         self.title_text = self.get_title_text()

@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 class TextToolBar(tk.Frame):
-    def __init__(self, parent, show_align_buttons=True, show_font_dropdown=True, show_font_size_dropdown=True, *args, **kwargs):
+    def __init__(self, parent, show_align_buttons=True, show_font_dropdown=True, 
+                 show_font_size_dropdown=True, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.show_align_buttons = show_align_buttons
         self.show_font_dropdown = show_font_dropdown
@@ -34,9 +35,10 @@ class TextToolBar(tk.Frame):
             # Create a dropdown for fonts
             self.font_var = tk.StringVar()
             self.font_dropdown = ttk.Combobox(self, textvariable=self.font_var)
-            self.font_dropdown['values'] = ("Arial", "Courier", "Helvetica", "Times New Roman", "Verdana")
+            self.font_dropdown['values'] = ("Bernard Condensed", "Arial", "Courier", "Helvetica", "Times New Roman", "Verdana")
             self.font_dropdown.grid(row=0, column=col, padx=5, pady=0, sticky="ew")
             self.font_dropdown.current(0)  # Set default value
+            self.font_dropdown.bind("<<ComboboxSelected>>", self.on_font_selected)
             col += 1
 
         if self.show_font_size_dropdown:
@@ -51,6 +53,11 @@ class TextToolBar(tk.Frame):
         # Configure grid to ensure elements are spaced evenly
         for i in range(col):
             self.grid_columnconfigure(i, weight=1)
+
+    def on_font_selected(self, event):
+        selected_font = self.font_var.get()
+        print(f"Selected font: {selected_font}")
+        # Perform your desired function here
 
     def left_align(self):
         print("Left align")
