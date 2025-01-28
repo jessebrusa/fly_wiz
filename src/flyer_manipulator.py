@@ -29,6 +29,11 @@ class FlyerManipulator:
         self.image = self.background_applier.apply_background_color(self.image)
         self.update_data_handler()
 
+    def set_layout(self, layout_name):
+        print(f"Setting layout to: {layout_name}")
+        self.current_layout = layout_name
+        self.update_flyer()
+
     def apply_layout(self):
         if self.current_layout == 'standard':
             layout = standard.Standard(self.image, self.data_handler)
@@ -49,16 +54,10 @@ class FlyerManipulator:
         self.image = layout.apply_layout()
         self.update_data_handler()
 
-    def set_layout(self, layout_name):
-        print(f"Setting layout to: {layout_name}")
-        self.current_layout = layout_name
-        self.update_flyer()
-
     def update_flyer_image_gui(self):
         self.main_app.content_section.right_frame.flyer_image_section.update_image()
 
     def update_flyer(self):
-        print("Updating flyer...")
         self.apply_background_color()
         self.apply_layout()
         self.update_flyer_image_gui()

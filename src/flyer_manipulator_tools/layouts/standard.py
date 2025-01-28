@@ -2,6 +2,17 @@ from .base_layout import BaseLayout
 from PIL import ImageFont
 
 class Standard(BaseLayout):
+    def __init__(self, flyer_image, data_handler):
+        super().__init__(flyer_image, data_handler)
+        self.title_text = self.get_data_handler_title_text()
+        self.apply_layout()
+
+    def get_data_handler_title_text(self):
+        """
+        Get the title text from the data handler.
+        """
+        return self.data_handler.get_data().get("title", "")
+
     def place_title(self, x=100, y=100, font=None, font_size=40, color="black"):
         """
         Place the title text on the flyer at a specific location for the standard layout.
@@ -19,12 +30,11 @@ class Standard(BaseLayout):
         color : str
             The color of the text.
         """
-        title_text = self.data_handler.get_data().get("title", "")
         if font:
             font = ImageFont.truetype(font, font_size)
         else:
             font = ImageFont.load_default()
-        self.draw.text((x, y), title_text, font=font, fill=color)
+        self.draw.text((x, y), self.title_text, font=font, fill=color)  
 
     def apply_layout(self):
         """
