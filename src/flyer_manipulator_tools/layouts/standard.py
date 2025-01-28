@@ -4,16 +4,41 @@ from PIL import ImageFont
 class Standard(BaseLayout):
     def __init__(self, flyer_image, data_handler):
         super().__init__(flyer_image, data_handler)
-        self.default_font_path = "src/flyer_manipulator_tools/layouts/fonts/BernardMTCondensed.ttf"
+        self.font_paths = {
+            "Bernard Condensed": "src/flyer_manipulator_tools/layouts/fonts/BernardMTCondensed.ttf",
+            "Arial": "path/to/arial.ttf",
+            "Courier": "path/to/courier.ttf",
+            "Helvetica": "path/to/helvetica.ttf",
+            "Times New Roman": "path/to/times_new_roman.ttf",
+            "Verdana": "path/to/verdana.ttf"
+        }
         self.apply_layout()
 
-    def get_data_handler_title_text(self):
+    def get_title_text(self):
         """
         Get the title text from the data handler.
         """
-        return self.data_handler.get_data().get("title", "")
+        return self.data_handler.get_data().get("title", {}).get("text", "")
 
-    def place_title(self, x=100, y=100, font_path=None, font_size=80, color="black"):
+    def get_title_font(self):
+        """
+        Get the title font from the data handler.
+        """
+        return self.data_handler.get_data().get("title", {}).get("font", "Bernard Condensed")
+
+    def get_title_font_size(self):
+        """
+        Get the title font size from the data handler.
+        """
+        return self.data_handler.get_data().get("title", {}).get("font_size", 40)
+
+    def get_font_path(self, font_name):
+        """
+        Get the path to the TTF file for the given font name.
+        """
+        return self.font_paths.get(font_name)
+
+    def place_title(self, x=100, y=100, font_size=None, color="black"):
         """
         Place the title text on the flyer at a specific location for the standard layout.
 
@@ -23,16 +48,17 @@ class Standard(BaseLayout):
             The x-coordinate of the title text.
         y : int
             The y-coordinate of the title text.
-        font_path : str or None
-            The path to the font file to be used. If None, the default BernardMTCondensed font is used.
-        font_size : int
-            The size of the font.
+        font_size : int or None
+            The size of the font. If None, the default size from the data handler is used.
         color : str
             The color of the text.
         """
-        title_text = self.get_data_handler_title_text()
-        if font_path is None:
-            font_path = self.default_font_path
+        title_text = self.get_title_text()
+        title_font = self.get_title_font()
+        title_font_size = self.get_title_font_size()
+        font_path = self.get_font_path(title_font)
+        if font_size is None:
+            font_size = title_font_size
         try:
             font = ImageFont.truetype(font_path, font_size)
             print(f"Font loaded: {font_path} with size {font_size}")
@@ -45,6 +71,6 @@ class Standard(BaseLayout):
         """
         Apply the standard layout to the flyer.
         """
-        self.place_title(x=100, y=100, font_size=80, color="black")
+        self.place_title(x=100, y=100, color="black")
 
         return self.flyer_image

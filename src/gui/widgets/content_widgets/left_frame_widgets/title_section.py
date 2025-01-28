@@ -10,6 +10,9 @@ class TitleSection(BaseSection):
         self.monitor_title_text()
 
     def get_title_text(self):
+        """
+        Get the title text from the text widget.
+        """
         return self.text_area.get("1.0", tk.END).strip()
 
     def title_text_changed(self):
@@ -21,7 +24,12 @@ class TitleSection(BaseSection):
         self.title_text = title_text
 
     def update_data_handler(self):
-        self.data_handler.update_data('title', self.get_title_text())
+        """
+        Update the title text in the data handler.
+        """
+        title_data = self.data_handler.get_data().get('title', {})
+        title_data['text'] = self.get_title_text()
+        self.data_handler.update_data('title', title_data)
 
     def update_flyer_manipulator(self):
         self.main_app.flyer_manipulator.update_flyer()

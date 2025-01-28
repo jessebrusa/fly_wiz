@@ -32,7 +32,11 @@ class DataHandler:
         Initializes the DataHandler with an empty data dictionary.
         """
         self.data = {
-            'title': '',
+            'title': {
+                'text': '',
+                'font': 'Bernard Condensed',
+                'font_size': 40,
+            },
             'styled_info': '',
             'text_info': '',
             'footer': '',
