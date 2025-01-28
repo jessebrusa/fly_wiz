@@ -70,15 +70,7 @@ class FlyerManipulator:
             raise ValueError(f"Unknown layout: {self.current_layout}")
         self.image = layout.apply_layout()
         self.update_data_handler()
-
-    def update_flyer(self):
-        """
-        Updates the flyer by placing images on it.
-        """
-        self.apply_background_color()
-        self.apply_layout()
-        self.main_app.content_section.right_frame.flyer_image_section.update_image()
-
+    
     def set_layout(self, layout_name):
         """
         Sets the current layout and updates the flyer.
@@ -91,3 +83,14 @@ class FlyerManipulator:
         print(f"Setting layout to: {layout_name}")
         self.current_layout = layout_name
         self.update_flyer()
+        
+    def update_flyer_image_gui(self):
+        self.main_app.content_section.right_frame.flyer_image_section.update_image()
+
+    def update_flyer(self):
+        """
+        Updates the flyer by placing images on it.
+        """
+        self.apply_background_color()
+        self.apply_layout()
+        self.update_flyer_image_gui()
