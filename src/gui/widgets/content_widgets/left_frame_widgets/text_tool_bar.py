@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 
 class TextToolBar(tk.Frame):
-    def __init__(self, parent, show_align_buttons=True, show_font_dropdown=True, 
+    def __init__(self, parent, data_handler, show_align_buttons=True, show_font_dropdown=True, 
                  show_font_size_dropdown=True, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+        self.data_handler = data_handler  # Store the data_handler instance
         self.show_align_buttons = show_align_buttons
         self.show_font_dropdown = show_font_dropdown
         self.show_font_size_dropdown = show_font_size_dropdown
@@ -57,7 +58,11 @@ class TextToolBar(tk.Frame):
     def on_font_selected(self, event):
         selected_font = self.font_var.get()
         print(f"Selected font: {selected_font}")
-        # Perform your desired function here
+        
+        # Update the DataHandler with the selected font
+        title_data = self.data_handler.get_data().get('title', {})
+        title_data['font'] = selected_font
+        self.data_handler.update_data('title', title_data)
 
     def left_align(self):
         print("Left align")
@@ -66,4 +71,5 @@ class TextToolBar(tk.Frame):
         print("Center align")
 
     def right_align(self):
+        print("Right align")
         print("Right align")

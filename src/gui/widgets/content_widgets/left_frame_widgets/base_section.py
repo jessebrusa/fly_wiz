@@ -41,7 +41,7 @@ class BaseSection(ttk.Frame):
         Creates and places the content in the section.
         """
         self.text_area = self.create_label_and_text_area(self, self.label_text)
-        self.text_tool_bar = TextToolBar(self, show_align_buttons=self.show_align_buttons, show_font_dropdown=self.show_font_dropdown, show_font_size_dropdown=self.show_font_size_dropdown)
+        self.text_tool_bar = TextToolBar(self, self.data_handler, show_align_buttons=self.show_align_buttons, show_font_dropdown=self.show_font_dropdown, show_font_size_dropdown=self.show_font_size_dropdown)
         self.text_tool_bar.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     def create_label_and_text_area(self, parent, label_text):
