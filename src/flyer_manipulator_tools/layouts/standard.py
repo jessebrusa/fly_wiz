@@ -5,7 +5,6 @@ class Standard(BaseLayout):
     def __init__(self, flyer_image, data_handler):
         super().__init__(flyer_image, data_handler)
         self.default_font_path = "src/flyer_manipulator_tools/layouts/fonts/BernardMTCondensed.ttf"
-        self.title_text = self.get_data_handler_title_text()
         self.apply_layout()
 
     def get_data_handler_title_text(self):
@@ -14,7 +13,7 @@ class Standard(BaseLayout):
         """
         return self.data_handler.get_data().get("title", "")
 
-    def place_title(self, x=100, y=100, font_path=None, font_size=40, color="black"):
+    def place_title(self, x=100, y=100, font_path=None, font_size=80, color="black"):
         """
         Place the title text on the flyer at a specific location for the standard layout.
 
@@ -31,14 +30,21 @@ class Standard(BaseLayout):
         color : str
             The color of the text.
         """
+        title_text = self.get_data_handler_title_text()
         if font_path is None:
             font_path = self.default_font_path
-        font = ImageFont.truetype(font_path, font_size)
-        self.draw.text((x, y), self.title_text, font=font, fill=color)
+        try:
+            font = ImageFont.truetype(font_path, font_size)
+            print(f"Font loaded: {font_path} with size {font_size}")
+        except IOError:
+            print(f"Failed to load font: {font_path}. Using default font.")
+            font = ImageFont.load_default()
+        self.draw.text((x, y), title_text, font=font, fill=color)
 
     def apply_layout(self):
         """
         Apply the standard layout to the flyer.
         """
-        self.place_title(x=100, y=100, font_size=40, color="black")
+        self.place_title(x=100, y=100, font_size=80, color="black")
+
         return self.flyer_image
