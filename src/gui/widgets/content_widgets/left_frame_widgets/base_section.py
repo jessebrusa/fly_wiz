@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from .text_tool_bar import TextToolBar
 
 LABEL_FONT = ("Helvetica", 16)
 TEXT_AREA_FONT = ("Helvetica", 15)
@@ -29,6 +30,8 @@ class BaseSection(ttk.Frame):
         Creates and places the content in the section.
         """
         self.text_area = self.create_label_and_text_area(self, self.label_text)
+        self.text_tool_bar = TextToolBar(self)
+        self.text_tool_bar.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     def create_label_and_text_area(self, parent, label_text):
         """
