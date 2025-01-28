@@ -1,19 +1,36 @@
 from .base_layout import BaseLayout
+from PIL import ImageFont
 
 class Standard(BaseLayout):
-    def place_images(self):
+    def place_title(self, x=100, y=100, font=None, font_size=40, color="black"):
         """
-        Place images on the flyer.
+        Place the title text on the flyer at a specific location for the standard layout.
+
+        Parameters
+        ----------
+        x : int
+            The x-coordinate of the title text.
+        y : int
+            The y-coordinate of the title text.
+        font : str or None
+            The path to the font file to be used. If None, the default font is used.
+        font_size : int
+            The size of the font.
+        color : str
+            The color of the text.
         """
-        combined_image = super().place_images()
+        title_text = self.data_handler.get_data().get("title", "")
+        if font:
+            font = ImageFont.truetype(font, font_size)
+        else:
+            font = ImageFont.load_default()
+        self.draw.text((x, y), title_text, font=font, fill=color)
 
-        if combined_image:
-            # Ensure combined_image is in 'RGBA' mode
-            if combined_image.mode != 'RGBA':
-                combined_image = combined_image.convert('RGBA')
+    def apply_layout(self):
+        """
+        Apply the standard layout to the flyer.
+        """
+        # Place the title text at the desired location
+        self.place_title(x=100, y=100, font=None, font_size=40, color="black")
 
-            # Place the combined image in the center of the flyer
-            x_offset = (1100 - combined_image.width) // 2
-            y_offset = (850 - combined_image.height) // 2
-            alpha_mask = combined_image.split()[3]  # Extract the alpha channel
-            self.flyer_image.paste(combined_image, (x_offset, y_offset), alpha_mask)
+        return self.flyer_image
