@@ -61,9 +61,9 @@ class Standard(BaseLayout):
         x = (image_width - text_width) // 2
         return x
 
-    def center_text_vertically_top_20(self, text, font):
+    def center_text_vertically_top_25(self, text, font):
         """
-        Calculate the y-coordinate to center the text vertically within the top 20% of the flyer.
+        Calculate the y-coordinate to center the text vertically within the top 25% of the flyer.
 
         Parameters
         ----------
@@ -75,14 +75,14 @@ class Standard(BaseLayout):
         Returns
         -------
         int
-            The y-coordinate to center the text vertically within the top 20% of the flyer.
+            The y-coordinate to center the text vertically within the top 25% of the flyer.
         """
         draw = ImageDraw.Draw(self.flyer_image)
         text_bbox = draw.textbbox((0, 0), text, font=font)
         text_height = text_bbox[3] - text_bbox[1]
         image_height = self.flyer_image.height
-        top_20_height = image_height // 5
-        y = (top_20_height - text_height) // 2
+        top_25_height = image_height // 4
+        y = (top_25_height - text_height) // 2
         return y
 
     def place_title(self, font_size=None, color="black"):
@@ -109,15 +109,19 @@ class Standard(BaseLayout):
             print(f"Failed to load font: {font_path}. Using default font.")
             font = ImageFont.load_default()
         
-        # Calculate the x-coordinate to center the text horizontally
-        x = self.center_text_horizontally(title_text, font)
+        # Split the title text into lines
+        lines = title_text.split('\n')
         
         # Calculate the y-coordinate to center the text vertically within the top 25%
-        y = self.center_text_vertically_top_20(title_text, font)
+        y = self.center_text_vertically_top_25(title_text, font)
         
-        # Draw the text on the flyer
+        # Draw each line of text on the flyer
         draw = ImageDraw.Draw(self.flyer_image)
-        draw.text((x, y), title_text, font=font, fill=color)
+        for line in lines:
+            # Calculate the x-coordinate to center the text horizontally
+            x = self.center_text_horizontally(line, font)
+            draw.text((x, y), line, font=font, fill=color)
+            y += draw.textbbox((0, 0), line, font=font)[3] - draw.textbbox((0, 0), line, font=font)[1]  # Move y-coordinate down for the next line
 
     def place_image(self):
         """
