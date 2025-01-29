@@ -61,9 +61,9 @@ class Standard(BaseLayout):
         x = (image_width - text_width) // 2
         return x
 
-    def center_text_vertically_top_25(self, text, font):
+    def center_text_vertically_top_20(self, text, font):
         """
-        Calculate the y-coordinate to center the text vertically within the top 25% of the flyer.
+        Calculate the y-coordinate to center the text vertically within the top 20% of the flyer.
 
         Parameters
         ----------
@@ -75,14 +75,14 @@ class Standard(BaseLayout):
         Returns
         -------
         int
-            The y-coordinate to center the text vertically within the top 25% of the flyer.
+            The y-coordinate to center the text vertically within the top 20% of the flyer.
         """
         draw = ImageDraw.Draw(self.flyer_image)
         text_bbox = draw.textbbox((0, 0), text, font=font)
         text_height = text_bbox[3] - text_bbox[1]
         image_height = self.flyer_image.height
-        top_25_height = image_height // 4
-        y = (top_25_height - text_height) // 2
+        top_20_height = image_height // 5
+        y = (top_20_height - text_height) // 2
         return y
 
     def place_title(self, font_size=None, color="black"):
@@ -113,16 +113,30 @@ class Standard(BaseLayout):
         x = self.center_text_horizontally(title_text, font)
         
         # Calculate the y-coordinate to center the text vertically within the top 25%
-        y = self.center_text_vertically_top_25(title_text, font)
+        y = self.center_text_vertically_top_20(title_text, font)
         
         # Draw the text on the flyer
         draw = ImageDraw.Draw(self.flyer_image)
         draw.text((x, y), title_text, font=font, fill=color)
+
+    def place_image(self):
+        """
+        Place an image on the flyer centered both vertically and horizontally.
+
+        """
+        image = self.place_images()
+        if image:
+            image_width, image_height = image.size
+            flyer_width, flyer_height = self.flyer_image.size
+            x = (flyer_width - image_width) // 2
+            y = (flyer_height - image_height) // 2
+            self.flyer_image.paste(image, (x, y))
 
     def apply_layout(self):
         """
         Apply the standard layout to the flyer.
         """
         self.place_title(color="black")
+        self.place_image()
 
         return self.flyer_image
